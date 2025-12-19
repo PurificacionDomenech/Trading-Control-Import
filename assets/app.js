@@ -1747,10 +1747,10 @@ function initTheme() {
     
     if (savedTheme === 'dark') {
         document.body.classList.add('dark-mode');
-        themeToggle.textContent = 'Claro';
+        themeToggle.textContent = '☀️';
     } else {
         document.body.classList.remove('dark-mode');
-        themeToggle.textContent = 'Oscuro';
+        themeToggle.textContent = '🌙';
     }
     
     themeToggle.addEventListener('click', () => {
@@ -1758,7 +1758,7 @@ function initTheme() {
         const isDark = document.body.classList.contains('dark-mode');
         
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        themeToggle.textContent = isDark ? 'Claro' : 'Oscuro';
+        themeToggle.textContent = isDark ? '☀️' : '🌙';
     });
 }
 

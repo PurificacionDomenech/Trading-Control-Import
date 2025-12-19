@@ -32,23 +32,24 @@ body.dark-mode {
     top: 16px;
     right: 16px;
     z-index: 1000;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    color: #ffffff;
+    background: var(--primary-color);
+    color: #1a1a1a;
     border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
     cursor: pointer;
-    font-size: 11px;
-    font-weight: 600;
+    font-size: 20px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0, 217, 255, 0.3);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #theme-toggle:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 217, 255, 0.4);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 217, 255, 0.5);
 }
 
 body {
@@ -142,24 +143,24 @@ body {
             cursor: pointer;
             background-color: transparent;
             border: none;
-            border-bottom: 2px solid transparent;
+            border-radius: 8px;
             text-align: center;
             color: var(--text-muted, #9ca3af);
             font-weight: 500;
             font-size: 14px;
-            transition: all 0.3s;
+            transition: all 0.2s;
             white-space: nowrap;
             opacity: 1;
         }
 
         .tab:hover {
             color: var(--text-color);
-            border-bottom-color: var(--primary-color);
+            background-color: var(--hover-bg);
         }
 
         .tab.active {
-            color: var(--primary-color);
-            border-bottom-color: var(--primary-color);
+            color: #1a1a1a;
+            background-color: var(--primary-color);
         }
 
         .tab-content {
@@ -223,22 +224,22 @@ body {
         }
 
         button {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: #ffffff;
+            background: var(--primary-color);
+            color: #1a1a1a;
             border: none;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
             width: 100%;
-            transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(0, 217, 255, 0.2);
+            transition: all 0.2s;
+            box-shadow: none;
         }
 
         button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 217, 255, 0.3);
+            background: #00c4d4;
+            box-shadow: 0 2px 8px rgba(0, 217, 255, 0.3);
         }
 
         .button-secondary {
@@ -251,15 +252,18 @@ body {
         .button-secondary:hover {
             background-color: var(--hover-bg);
             border-color: var(--primary-color);
+            box-shadow: none;
         }
 
         .button-danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+            background: var(--secondary-color);
+            color: #ffffff;
+            box-shadow: none;
         }
 
         .button-danger:hover {
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            background: #c43ab3;
+            box-shadow: 0 2px 8px rgba(184, 79, 199, 0.3);
         }
 
         .button-small {
