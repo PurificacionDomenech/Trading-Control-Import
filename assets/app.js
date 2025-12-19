@@ -818,21 +818,18 @@ function updateJournalStatistics() {
     const avgH = Math.floor(avgDurS / 3600), avgM = Math.floor((avgDurS % 3600) / 60), avgS = Math.floor(avgDurS % 60);
     const avgDurFmt = vDurCnt > 0 ? `${avgH}h ${avgM}m ${avgS}s` : 'N/A';
     cont.innerHTML = `
-        <h3>Estadísticas Generales</h3>
-        <div class="card-stats">
-            <div class="stat-box"><h4>Total Ops</h4><p>${tOps}</p></div>
-            <div class="stat-box"><h4>Ganadoras</h4><p class="positive">${tWins}</p></div>
-            <div class="stat-box"><h4>Perdedoras</h4><p class="negative">${tLosses}</p></div>
-            <div class="stat-box"><h4>Ratio Acierto</h4><p class="${winR >= 50 ? 'positive' : 'negative'}">${(tWins + tLosses) > 0 ? formatPercentage(winR) : 'N/A'}</p></div>
-            <div class="stat-box"><h4>Beneficio Bruto</h4><p class="positive">${formatCurrency(tProfit)}</p></div>
-            <div class="stat-box"><h4>Pérdida Bruta</h4><p class="${getPercentageClass(winR)}">${(tWins + tLosses) > 0 ? formatPercentage(winR) : 'N/A'}</p></div>
-            <div class="stat-box"><h4>Beneficio Neto</h4><p class="${netP >= 0 ? 'positive' : 'negative'}">${formatCurrency(netP)}</p></div>
-            <div class="stat-box"><h4>Ganancia Media</h4><p class="positive">${formatCurrency(avgW)}</p></div>
-            <div class="stat-box"><h4>Pérdida Media</h4><p class="negative">${formatCurrency(Math.abs(avgL))}</p></div>
-            <div class="stat-box"><h4>Profit Factor</h4><p class="${pF >= 1 ? 'positive' : 'negative'}">${pF === Infinity ? '∞' : pF.toFixed(2)}</p></div>
-            <div class="stat-box"><h4>Duración Media</h4><p>${avgDurFmt}</p></div>
-            ${nOps.length > 0 ? `<div class="stat-box"><h4>Neutras</h4><p>${nOps.length}</p></div>` : ''}
-        </div>
+        <div class="stat-box"><h4>Total Ops</h4><p>${tOps}</p></div>
+        <div class="stat-box"><h4>Ganadoras</h4><p class="positive">${tWins}</p></div>
+        <div class="stat-box"><h4>Perdedoras</h4><p class="negative">${tLosses}</p></div>
+        <div class="stat-box"><h4>Ratio Acierto</h4><p class="${winR >= 50 ? 'positive' : 'negative'}">${(tWins + tLosses) > 0 ? formatPercentage(winR) : 'N/A'}</p></div>
+        <div class="stat-box"><h4>Beneficio Bruto</h4><p class="positive">${formatCurrency(tProfit)}</p></div>
+        <div class="stat-box"><h4>Pérdida Bruta</h4><p class="negative">${formatCurrency(Math.abs(tLoss))}</p></div>
+        <div class="stat-box"><h4>Beneficio Neto</h4><p class="${netP >= 0 ? 'positive' : 'negative'}">${formatCurrency(netP)}</p></div>
+        <div class="stat-box"><h4>Ganancia Media</h4><p class="positive">${formatCurrency(avgW)}</p></div>
+        <div class="stat-box"><h4>Pérdida Media</h4><p class="negative">${formatCurrency(Math.abs(avgL))}</p></div>
+        <div class="stat-box"><h4>Profit Factor</h4><p class="${pF >= 1 ? 'positive' : 'negative'}">${pF === Infinity ? '∞' : pF.toFixed(2)}</p></div>
+        <div class="stat-box"><h4>Duración Media</h4><p>${avgDurFmt}</p></div>
+        ${nOps.length > 0 ? `<div class="stat-box"><h4>Neutras</h4><p>${nOps.length}</p></div>` : ''}
     `;
 }
 
