@@ -248,8 +248,8 @@ function removeChecklistItem(indexToRemove) {
 
 function markChecklistItem(index, checkbox) {
     const checklistKey = getChecklistKey();
-    const checklistItems = getChecklistItemsForAccount();
-    let estadoTareas = JSON.parse(localStorage.getItem(checklistKey)) || checklistItems.map(() => false);
+    const items = getChecklistItemsForAccount();
+    let estadoTareas = JSON.parse(localStorage.getItem(checklistKey)) || items.map(() => false);
     estadoTareas[index] = checkbox.checked;
     localStorage.setItem(checklistKey, JSON.stringify(estadoTareas));
     showChecklist();
@@ -1747,9 +1747,10 @@ function initTheme() {
     
     if (savedTheme === 'dark') {
         document.body.classList.add('dark-mode');
-        themeToggle.textContent = '☀️';
+        themeToggle.textContent = 'Claro';
     } else {
-        themeToggle.textContent = '🌙';
+        document.body.classList.remove('dark-mode');
+        themeToggle.textContent = 'Oscuro';
     }
     
     themeToggle.addEventListener('click', () => {
@@ -1757,7 +1758,7 @@ function initTheme() {
         const isDark = document.body.classList.contains('dark-mode');
         
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        themeToggle.textContent = isDark ? '☀️' : '🌙';
+        themeToggle.textContent = isDark ? 'Claro' : 'Oscuro';
     });
 }
 
