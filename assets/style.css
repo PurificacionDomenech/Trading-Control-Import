@@ -65,7 +65,7 @@ body.dark-mode {
 
 h1 {
     text-align: left;
-    color: #00d9ff;
+    color: #5cd5e6;
     font-size: 28px;
     font-weight: 700;
     margin-bottom: 24px;
@@ -144,7 +144,7 @@ body {
         .account-controls select:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+            box-shadow: 0 0 0 3px rgb(78, 162, 177, 0.1);
         }
 
         .account-controls button {
@@ -227,7 +227,7 @@ body {
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+            box-shadow: 0 0 0 3px rgb(88, 181, 198, 0.1);
         }
 
         input::placeholder, textarea::placeholder {
@@ -341,12 +341,12 @@ body {
         }
 
         .negative {
-            color: #ef4444;
+            color: #f042ca;
             font-weight: 600;
         }
 
         .positive {
-            color: #10b981;
+            color: #78eaf2;
             font-weight: 600;
         }
 
@@ -356,11 +356,11 @@ body {
         }
 
         .operation-bullish {
-            background-color: rgba(16, 185, 129, 0.1);
+            background-color: rgb(106, 226, 224, 0.1);
         }
 
         .operation-bearish {
-            background-color: rgba(239, 68, 68, 0.1);
+            background-color: rgb(238, 73, 161, 0.1);
         }
 
         .filter-controls {
@@ -385,7 +385,7 @@ body {
         }
 
         .dashboard-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 217, 255, 0.15);
+            box-shadow: 0 4px 12px rgb(56, 164, 183, 0.15);
         }
 
         .card-stats {
@@ -405,7 +405,7 @@ body {
 
         .stat-box:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 217, 255, 0.1);
+            box-shadow: 0 4px 12px rgb(69, 190, 211, 0.1);
         }
 
         .stat-box h4 {
@@ -571,12 +571,12 @@ body {
         }
 
         #listaTareas li.completed {
-            background-color: rgba(16, 185, 129, 0.1);
-            border-color: rgba(16, 185, 129, 0.3);
+            background-color: rgb(101, 220, 236, 0.1);
+            border-color: rgb(78, 208, 218, 0.3);
         }
 
         body.dark-mode #listaTareas li.completed {
-            background-color: rgba(16, 185, 129, 0.15);
+            background-color: rgb(77, 231, 234, 0.15);
         }
 
         #listaTareas input[type="checkbox"] {
@@ -594,7 +594,7 @@ body {
 
         #listaTareas .ok {
             margin-left: auto;
-            color: #10b981;
+            color: #46d0e2;
             font-weight: 600;
             font-size: 14px;
         }
