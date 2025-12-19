@@ -14,6 +14,7 @@
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <meta name="theme-color" content="#1a1a1a">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -26,6 +27,9 @@
             <select id="account-selector" onchange="setActiveAccount(this.value)"></select>
             <button onclick="openCreateAccountModal()" class="button-small button-secondary">Nueva Cuenta</button>
             <button onclick="confirmDeleteAccount()" class="button-small button-danger">Eliminar</button>
+            <!-- Botón para importar CSV -->
+            <input type="file" id="csv-file-input" accept=".csv" style="display: none;" onchange="handleFileUpload(this)">
+            <button onclick="document.getElementById('csv-file-input').click()" class="button-small button-secondary">Importar CSV</button>
         </div>
 
         <div class="tabs">

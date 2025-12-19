@@ -497,7 +497,7 @@ function procesarCSV(data) {
         let cuenta = accounts.find(acc => acc.name === nombreCuenta);
         if (!cuenta) {
             // Crear nueva cuenta
-            const newAccountId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
+            const newAccountId = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9);
             cuenta = { id: newAccountId, name: nombreCuenta };
             accounts.push(cuenta);
             saveAccounts();
@@ -727,7 +727,13 @@ document.getElementById('trading-form').addEventListener('submit', function(e) {
         };
         // Verificar si estamos editando
         if (window.editingOperationId) {
-            operations = operations.filter(op => op.id !== window.editingOperationId && op.numero_de_trade !== window.editingOperationId);
+            const editId = window.editingOperationId;
+            operations = operations.filter(op => 
+                op.id !== editId && 
+                op.numero_de_trade !== editId
+            );
+            operation.id = editId;
+            operation.numero_de_trade = editId;
             delete window.editingOperationId;
         }
 
