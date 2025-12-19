@@ -343,8 +343,7 @@ function openCreateAccountModal() {
     accounts.push({ id: id, name: name });
     saveAccounts();
     setActiveAccount(id);
-    alert('Cuenta creada. Ajusta la configuración de la cuenta si es necesario.');
-    openSettingsModal();
+    alert('Cuenta creada correctamente.');
 }
 
 function confirmDeleteAccount() {
