@@ -250,9 +250,12 @@ function markChecklistItem(index, checkbox) {
     const checklistKey = getChecklistKey();
     const checklistItems = getChecklistItemsForAccount();
     let estadoTareas = JSON.parse(localStorage.getItem(checklistKey)) || checklistItems.map(() => false);
+    
+    // Asegurar que el array de estados coincide con el número de items
     if (estadoTareas.length !== checklistItems.length) {
-        estadoTareas = checklistItems.map(() => false);
+        estadoTareas = checklistItems.map((_, i) => estadoTareas[i] !== undefined ? estadoTareas[i] : false);
     }
+    
     estadoTareas[index] = checkbox.checked;
     localStorage.setItem(checklistKey, JSON.stringify(estadoTareas));
     showChecklist();
