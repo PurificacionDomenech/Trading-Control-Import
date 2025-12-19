@@ -1841,8 +1841,8 @@ function removeChecklistItem(indexToRemove) {
 
         function markChecklistItem(index, checkbox) {
             const checklistKey = getChecklistKey();
-            const checklistItems = getChecklistItemsForAccount();
-            let estadoTareas = JSON.parse(localStorage.getItem(checklistKey)) || checklistItems.map(() => false);
+            const items = getChecklistItemsForAccount();
+            let estadoTareas = JSON.parse(localStorage.getItem(checklistKey)) || items.map(() => false);
             estadoTareas[index] = checkbox.checked;
             localStorage.setItem(checklistKey, JSON.stringify(estadoTareas));
             showChecklist();
@@ -1921,6 +1921,12 @@ function removeChecklistItem(indexToRemove) {
             goals = storedGoals ? JSON.parse(storedGoals) : { weekly: 0, monthly: 0 };
             calculateHwmAndDrawdownFloor(true);
             populateAccountSelector();
+            
+            // Recargar retos semanales si ya está inicializada la clase
+            if (window.app) {
+                window.app.reloadForAccount();
+            }
+            
             updateUI();
         }
 
@@ -3010,13 +3016,26 @@ class RetosSemanales {
         document.getElementById('toggleTotalViewBtn').addEventListener('click', () => this.toggleVistaTotal());
     }
 
+    getRetosKey() {
+        return `retosSemanalesData_${currentAccountId}`;
+    }
+
     loadData() {
-        const saved = localStorage.getItem('retosSemanalesData');
+        const saved = localStorage.getItem(this.getRetosKey());
         return saved ? JSON.parse(saved) : {};
     }
 
     saveData() {
-        localStorage.setItem('retosSemanalesData', JSON.stringify(this.data));
+        localStorage.setItem(this.getRetosKey(), JSON.stringify(this.data));
+    }
+
+    reloadForAccount() {
+        this.data = this.loadData();
+        this.currentWeek = this.getCurrentWeekKey();
+        this.currentMonth = new Date().getMonth();
+        this.currentYear = new Date().getFullYear();
+        this.viendoTodo = false;
+        this.renderAll();
     }
 
     getCurrentWeekData() {
