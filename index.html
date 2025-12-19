@@ -566,7 +566,7 @@
                 min-width: 100%;
             }
         }
-        .mood-input-container {
+.mood-input-container {
     position: relative;
  }
 
@@ -1598,7 +1598,7 @@ function getChecklistItemsForAccount() {
     }
 }
 
-        // --- State toggleGoalAchieved    ---
+        // --- State ---
         let accounts = [];
         let currentAccountId = null;
         let operations = [];
@@ -2077,33 +2077,29 @@ function removeChecklistItem(indexToRemove) {
 
     const date = dateInput.value;
     const type = typeInput.value || null;
-    
-    // Obtener activo (personalizado o seleccionado)
+
     let activo = activoSelect.value;
     if (activo === 'custom') {
         activo = customActivoInput.value.trim();
     }
-    
-    // Obtener estrategia (personalizada o seleccionada)
+
     let estrategia = estrategiaSelect.value;
     if (estrategia === 'custom') {
         estrategia = customEstrategiaInput.value.trim();
     }
-    
+
     const contracts = parseInt(contractsInput.value) || null;
-    
-    // Obtener tipo de entrada (personalizado o seleccionado)
+
     let entryType = entryTypeSelect.value;
     if (entryType === 'custom') {
         entryType = customEntryTypeInput.value.trim();
     }
-    
-    // Obtener tipo de salida (personalizado o seleccionado)
+
     let exitType = exitTypeSelect.value;
     if (exitType === 'custom') {
         exitType = customExitTypeInput.value.trim();
     }
-    
+
     const entryTime = entryTimeInput.value || null;
     const exitTime = exitTimeInput.value || null;
     const amount = parseAmount(amountInput.value);
@@ -2121,30 +2117,46 @@ function removeChecklistItem(indexToRemove) {
 
     readFileAsDataURL(mediaInput.files[0], (mediaData) => {
         const operation = {
+            numero_de_trade: Date.now(),
             id: Date.now(),
-            date,
-            type,
+            fecha_de_operacion: date,
+            instrumento: activo || 'N/A',
+            cuenta: currentAccountId,
+            mercado_pos: type === 'bullish' ? 'Long' : (type === 'bearish' ? 'Short' : null),
+            cant: contracts,
+            precio_de_entrada: null,
+            precio_de_salida: null,
+            tiempo_de_entrada: entryTime,
+            tiempo_de_salida: exitTime,
+            con_ganancia_neto: amount,
+            estrategia_manual: estrategia || 'N/A',
+            tipo_entrada_manual: entryType || null,
+            tipo_salida_manual: exitType || null,
+            estado_animo: mood,
+            valoracion_noticias: newsRating,
+            notas_psicologia: notes,
+            media: mediaData,
+            date: date,
+            type: type,
             activo: activo || 'N/A',
             estrategia: estrategia || 'N/A',
             contracts: contracts,
             entryType: entryType || null,
             exitType: exitType || null,
-            entryTime,
-            exitTime,
+            entryTime: entryTime,
+            exitTime: exitTime,
             duration: calculateDuration(entryTime, exitTime),
-            amount,
-            notes,
-            mood,
-            newsRating,
-            media: mediaData
+            amount: amount,
+            notes: notes,
+            mood: mood,
+            newsRating: newsRating
         };
         operations.push(operation);
-        operations.sort((a, b) => new Date(a.date + 'T' + (a.entryTime || '00:00:00')) - new Date(b.date + 'T' + (b.entryTime || '00:00:00')));
+        operations.sort((a, b) => new Date(a.fecha_de_operacion + 'T' + (a.tiempo_de_entrada || '00:00:00')) - new Date(b.fecha_de_operacion + 'T' + (b.tiempo_de_entrada || '00:00:00')));
         calculateHwmAndDrawdownFloor();
         saveData();
         alert('Operación guardada.');
-        
-        // Reset form
+
         document.getElementById('trading-form').reset();
         document.getElementById('date').value = new Date().toISOString().split('T')[0];
         document.getElementById('custom-activo-input').style.display = 'none';
@@ -2152,11 +2164,10 @@ function removeChecklistItem(indexToRemove) {
         document.getElementById('custom-entry-type-input').style.display = 'none';
         document.getElementById('custom-exit-type-input').style.display = 'none';
         setNewsRating(0);
-        
+
         updateUI();
     });
 });
-
 function deleteOperation(id) {
             if (confirm('¿Eliminar esta operación?')) {
                 operations = operations.filter(op => op.id !== id);
@@ -2207,7 +2218,7 @@ function deleteOperation(id) {
 
             let historicalPeak = settings.initialBalance;
             for (const op of operations) {
-                historicalPeak += op.amount;
+                historicalPeak += op.con_ganancia_neto || op.amount || 0;
                 if (historicalPeak >= bufferThreshold) {
                     floorIsFixed = true;
                     break;
@@ -2220,7 +2231,7 @@ function deleteOperation(id) {
                 currentBalance = settings.initialBalance;
                 peakBalance = settings.initialBalance;
                 operations.forEach(op => {
-                    currentBalance += op.amount;
+                    currentBalance += op.con_ganancia_neto || op.amount || 0;
                     if (currentBalance > peakBalance) {
                         peakBalance = currentBalance;
                     }
@@ -2231,7 +2242,7 @@ function deleteOperation(id) {
             let runningBalance = settings.initialBalance;
             highWaterMark = settings.initialBalance;
             operations.forEach(op => {
-                runningBalance += op.amount;
+                runningBalance += op.con_ganancia_neto || op.amount || 0;
                 highWaterMark = Math.max(highWaterMark, runningBalance);
             });
 
@@ -2375,13 +2386,13 @@ function renderAchievedGoals() {
                 return;
             }
             const tOps = operations.length;
-            const wOps = operations.filter(op => op.amount > 0);
-            const lOps = operations.filter(op => op.amount < 0);
-            const nOps = operations.filter(op => op.amount === 0);
+            const wOps = operations.filter(op => (op.con_ganancia_neto || op.amount) > 0);
+            const lOps = operations.filter(op => (op.con_ganancia_neto || op.amount) < 0);
+            const nOps = operations.filter(op => (op.con_ganancia_neto || op.amount) === 0);
             const tWins = wOps.length;
             const tLosses = lOps.length;
-            const tProfit = wOps.reduce((s, op) => s + op.amount, 0);
-            const tLoss = lOps.reduce((s, op) => s + op.amount, 0);
+            const tProfit = wOps.reduce((s, op) => s + (op.con_ganancia_neto || op.amount), 0);
+            const tLoss = lOps.reduce((s, op) => s + (op.con_ganancia_neto || op.amount), 0);
             const netP = tProfit + tLoss;
             const winR = (tWins + tLosses) > 0 ? (tWins / (tWins + tLosses) * 100) : 0;
             const avgW = tWins > 0 ? tProfit / tWins : 0;
@@ -2389,7 +2400,7 @@ function renderAchievedGoals() {
             const pF = (tLoss !== 0) ? Math.abs(tProfit / tLoss) : (tProfit > 0 ? Infinity : 0);
             let tDurS = 0, vDurCnt = 0;
             operations.forEach(op => {
-                const dur = calculateDuration(op.entryTime, op.exitTime);
+                const dur = calculateDuration(op.tiempo_de_entrada || op.entryTime, op.tiempo_de_salida || op.exitTime);
                 if (typeof dur === 'string' && dur.includes('h')) {
                     const p = dur.match(/(\d+)h (\d+)m (\d+)s/);
                     if (p) {
@@ -2474,7 +2485,7 @@ function updateUI() {
             });
             sel.value = sorted.includes(cur) ? cur : '';
         }
-  // --- Atencion---
+  // --- Historial Operations ---
       function renderOperations(filteredOps = null) {
     const list = document.getElementById('operations-list');
     list.innerHTML = '';
@@ -2488,8 +2499,8 @@ function updateUI() {
     
     // Ordenar operaciones
     const sortedOps = ops.sort((a, b) => {
-        const dateA = new Date(a.date + 'T' + (a.entryTime || '00:00:00'));
-        const dateB = new Date(b.date + 'T' + (b.entryTime || '00:00:00'));
+        const dateA = new Date(a.fecha_de_operacion || a.date + 'T' + (a.tiempo_de_entrada || a.entryTime || '00:00:00'));
+        const dateB = new Date(b.fecha_de_operacion || b.date + 'T' + (b.tiempo_de_entrada || b.entryTime || '00:00:00'));
         return dateB - dateA || b.id - a.id;
     });
 
@@ -2500,7 +2511,8 @@ function updateUI() {
     // Renderizar operaciones
     opsToShow.forEach(op => {
         const tr = document.createElement('tr');
-        tr.className = op.type === 'bullish' ? 'operation-bullish' : (op.type === 'bearish' ? 'operation-bearish' : '');
+        const displayAmount = op.con_ganancia_neto !== undefined ? op.con_ganancia_neto : op.amount;
+        tr.className = displayAmount > 0 ? 'operation-bullish' : (displayAmount < 0 ? 'operation-bearish' : '');
         
         const mediaHtml = op.media ? 
             (op.media.startsWith('data:image') ? 
@@ -2508,28 +2520,36 @@ function updateUI() {
                 `<video src="${op.media}" class="media-preview" controls></video>`) : 'N/A';
         
         // Formatear el mood para que solo muestre el icono
-        let moodDisplay = op.mood || 'N/A';
+        let moodDisplay = op.estado_animo || op.mood || 'N/A';
         if (moodDisplay.includes('😊')) moodDisplay = '😊';
         else if (moodDisplay.includes('😐')) moodDisplay = '😐';
         else if (moodDisplay.includes('😟')) moodDisplay = '😟';
         else if (moodDisplay.includes('😠')) moodDisplay = '😠';
         
+        const displayDate = op.fecha_de_operacion || op.date;
+        const displayInstrument = op.instrumento || op.activo || 'N/A';
+        const displayStrategy = op.estrategia_manual || op.estrategia || 'N/A';
+        const displayContracts = op.cant || op.contracts || 'N/A';
+        const displayEntryType = op.tipo_entrada_manual || op.entryType || 'N/A';
+        const displayExitType = op.tipo_salida_manual || op.exitType || 'N/A';
+        const displayDuration = calculateDuration(op.tiempo_de_entrada || op.entryTime, op.tiempo_de_salida || op.exitTime);
+        
         tr.innerHTML = `
-            <td>${formatDate(op.date)}</td>
-            <td>${formatType(op.type)}</td>
-            <td>${op.activo || 'N/A'}</td>
-            <td>${op.estrategia || 'N/A'}</td>
-            <td>${op.contracts || 'N/A'}</td>
-            <td>${op.entryType || 'N/A'}</td>
-            <td>${op.exitType || 'N/A'}</td>
-            <td>${op.duration}</td>
+            <td>${formatDate(displayDate)}</td>
+            <td>${formatType(op.mercado_pos === 'Long' ? 'bullish' : (op.mercado_pos === 'Short' ? 'bearish' : null))}</td>
+            <td>${displayInstrument}</td>
+            <td>${displayStrategy}</td>
+            <td>${displayContracts}</td>
+            <td>${displayEntryType}</td>
+            <td>${displayExitType}</td>
+            <td>${displayDuration}</td>
             <td>${moodDisplay}</td>
-            <td class="${op.amount > 0 ? 'positive' : (op.amount < 0 ? 'negative' : '')}">${formatCurrency(op.amount)}</td>
+            <td class="${displayAmount > 0 ? 'positive' : (displayAmount < 0 ? 'negative' : '')}">${formatCurrency(displayAmount)}</td>
             <td>${mediaHtml}</td>
             <td>
-                <button onclick="showOperationDetails(${op.id})" 
+                <button onclick="showOperationDetails(${op.id || op.numero_de_trade})" 
                 class="button-secondary button-small" style="margin-right: 5px;">Ver</button>
-                <button onclick="deleteOperation(${op.id})" class="button-danger button-small">Eliminar</button>
+                <button onclick="deleteOperation(${op.id || op.numero_de_trade})" class="button-danger button-small">Eliminar</button>
             </td>
         `;
         list.appendChild(tr);
@@ -2541,9 +2561,9 @@ function updateUI() {
 function changeOperationsDisplay() {
     filterOperations(); // Esto llamará a renderOperations con la nueva configuración
 }
-  // --- 
+  // --- Operaciones ---
    function showOperationDetails(id) {
-    const op = operations.find(op => op.id === id);
+    const op = operations.find(op => op.id === id || op.numero_de_trade === id);
     if (!op) return;
     
     const mediaHtml = op.media ? 
@@ -2553,43 +2573,54 @@ function changeOperationsDisplay() {
         : '<p><em>Sin media</em></p>';
     
     // Formatear valoración de noticias como estrellas
-    const starsHtml = '★'.repeat(op.newsRating || 0) + '☆'.repeat(4 - (op.newsRating || 0));
+    const starsHtml = '★'.repeat(op.valoracion_noticias || op.newsRating || 0) + '☆'.repeat(4 - (op.valoracion_noticias || op.newsRating || 0));
     
     document.getElementById('operation-details-content').innerHTML = `
         <div style="margin-bottom: 15px;">
-            <p><strong>Fecha:</strong> ${formatDate(op.date)}</p>
-            <p><strong>Tipo:</strong> ${formatType(op.type)}</p>
-            <p><strong>Activo:</strong> ${op.activo || 'N/A'}</p>
-            <p><strong>Estrategia:</strong> ${op.estrategia || 'N/A'}</p>
-            <p><strong>Contratos:</strong> ${op.contracts || 'N/A'}</p>
-            <p><strong>Tipo de Entrada:</strong> ${op.entryType || 'N/A'}</p>
-            <p><strong>Tipo de Salida:</strong> ${op.exitType || 'N/A'}</p>
-            <p><strong>Hora Entrada:</strong> ${op.entryTime || 'N/A'}</p>
-            <p><strong>Hora Salida:</strong> ${op.exitTime || 'N/A'}</p>
-            <p><strong>Duración:</strong> ${op.duration}</p>
-            <p><strong>Importe:</strong> <span class="${op.amount > 0 ? 'positive' : (op.amount < 0 ? 'negative' : '')}">${formatCurrency(op.amount)}</span></p>
-            <p><strong>Estado de Ánimo:</strong> ${op.mood || 'N/A'}</p>
+            <p><strong>Fecha:</strong> ${formatDate(op.fecha_de_operacion || op.date)}</p>
+            <p><strong>Tipo:</strong> ${formatType(op.mercado_pos === 'Long' ? 'bullish' : (op.mercado_pos === 'Short' ? 'bearish' : null))}</p>
+            <p><strong>Instrumento:</strong> ${op.instrumento || op.activo || 'N/A'}</p>
+            <p><strong>Estrategia:</strong> ${op.estrategia_manual || op.estrategia || 'N/A'}</p>
+            <p><strong>Contratos:</strong> ${op.cant || op.contracts || 'N/A'}</p>
+            <p><strong>Tipo de Entrada:</strong> ${op.tipo_entrada_manual || op.entryType || 'N/A'}</p>
+            <p><strong>Tipo de Salida:</strong> ${op.tipo_salida_manual || op.exitType || 'N/A'}</p>
+            <p><strong>Hora Entrada:</strong> ${op.tiempo_de_entrada || op.entryTime || 'N/A'}</p>
+            <p><strong>Hora Salida:</strong> ${op.tiempo_de_salida || op.exitTime || 'N/A'}</p>
+            <p><strong>Duración:</strong> ${calculateDuration(op.tiempo_de_entrada || op.entryTime, op.tiempo_de_salida || op.exitTime)}</p>
+            <p><strong>Importe:</strong> <span class="${(op.con_ganancia_neto || op.amount) > 0 ? 'positive' : ((op.con_ganancia_neto || op.amount) < 0 ? 'negative' : '')}">${formatCurrency(op.con_ganancia_neto || op.amount)}</span></p>
+            <p><strong>Estado de Ánimo:</strong> ${op.estado_animo || op.mood || 'N/A'}</p>
             <p><strong>Valoración Noticias:</strong> ${starsHtml}</p>
         </div>
-        ${op.notes ? `<div style="border-top: 1px solid #4b5563; padding-top: 15px;"><h4>Notas:</h4><p style="white-space: pre-wrap;">${op.notes}</p>
+        ${op.notas_psicologia || op.notes ? `<div style="border-top: 1px solid #4b5563; padding-top: 15px;"><h4>Notas:</h4><p style="white-space: pre-wrap;">${op.notas_psicologia || op.notes}</p>
             </div>` : '<p><em>Sin notas.</em></p>'}
         <div style="border-top: 1px solid #4b5563; padding-top: 15px;"><h4>Media:</h4>${mediaHtml}</div>
     `;
     openDetailsModal();
 }
-        // --- operacion diario
-
+        // --- Historial Filter ---
         function filterOperations() {
             const yf = document.getElementById('filter-year').value;
             const mf = document.getElementById('filter-month').value;
             const tf = document.getElementById('filter-type').value;
             const rf = document.getElementById('filter-result').value;
             let fOps = [...operations];
-            if (yf) fOps = fOps.filter(op => op.date.substring(0, 4) === yf);
-            if (mf) fOps = fOps.filter(op => op.date.substring(5, 7) === mf);
-            if (tf) fOps = fOps.filter(op => tf === 'none' ? !op.type : op.type === tf);
-            if (rf) fOps = fOps.filter(op => rf === 'win' ? op.amount > 0 : (rf === 'loss' ?
-             op.amount < 0 : op.amount === 0));
+            if (yf) fOps = fOps.filter(op => (op.fecha_de_operacion || op.date).substring(0, 4) === yf);
+            if (mf) fOps = fOps.filter(op => (op.fecha_de_operacion || op.date).substring(5, 7) === mf);
+            if (tf) {
+                if (tf === 'bullish') fOps = fOps.filter(op => op.mercado_pos === 'Long' || op.type === 'bullish');
+                else if (tf === 'bearish') fOps = fOps.filter(op => op.mercado_pos === 'Short' || op.type === 'bearish');
+                else if (tf === 'none') fOps = fOps.filter(op => !op.mercado_pos && !op.type);
+                else fOps = fOps.filter(op => op.instrumento === tf || op.activo === tf);
+            }
+            if (rf) {
+                fOps = fOps.filter(op => {
+                    const amount = op.con_ganancia_neto !== undefined ? op.con_ganancia_neto : op.amount;
+                    if (rf === 'win') return amount > 0;
+                    if (rf === 'loss') return amount < 0;
+                    if (rf === 'neutral') return amount === 0;
+                    return true;
+                });
+            }
             renderOperations(fOps);
         }
 
@@ -2600,16 +2631,16 @@ function changeOperationsDisplay() {
             const weekNumber = getWeekNumber(today);
 
             const weeklyOps = operations.filter(op => {
-                const opDate = new Date(op.date);
+                const opDate = new Date(op.fecha_de_operacion || op.date);
                 return getWeekNumber(opDate) === weekNumber && opDate.getFullYear() === year;
             });
             const monthlyOps = operations.filter(op => {
-                const opDate = new Date(op.date);
+                const opDate = new Date(op.fecha_de_operacion || op.date);
                 return opDate.getFullYear() === year && (opDate.getMonth() + 1) === month;
             });
 
-            const weeklyPL = weeklyOps.reduce((sum, op) => sum + op.amount, 0);
-            const monthlyPL = monthlyOps.reduce((sum, op) => sum + op.amount, 0);
+            const weeklyPL = weeklyOps.reduce((sum, op) => sum + (op.con_ganancia_neto || op.amount || 0), 0);
+            const monthlyPL = monthlyOps.reduce((sum, op) => sum + (op.con_ganancia_neto || op.amount || 0), 0);
 
             const weeklyPerc = goals.weekly > 0 ? (weeklyPL / goals.weekly * 100) : 0;
             const monthlyPerc = goals.monthly > 0 ? (monthlyPL / goals.monthly * 100) : 0;
@@ -2641,7 +2672,7 @@ function changeOperationsDisplay() {
             if (!currentAccountId) return;
 
             const initialBalance = settings.initialBalance;
-            const totalPL = operations.reduce((sum, op) => sum + op.amount, 0);
+            const totalPL = operations.reduce((sum, op) => sum + (op.con_ganancia_neto || op.amount || 0), 0);
             const currentBalance = initialBalance + totalPL;
             const roi = initialBalance > 0 ? (totalPL / initialBalance * 100) : 0;
 
@@ -2681,8 +2712,9 @@ function changeOperationsDisplay() {
         function updateConsistencyRule() {
             const dailyProfits = {};
             operations.forEach(op => {
-                if (!dailyProfits[op.date]) dailyProfits[op.date] = 0;
-                dailyProfits[op.date] += op.amount;
+                const date = op.fecha_de_operacion || op.date;
+                if (!dailyProfits[date]) dailyProfits[date] = 0;
+                dailyProfits[date] += (op.con_ganancia_neto || op.amount || 0);
             });
 
             const positiveDays = Object.values(dailyProfits).filter(p => p > 0);
@@ -2714,10 +2746,10 @@ function changeOperationsDisplay() {
             const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
             const performance = Array(5).fill(0);
             operations.forEach(op => {
-                let day = new Date(op.date).getDay();
+                let day = new Date(op.fecha_de_operacion || op.date).getDay();
                 if (day === 0) day = 5; // Domingo a final
                 else day -= 1;
-                performance[day] += op.amount;
+                performance[day] += (op.con_ganancia_neto || op.amount || 0);
             });
 
             const container = document.getElementById('weekly-performance');
@@ -2744,10 +2776,10 @@ function changeOperationsDisplay() {
 
     // Calcular estadísticas por día
     operations.forEach(op => {
-        const dayName = getDayOfWeek(op.date);
+        const dayName = getDayOfWeek(op.fecha_de_operacion || op.date);
         // Solo procesar si el día es hábil
         if (days.includes(dayName)) {
-            const amount = parseFloat(op.amount) || 0;
+            const amount = parseFloat(op.con_ganancia_neto || op.amount) || 0;
             dayStats[dayName].total++;
             if (amount > 0) {
                 dayStats[dayName].wins++;
@@ -2791,7 +2823,8 @@ function changeOperationsDisplay() {
             table.innerHTML = '<thead><tr><th>Fecha</th><th>Importe</th></tr></thead><tbody></tbody>';
             recent.forEach(op => {
                 const tr = document.createElement('tr');
-                tr.innerHTML = `<td>${formatDate(op.date)}</td><td class="${op.amount > 0 ? 'positive' : (op.amount < 0 ? 'negative' : '')}">${formatCurrency(op.amount)}</td>`;
+                const displayAmount = op.con_ganancia_neto !== undefined ? op.con_ganancia_neto : op.amount;
+                tr.innerHTML = `<td>${formatDate(op.fecha_de_operacion || op.date)}</td><td class="${displayAmount > 0 ? 'positive' : (displayAmount < 0 ? 'negative' : '')}">${formatCurrency(displayAmount)}</td>`;
                 table.querySelector('tbody').appendChild(tr);
             });
             container.appendChild(table);
@@ -2805,6 +2838,7 @@ function changeOperationsDisplay() {
         return 'percentage-above-50'; // Turquesa
     }
   }
+// --- Gráfico de Crecimiento de Capital ---
 // --- VERSIÓN DE DEPURACIÓN de renderCapitalGrowthChart ---
 
 
@@ -2849,11 +2883,11 @@ function renderCapitalGrowthChart() {
     let runningBalance = settings.initialBalance;
     let highWaterMark = settings.initialBalance;
 
-    const sortedOperations = [...operations].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const sortedOperations = [...operations].sort((a, b) => new Date(a.fecha_de_operacion || a.date) - new Date(b.fecha_de_operacion || b.date));
 
     sortedOperations.forEach(op => {
-        runningBalance += op.amount;
-        dailyBalances[op.date] = runningBalance;
+        runningBalance += (op.con_ganancia_neto || op.amount || 0);
+        dailyBalances[op.fecha_de_operacion || op.date] = runningBalance;
         highWaterMark = Math.max(highWaterMark, runningBalance);
     });
 
@@ -2863,7 +2897,7 @@ function renderCapitalGrowthChart() {
     const drawdownData = [];
 
     if (sortedOperations.length > 0) {
-        const firstOpDate = new Date(sortedOperations[0].date);
+        const firstOpDate = new Date(sortedOperations[0].fecha_de_operacion || sortedOperations[0].date);
         firstOpDate.setDate(firstOpDate.getDate() - 1); // Un día antes para el "bajón" inicial
         
         labels.push(firstOpDate.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }));
