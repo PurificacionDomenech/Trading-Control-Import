@@ -1207,6 +1207,8 @@ function renderOperations(filteredOps = null) {
             <td>
                 <button onclick="showOperationDetails(${op.id || op.numero_de_trade})" 
                 class="button-secondary button-small" style="margin-right: 5px;">Ver</button>
+                <button onclick="editOperation(${op.id || op.numero_de_trade})" 
+                class="button-secondary button-small" style="margin-right: 5px;">Editar</button>
                 <button onclick="deleteOperation(${op.id || op.numero_de_trade})" class="button-danger button-small">Eliminar</button>
             </td>
         `;
