@@ -465,6 +465,167 @@ function resetAllData() {
     }
 }
 
+// --- CSV Import ---
+function iniciarImportacionCSV(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    Papa.parse(file, {
+        header: true,
+        delimiter: ';',
+        skipEmptyLines: true,
+        complete: function(results) {
+            procesarCSV(results.data);
+        },
+        error: function(error) {
+            alert('Error al leer el archivo CSV: ' + error.message);
+        }
+    });
+}
+
+function procesarCSV(data) {
+    let operacionesImportadas = 0;
+    let operacionesDuplicadas = 0;
+    let cuentasCreadas = [];
+
+    data.forEach(row => {
+        // Mapeo de campos CSV a campos internos
+        const nombreCuenta = row['Cuenta']?.trim();
+        if (!nombreCuenta) return;
+
+        // Verificar si la cuenta existe
+        let cuenta = accounts.find(acc => acc.name === nombreCuenta);
+        if (!cuenta) {
+            // Crear nueva cuenta
+            const newAccountId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
+            cuenta = { id: newAccountId, name: nombreCuenta };
+            accounts.push(cuenta);
+            saveAccounts();
+            cuentasCreadas.push(nombreCuenta);
+        }
+
+        // Cargar operaciones de esta cuenta
+        const cuentaOpsKey = getOperationsKey(cuenta.id);
+        const cuentaOps = localStorage.getItem(cuentaOpsKey);
+        const operacionesCuenta = cuentaOps ? JSON.parse(cuentaOps) : [];
+
+        // Mapear datos del CSV
+        const numeroTrade = row['Número de trade']?.trim();
+        const fecha = parsearFechaNinjaTrader(row['Tiempo de entrada']);
+        const horaEntrada = parsearHoraNinjaTrader(row['Tiempo de entrada']);
+        const horaSalida = parsearHoraNinjaTrader(row['Tiempo de salida']);
+
+        // Verificar duplicados
+        const existeDuplicado = operacionesCuenta.some(op => 
+            op.numero_de_trade == numeroTrade && 
+            op.fecha_de_operacion === fecha
+        );
+
+        if (existeDuplicado) {
+            operacionesDuplicadas++;
+            return;
+        }
+
+        // Parsear ganancia neta (eliminar símbolos de moneda y convertir)
+        const gananciaTexto = row['Con ganancia neto']?.replace(/[^0-9,.\-]/g, '').replace(',', '.');
+        const ganancia = parseFloat(gananciaTexto) || 0;
+
+        // Parsear comisión
+        const comisionTexto = row['Comisión']?.replace(/[^0-9,.\-]/g, '').replace(',', '.');
+        const comision = parseFloat(comisionTexto) || 0;
+
+        // Crear operación
+        const operacion = {
+            id: Date.now() + Math.random(),
+            numero_de_trade: numeroTrade || Date.now(),
+            cuenta: cuenta.id,
+            instrumento: row['Instrumento']?.trim() || 'N/A',
+            estrategia_manual: row['Estrategia']?.trim() || 'N/A',
+            mercado_pos: row['Mercado pos.']?.trim() || null,
+            cant: parseInt(row['Cant.']) || null,
+            precio_de_entrada: parseFloat(row['Precio de entrada']?.replace(',', '.')) || null,
+            precio_de_salida: parseFloat(row['Precio de salida']?.replace(',', '.')) || null,
+            tiempo_de_entrada: horaEntrada,
+            tiempo_de_salida: horaSalida,
+            fecha_de_operacion: fecha,
+            con_ganancia_neto: ganancia,
+            comision: comision,
+            // Campos heredados para compatibilidad
+            date: fecha,
+            type: row['Mercado pos.']?.toLowerCase() === 'long' ? 'bullish' : 
+                  (row['Mercado pos.']?.toLowerCase() === 'short' ? 'bearish' : null),
+            activo: row['Instrumento']?.trim() || 'N/A',
+            estrategia: row['Estrategia']?.trim() || 'N/A',
+            contracts: parseInt(row['Cant.']) || null,
+            entryTime: horaEntrada,
+            exitTime: horaSalida,
+            amount: ganancia,
+            duration: calculateDuration(horaEntrada, horaSalida),
+            notes: `Importado de NinjaTrader`,
+            mood: null,
+            newsRating: 0
+        };
+
+        operacionesCuenta.push(operacion);
+        operacionesCuenta.sort((a, b) => new Date(a.fecha_de_operacion + 'T' + (a.tiempo_de_entrada || '00:00:00')) - 
+                                          new Date(b.fecha_de_operacion + 'T' + (b.tiempo_de_entrada || '00:00:00')));
+        
+        localStorage.setItem(cuentaOpsKey, JSON.stringify(operacionesCuenta));
+        operacionesImportadas++;
+    });
+
+    // Mensaje de resumen
+    let mensaje = `✅ Importación completada:\n`;
+    mensaje += `- ${operacionesImportadas} operaciones importadas\n`;
+    if (operacionesDuplicadas > 0) {
+        mensaje += `- ${operacionesDuplicadas} operaciones duplicadas (omitidas)\n`;
+    }
+    if (cuentasCreadas.length > 0) {
+        mensaje += `- Cuentas creadas: ${cuentasCreadas.join(', ')}`;
+    }
+    
+    alert(mensaje);
+    
+    // Recargar datos si estamos en la cuenta importada
+    if (operacionesImportadas > 0) {
+        const storedActive = localStorage.getItem(ACTIVE_ACCOUNT_KEY);
+        if (storedActive) {
+            setActiveAccount(storedActive);
+        }
+    }
+    
+    // Limpiar input
+    document.getElementById('csv-file-input').value = '';
+}
+
+function parsearFechaNinjaTrader(fechaHora) {
+    if (!fechaHora) return new Date().toISOString().split('T')[0];
+    
+    // Formato: "01/12/2025 8:31:48"
+    const partes = fechaHora.split(' ')[0].split('/');
+    if (partes.length === 3) {
+        const dia = partes[0].padStart(2, '0');
+        const mes = partes[1].padStart(2, '0');
+        const año = partes[2];
+        return `${año}-${mes}-${dia}`;
+    }
+    return new Date().toISOString().split('T')[0];
+}
+
+function parsearHoraNinjaTrader(fechaHora) {
+    if (!fechaHora) return null;
+    
+    // Formato: "01/12/2025 8:31:48"
+    const partes = fechaHora.split(' ');
+    if (partes.length === 2) {
+        const hora = partes[1].split(':');
+        if (hora.length === 3) {
+            return `${hora[0].padStart(2, '0')}:${hora[1].padStart(2, '0')}:${hora[2].padStart(2, '0')}`;
+        }
+    }
+    return null;
+}
+
 // --- Operations ---
 
 document.getElementById('trading-form').addEventListener('submit', function(e) {
@@ -564,6 +725,12 @@ document.getElementById('trading-form').addEventListener('submit', function(e) {
             mood: mood,
             newsRating: newsRating
         };
+        // Verificar si estamos editando
+        if (window.editingOperationId) {
+            operations = operations.filter(op => op.id !== window.editingOperationId && op.numero_de_trade !== window.editingOperationId);
+            delete window.editingOperationId;
+        }
+
         operations.push(operation);
         operations.sort((a, b) => new Date(a.fecha_de_operacion + 'T' + (a.tiempo_de_entrada || '00:00:00')) - new Date(b.fecha_de_operacion + 'T' + (b.tiempo_de_entrada || '00:00:00')));
         calculateHwmAndDrawdownFloor();
@@ -577,14 +744,107 @@ document.getElementById('trading-form').addEventListener('submit', function(e) {
         document.getElementById('custom-entry-type-input').style.display = 'none';
         document.getElementById('custom-exit-type-input').style.display = 'none';
         setNewsRating(0);
+        
+        // Resetear estado de edición
+        delete window.editingOperationId;
+        const submitButton = document.querySelector('#trading-form button[type="submit"]');
+        submitButton.textContent = 'Guardar Operación';
+        submitButton.style.backgroundColor = '';
 
         updateUI();
     });
 });
 
+function editOperation(id) {
+    const op = operations.find(op => op.id === id || op.numero_de_trade === id);
+    if (!op) {
+        alert('Operación no encontrada');
+        return;
+    }
+
+    // Cambiar a la pestaña de registro
+    openTab('registro');
+
+    // Llenar el formulario con los datos de la operación
+    document.getElementById('date').value = op.fecha_de_operacion || op.date;
+    
+    // Tipo de operación
+    if (op.mercado_pos === 'Long' || op.type === 'bullish') {
+        document.getElementById('type').value = 'bullish';
+    } else if (op.mercado_pos === 'Short' || op.type === 'bearish') {
+        document.getElementById('type').value = 'bearish';
+    }
+
+    // Activo
+    const activoSelect = document.getElementById('activo');
+    const activoValue = op.instrumento || op.activo;
+    if (['Nasdaq', 'Oro', 'Dax'].includes(activoValue)) {
+        activoSelect.value = activoValue;
+    } else {
+        activoSelect.value = 'custom';
+        document.getElementById('custom-activo-input').style.display = 'block';
+        document.getElementById('custom-activo-input').value = activoValue;
+    }
+
+    // Estrategia
+    const estrategiaSelect = document.getElementById('estrategia');
+    const estrategiaValue = op.estrategia_manual || op.estrategia;
+    if (['Flash', 'Monarca', 'Monarca Plus', 'Imperial', 'Golden', 'Golden Band'].includes(estrategiaValue)) {
+        estrategiaSelect.value = estrategiaValue;
+    } else {
+        estrategiaSelect.value = 'custom';
+        document.getElementById('custom-estrategia-input').style.display = 'block';
+        document.getElementById('custom-estrategia-input').value = estrategiaValue;
+    }
+
+    document.getElementById('contracts').value = op.cant || op.contracts || '';
+    document.getElementById('entry-time').value = op.tiempo_de_entrada || op.entryTime || '';
+    document.getElementById('exit-time').value = op.tiempo_de_salida || op.exitTime || '';
+    document.getElementById('amount').value = op.con_ganancia_neto !== undefined ? op.con_ganancia_neto : op.amount;
+
+    // Tipo de entrada
+    const entryTypeSelect = document.getElementById('entry-type');
+    const entryTypeValue = op.tipo_entrada_manual || op.entryType || '';
+    const entryTypeOptions = Array.from(entryTypeSelect.options).map(opt => opt.value);
+    if (entryTypeOptions.includes(entryTypeValue)) {
+        entryTypeSelect.value = entryTypeValue;
+    } else if (entryTypeValue) {
+        entryTypeSelect.value = 'custom';
+        document.getElementById('custom-entry-type-input').style.display = 'block';
+        document.getElementById('custom-entry-type-input').value = entryTypeValue;
+    }
+
+    // Tipo de salida
+    const exitTypeSelect = document.getElementById('exit-type');
+    const exitTypeValue = op.tipo_salida_manual || op.exitType || '';
+    const exitTypeOptions = Array.from(exitTypeSelect.options).map(opt => opt.value);
+    if (exitTypeOptions.includes(exitTypeValue)) {
+        exitTypeSelect.value = exitTypeValue;
+    } else if (exitTypeValue) {
+        exitTypeSelect.value = 'custom';
+        document.getElementById('custom-exit-type-input').style.display = 'block';
+        document.getElementById('custom-exit-type-input').value = exitTypeValue;
+    }
+
+    document.getElementById('journal-mood').value = op.estado_animo || op.mood || '';
+    setNewsRating(op.valoracion_noticias || op.newsRating || 0);
+    document.getElementById('notes').value = op.notas_psicologia || op.notes || '';
+
+    // Eliminar la operación antigua al guardar
+    window.editingOperationId = op.id || op.numero_de_trade;
+
+    // Cambiar el texto del botón
+    const submitButton = document.querySelector('#trading-form button[type="submit"]');
+    submitButton.textContent = 'Actualizar Operación';
+    submitButton.style.backgroundColor = '#ef44bc';
+
+    // Scroll al formulario
+    document.getElementById('trading-form').scrollIntoView({ behavior: 'smooth' });
+}
+
 function deleteOperation(id) {
     if (confirm('¿Eliminar esta operación?')) {
-        operations = operations.filter(op => op.id !== id);
+        operations = operations.filter(op => op.id !== id && op.numero_de_trade !== id);
         calculateHwmAndDrawdownFloor();
         saveData();
         updateUI();
