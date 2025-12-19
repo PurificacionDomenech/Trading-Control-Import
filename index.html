@@ -4,19 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Trading Control</title>
-
     <!-- Color de la barra de estado en móviles -->
     <meta name="theme-color" content="#1a1a1a">
-
     <!-- Enlace al Manifiesto de Aplicación Web (incrustado y corregido) -->
     <link rel="manifest" href="manifest.json">
-
     <!-- Icono para dispositivos Apple (muy importante para accesos directos) -->
     <link rel="apple-touch-icon" href="logo.jpg">
-
     <!-- Icono básico para pestañas de navegador (Favicon) -->
     <link rel="icon" type="image/jpeg" href="logo.jpg">
-
     <meta name="theme-color" content="#1a1a1a">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="assets/style.css">
@@ -44,15 +39,15 @@
         <!-- Dashboard -->
         <div id="dashboard" class="tab-content active">
             <div class="dashboard-card">
-                <h3>Resumen de Cuenta</h3>
+                <h3>💰 Resumen de Cuenta</h3>
                 <div class="card-stats">
                     <div class="stat-box"><h4>Saldo Inicial</h4><p id="initial-balance-display">0.00 €</p></div>
                     <div class="stat-box"><h4>Saldo Actual</h4><p id="current-balance">0.00 €</p></div>
                     <div class="stat-box"><h4>Ganancia/Pérdida</h4><p id="profit-loss">0.00 €</p></div>
                     <div class="stat-box"><h4>Rentabilidad</h4><p id="roi">0.00%</p></div>
                 </div>
-                <div style="text-align: right; margin-top: 10px;">
-                    <button onclick="openSettingsModal()" class="button-secondary button-small">Ajustes</button>
+                <div style="text-align: right; margin-top: 16px;">
+                    <button onclick="openSettingsModal()" class="button-secondary button-small">⚙️ Ajustes</button>
                 </div>
             </div>
             <div class="dashboard-card">
@@ -93,7 +88,6 @@
               <canvas id="capitalGrowthChart"></canvas>
                 </div>
             </div>
-
 
             <div class="dashboard-card">
                 <h3>Operaciones Recientes</h3>
@@ -219,16 +213,17 @@
             placeholder="Escribe el tipo de salida">
         </div>
          <div class="form-group">
-<label for="journal-news">Valoración de Noticias:</label>
-<div class="stars">
-    <span class="star" data-value="0" onclick="setNewsRating(0)">☆</span>
-    <span class="star" data-value="1" onclick="setNewsRating(1)">☆</span>
-    <span class="star" data-value="2" onclick="setNewsRating(2)">☆</span>
-    <span class="star" data-value="3" onclick="setNewsRating(3)">☆</span>
-    <span class="star" data-value="4" onclick="setNewsRating(4)">☆</span>
-</div>
-<input type="hidden" id="journal-news" value="0"></div>
-<div class="form-group">
+            <label for="journal-news">Valoración de Noticias:</label>
+            <div class="stars">
+                <span class="star" data-value="0" onclick="setNewsRating(0)">☆</span>
+                <span class="star" data-value="1" onclick="setNewsRating(1)">☆</span>
+                <span class="star" data-value="2" onclick="setNewsRating(2)">☆</span>
+                <span class="star" data-value="3" onclick="setNewsRating(3)">☆</span>
+                <span class="star" data-value="4" onclick="setNewsRating(4)">☆</span>
+            </div>
+            <input type="hidden" id="journal-news" value="0">
+        </div>
+        <div class="form-group">
             <label for="journal-mood">Estado de Ánimo:</label>
             <div class="mood-input-container">
                 <input type="text" id="journal-mood" placeholder="Escribe tu estado de ánimo o usa los iconos">
@@ -241,9 +236,9 @@
    </div>
 </div>
 <div class="form-group">
-      <label for="trade-media">Foto/Video de la Operación (Opcional):</label>
-     <input type="file" id="trade-media" accept="image/*,video/*">
-     <small>Solo se aceptan imágenes (jpg, png) </small>
+            <label for="trade-media">Foto/Video de la Operación (Opcional):</label>
+            <input type="file" id="trade-media" accept="image/*,video/*">
+            <small>Solo se aceptan imágenes (jpg, png) </small>
 </div>
 
  <div class="form-group"><label for="notes">Notas (Opcional):</label>
@@ -317,43 +312,42 @@
 
  </div>
 
-
-        <!-- Objetivos -->
+<!-- Objetivos -->
 <div id="objetivos" class="tab-content">
-            <div class="objetivos">
-                <div class="objetivos">
-                    <h3>Metas</h3>
-                    <div class="form-group">
-                        <label for="journal-date">Fecha:</label>
-                        <input type="date" id="journal-date" required min="2020-01-01">
-                    </div>
-                    <div class="form-group">
-                        <label for="journal-title">Metas:</label>
-                        <input type="text" id="journal-title" placeholder="Escribe tu meta">
-                         <button onclick="saveJournalEntry()">Guardar Meta</button>
-                </div>
-                    </div>
-             <div class="form-group">
-
-                <div class="objetivos">
-                    <h3>Objetivos</h3>
-                    <div class="form-group">
-                        <label for="weekly-goal">Objetivo Semanal (€):</label>
-                        <input type="number" id="weekly-goal" step="0.01" placeholder="Ej: 1000">
-                        <p id="weekly-progress-detailed">Progreso: 0.00 € / 0.00 € (0%)</p>
-                    </div>
-                    <div class="form-group">
-                        <label for="monthly-goal">Objetivo Mensual (€):</label>
-                        <input type="number" id="monthly-goal" step="0.01" placeholder="Ej: 4000">
-                        <p id="monthly-progress-detailed">Progreso: 0.00 € / 0.00 € (0%)</p>
-                    </div>
-                    <button onclick="saveGoals()">Guardar Objetivos</button>
-
-                    <div class="card-stats" id="journal-stats-container"></div>
-
-                </div>
+    <div class="objetivos">
+        <div class="objetivos">
+            <h3>Metas</h3>
+            <div class="form-group">
+                <label for="journal-date">Fecha:</label>
+                <input type="date" id="journal-date" required min="2020-01-01">
             </div>
+            <div class="form-group">
+                <label for="journal-title">Metas:</label>
+                <input type="text" id="journal-title" placeholder="Escribe tu meta">
+                 <button onclick="saveJournalEntry()">Guardar Meta</button>
         </div>
+            </div>
+     <div class="form-group">
+
+        <div class="objetivos">
+            <h3>Objetivos</h3>
+            <div class="form-group">
+                <label for="weekly-goal">Objetivo Semanal (€):</label>
+                <input type="number" id="weekly-goal" step="0.01" placeholder="Ej: 1000">
+                <p id="weekly-progress-detailed">Progreso: 0.00 € / 0.00 € (0%)</p>
+            </div>
+            <div class="form-group">
+                <label for="monthly-goal">Objetivo Mensual (€):</label>
+                <input type="number" id="monthly-goal" step="0.01" placeholder="Ej: 4000">
+                <p id="monthly-progress-detailed">Progreso: 0.00 € / 0.00 € (0%)</p>
+            </div>
+            <button onclick="saveGoals()">Guardar Objetivos</button>
+
+            <div class="card-stats" id="journal-stats-container"></div>
+
+        </div>
+    </div>
+</div>
 </div>
 
 <!-- Retos Semanales -->
