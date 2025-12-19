@@ -1,0 +1,190 @@
+Necesito corregir un error crítico en mi aplicación de Trading Control. El problema está en la importación de archivos CSV desde NinjaTrader.
+
+## PROBLEMA ACTUAL:
+Cuando importo un CSV de NinjaTrader, la aplicación suma incorrectamente las operaciones. Por ejemplo, si hice 122.68€ en un día, la app muestra 603.8€.
+
+## CAUSA DEL ERROR:
+NinjaTrader genera MÚLTIPLES LÍNEAS en el CSV para un mismo trade cuando:
+- Se opera con varios contratos
+- Se cierran posiciones parcialmente
+- Hay ejecuciones en diferentes momentos
+
+Mi código actual:
+1. Importa cada línea como una operación separada (ERROR)
+2. Usa la columna "Con ganancia neto" que es el PROFIT ACUMULADO de toda la cuenta (ERROR)
+
+## SOLUCIÓN REQUERIDA:
+
+En el archivo `assets/app.js`, necesito modificar la función `procesarCSV`:
+
+### CAMBIO 1 - Usar la columna correcta:
+Buscar esta línea (aproximadamente línea 636):
+```javascript
+const gananciaTexto = row['Con ganancia neto']?.replace(/[^0-9,.\-]/g, '').replace(',', '.');
+```
+
+Y reemplazarla por:
+```javascript
+const gananciaTexto = row['Ganancias']?.replace(/[^0-9,.\-]/g, '').replace(',', '.');
+```
+
+### CAMBIO 2 - Agrupar ejecuciones del mismo trade:
+
+Reemplazar TODA la función `procesarCSV` (empieza aprox. en línea 588) con esta versión corregida:
+
+```javascript
+function procesarCSV(data) {
+    let operacionesImportadas = 0;
+    let operacionesDuplicadas = 0;
+    let cuentasCreadas = [];
+
+    // PASO 1: Agrupar operaciones por trade único
+    // NinjaTrader genera múltiples líneas para el mismo trade
+    const operacionesAgrupadas = {};
+
+    data.forEach(row => {
+        const nombreCuenta = row['Cuenta']?.trim();
+        if (!nombreCuenta) return;
+
+        const numeroTrade = row['Número de trade']?.trim();
+        const fecha = parsearFechaNinjaTrader(row['Tiempo de entrada']);
+        const horaEntrada = parsearHoraNinjaTrader(row['Tiempo de entrada']);
+        
+        // Crear clave única: cuenta + fecha + hora + número trade
+        const claveAgrupacion = `${nombreCuenta}_${fecha}_${horaEntrada}_${numeroTrade}`;
+        
+        // Si ya existe este trade, mantener solo la última ejecución
+        if (operacionesAgrupadas[claveAgrupacion]) {
+            const horaSalidaActual = parsearHoraNinjaTrader(row['Tiempo de salida']);
+            const horaSalidaExistente = parsearHoraNinjaTrader(operacionesAgrupadas[claveAgrupacion]['Tiempo de salida']);
+            
+            // Mantener la ejecución con hora de salida más tardía (la final)
+            if (!horaSalidaExistente || horaSalidaActual >= horaSalidaExistente) {
+                operacionesAgrupadas[claveAgrupacion] = row;
+            }
+        } else {
+            operacionesAgrupadas[claveAgrupacion] = row;
+        }
+    });
+
+    // PASO 2: Procesar solo las operaciones únicas (una por trade)
+    Object.values(operacionesAgrupadas).forEach(row => {
+        const nombreCuenta = row['Cuenta']?.trim();
+        if (!nombreCuenta) return;
+
+        // Verificar si la cuenta existe
+        let cuenta = accounts.find(acc => acc.name === nombreCuenta);
+        if (!cuenta) {
+            const newAccountId = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9);
+            cuenta = { id: newAccountId, name: nombreCuenta };
+            accounts.push(cuenta);
+            saveAccounts();
+            cuentasCreadas.push(nombreCuenta);
+        }
+
+        // Cargar operaciones de esta cuenta
+        const cuentaOpsKey = getOperationsKey(cuenta.id);
+        const cuentaOps = localStorage.getItem(cuentaOpsKey);
+        const operacionesCuenta = cuentaOps ? JSON.parse(cuentaOps) : [];
+
+        const numeroTrade = row['Número de trade']?.trim();
+        const fecha = parsearFechaNinjaTrader(row['Tiempo de entrada']);
+        const horaEntrada = parsearHoraNinjaTrader(row['Tiempo de entrada']);
+        const horaSalida = parsearHoraNinjaTrader(row['Tiempo de salida']);
+
+        // Verificar duplicados (mejorado)
+        const existeDuplicado = operacionesCuenta.some(op => 
+            op.numero_de_trade == numeroTrade && 
+            op.fecha_de_operacion === fecha &&
+            op.tiempo_de_entrada === horaEntrada
+        );
+
+        if (existeDuplicado) {
+            operacionesDuplicadas++;
+            return;
+        }
+
+        // CRÍTICO: Usar "Ganancias" (profit del trade) NO "Con ganancia neto" (profit acumulado cuenta)
+        const gananciaTexto = row['Ganancias']?.replace(/[^0-9,.\-]/g, '').replace(',', '.');
+        const ganancia = parseFloat(gananciaTexto) || 0;
+
+        const comisionTexto = row['Comisión']?.replace(/[^0-9,.\-]/g, '').replace(',', '.');
+        const comision = parseFloat(comisionTexto) || 0;
+
+        // Crear operación
+        const operacion = {
+            id: Date.now() + Math.random(),
+            numero_de_trade: numeroTrade || Date.now(),
+            cuenta: cuenta.id,
+            instrumento: row['Instrumento']?.trim() || 'N/A',
+            estrategia_manual: row['Estrategia']?.trim() || 'N/A',
+            mercado_pos: row['Mercado pos.']?.trim() || null,
+            cant: parseInt(row['Cant.']) || null,
+            precio_de_entrada: parseFloat(row['Precio de entrada']?.replace(',', '.')) || null,
+            precio_de_salida: parseFloat(row['Precio de salida']?.replace(',', '.')) || null,
+            tiempo_de_entrada: horaEntrada,
+            tiempo_de_salida: horaSalida,
+            fecha_de_operacion: fecha,
+            con_ganancia_neto: ganancia,
+            comision: comision,
+            // Campos heredados para compatibilidad
+            date: fecha,
+            type: row['Mercado pos.']?.toLowerCase() === 'long' ? 'bullish' : 
+                  (row['Mercado pos.']?.toLowerCase() === 'short' ? 'bearish' : null),
+            activo: row['Instrumento']?.trim() || 'N/A',
+            estrategia: row['Estrategia']?.trim() || 'N/A',
+            contracts: parseInt(row['Cant.']) || null,
+            entryTime: horaEntrada,
+            exitTime: horaSalida,
+            amount: ganancia,
+            duration: calculateDuration(horaEntrada, horaSalida),
+            notes: `Importado de NinjaTrader`,
+            mood: null,
+            newsRating: 0
+        };
+
+        operacionesCuenta.push(operacion);
+        operacionesCuenta.sort((a, b) => new Date(a.fecha_de_operacion + 'T' + (a.tiempo_de_entrada || '00:00:00')) - 
+                                          new Date(b.fecha_de_operacion + 'T' + (b.tiempo_de_entrada || '00:00:00')));
+        
+        localStorage.setItem(cuentaOpsKey, JSON.stringify(operacionesCuenta));
+        operacionesImportadas++;
+    });
+
+    // Mensaje de resumen
+    let mensaje = `✅ Importación completada:\n`;
+    mensaje += `- ${operacionesImportadas} operaciones importadas\n`;
+    if (operacionesDuplicadas > 0) {
+        mensaje += `- ${operacionesDuplicadas} operaciones duplicadas (omitidas)\n`;
+    }
+    if (cuentasCreadas.length > 0) {
+        mensaje += `- Cuentas creadas: ${cuentasCreadas.join(', ')}`;
+    }
+    
+    alert(mensaje);
+    
+    // Recargar datos de la cuenta activa
+    if (operacionesImportadas > 0) {
+        const opsKey = getOperationsKey(currentAccountId);
+        const storedOperations = localStorage.getItem(opsKey);
+        operations = storedOperations ? JSON.parse(storedOperations) : [];
+        operations.sort((a, b) => new Date(a.date + 'T' + (a.entryTime || '00:00:00')) - new Date(b.date + 'T' + (b.entryTime || '00:00:00')));
+        
+        calculateHwmAndDrawdownFloor(true);
+        updateUI();
+    }
+    
+    // Limpiar input
+    document.getElementById('csv-file-input').value = '';
+}
+```
+
+## IMPORTANTE:
+Por favor, realiza estos cambios en el archivo `assets/app.js` manteniendo todo el resto del código intacto. Solo modifica la función `procesarCSV` como se indica arriba.
+
+La función ahora:
+1. Agrupa las líneas del CSV que pertenecen al mismo trade
+2. Toma solo la última ejecución de cada trade (la que cierra la posición)
+3. Usa la columna "Ganancias" en lugar de "Con ganancia neto"
+
+Esto solucionará el problema de que se sumen múltiples veces las ganancias del mismo trade.
