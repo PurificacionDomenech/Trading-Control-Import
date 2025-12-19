@@ -248,8 +248,8 @@ function removeChecklistItem(indexToRemove) {
 
 function markChecklistItem(index, checkbox) {
     const checklistKey = getChecklistKey();
-    const items = getChecklistItemsForAccount();
-    let estadoTareas = JSON.parse(localStorage.getItem(checklistKey)) || items.map(() => false);
+    const checklistItems = getChecklistItemsForAccount();
+    let estadoTareas = JSON.parse(localStorage.getItem(checklistKey)) || checklistItems.map(() => false);
     estadoTareas[index] = checkbox.checked;
     localStorage.setItem(checklistKey, JSON.stringify(estadoTareas));
     showChecklist();
@@ -1740,6 +1740,27 @@ if (storedActive && accounts.find(a => a.id === storedActive)) {
 document.getElementById('date').value = new Date().toISOString().split('T')[0];
 openTab('dashboard');
 
+// --- Theme Toggle ---
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    const themeToggle = document.getElementById('theme-toggle');
+    
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        themeToggle.textContent = '☀️';
+    } else {
+        themeToggle.textContent = '🌙';
+    }
+    
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        themeToggle.textContent = isDark ? '☀️' : '🌙';
+    });
+}
+
 // Registro del Service Worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -1752,3 +1773,6 @@ if ('serviceWorker' in navigator) {
             });
     });
 }
+
+// Inicializar tema
+initTheme();
