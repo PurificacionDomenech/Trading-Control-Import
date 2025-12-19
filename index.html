@@ -20,11 +20,14 @@
 <body>
     <div class="container">
         <div class="header-container">
-            <h1>Trading Control</h1>
+            <h1><img src="icon.png" alt="Trading Control Icon">Trading Control</h1>
             <button id="theme-toggle" aria-label="Toggle theme">☀️</button>
         </div>
         <div class="account-controls">
-            <select id="account-selector" onchange="setActiveAccount(this.value)"></select>
+            <div class="account-selector-group">
+                <select id="account-selector" onchange="setActiveAccount(this.value)"></select>
+                <button onclick="openSettingsModal()" class="button-secondary btn-settings-inline" title="Ajustes de cuenta">⚙️</button>
+            </div>
             <button onclick="openCreateAccountModal()" class="button-small button-secondary">Nueva Cuenta</button>
             <button onclick="confirmDeleteAccount()" class="button-small button-danger">Eliminar</button>
             <!-- Botón para importar CSV -->
@@ -50,9 +53,6 @@
                     <div class="stat-box"><h4>Saldo Actual</h4><p id="current-balance">0.00 €</p></div>
                     <div class="stat-box"><h4>Ganancia/Pérdida</h4><p id="profit-loss">0.00 €</p></div>
                     <div class="stat-box"><h4>Rentabilidad</h4><p id="roi">0.00%</p></div>
-                </div>
-                <div style="text-align: right; margin-top: 16px;">
-                    <button onclick="openSettingsModal()" class="button-secondary button-small" style="padding: 8px 12px; font-size: 12px;">⚙️ Ajustes</button>
                 </div>
             </div>
 

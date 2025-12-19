@@ -1228,7 +1228,8 @@ function renderOperations(filteredOps = null) {
     opsToShow.forEach(op => {
         const tr = document.createElement('tr');
         const displayAmount = op.con_ganancia_neto !== undefined ? op.con_ganancia_neto : op.amount;
-        tr.className = displayAmount > 0 ? 'operation-bullish' : (displayAmount < 0 ? 'operation-bearish' : '');
+        const amountClass = displayAmount > 0 ? 'positive' : (displayAmount < 0 ? 'negative' : '');
+        const typeValue = op.mercado_pos === 'Long' ? 'bullish' : (op.mercado_pos === 'Short' ? 'bearish' : null);
 
         const mediaHtml = op.media ? 
             (op.media.startsWith('data:image') ? 
@@ -1251,7 +1252,7 @@ function renderOperations(filteredOps = null) {
 
         tr.innerHTML = `
             <td>${formatDate(displayDate)}</td>
-            <td>${formatType(op.mercado_pos === 'Long' ? 'bullish' : (op.mercado_pos === 'Short' ? 'bearish' : null))}</td>
+            <td class="${typeValue === 'bullish' ? 'positive' : (typeValue === 'bearish' ? 'negative' : '')}">${formatType(typeValue)}</td>
             <td>${displayInstrument}</td>
             <td>${displayStrategy}</td>
             <td>${displayContracts}</td>
@@ -1259,7 +1260,7 @@ function renderOperations(filteredOps = null) {
             <td>${displayExitType}</td>
             <td>${displayDuration}</td>
             <td>${moodDisplay}</td>
-            <td class="${displayAmount > 0 ? 'positive' : (displayAmount < 0 ? 'negative' : '')}">${formatCurrency(displayAmount)}</td>
+            <td><span class="${amountClass}">${formatCurrency(displayAmount)}</span></td>
             <td>${mediaHtml}</td>
             <td>
                 <button onclick="showOperationDetails(${op.id || op.numero_de_trade})" 
@@ -1535,7 +1536,8 @@ function updateRecentOperations() {
     recent.forEach(op => {
         const tr = document.createElement('tr');
         const displayAmount = op.con_ganancia_neto !== undefined ? op.con_ganancia_neto : op.amount;
-        tr.innerHTML = `<td>${formatDate(op.fecha_de_operacion || op.date)}</td><td class="${displayAmount > 0 ? 'positive' : (displayAmount < 0 ? 'negative' : '')}">${formatCurrency(displayAmount)}</td>`;
+        const amountClass = displayAmount > 0 ? 'positive' : (displayAmount < 0 ? 'negative' : '');
+        tr.innerHTML = `<td>${formatDate(op.fecha_de_operacion || op.date)}</td><td><span class="${amountClass}">${formatCurrency(displayAmount)}</span></td>`;
         table.querySelector('tbody').appendChild(tr);
     });
     container.appendChild(table);

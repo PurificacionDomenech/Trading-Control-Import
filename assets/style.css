@@ -63,8 +63,22 @@ body.dark-mode {
     gap: 16px;
 }
 
-.header-container h1 {
-    margin: 0;
+h1 {
+    text-align: left;
+    color: #00d9ff;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+h1 img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
 }
 
 body {
@@ -83,15 +97,6 @@ body {
             background-color: transparent;
             padding: 24px 16px;
             transition: background-color 0.3s;
-        }
-
-        h1 {
-            text-align: left;
-            color: var(--text-color);
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            letter-spacing: -0.5px;
         }
 
         h2 {
