@@ -19,17 +19,9 @@
 
     <meta name="theme-color" content="#1a1a1a">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <style>
-
-
-* {
-    box-sizing: border-box;
-}
-
-
- 
-        body {
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
@@ -1099,15 +1091,7 @@
 
 /* --- REGLA AÑADIDA --- */
 /* Alineamos el último título (Operativa) a la izquierda para que coincida con el selector */
-.dias-grid-header span:last-child {
-    text-align: left;
-}
 
-
-
-    </style>
-</head>
-<body>
     <div class="container">
         <h1>Trading Control</h1>
         <div class="account-controls">
@@ -1570,10 +1554,9 @@
          </div>
         </div>
     
-
-    <script>
-        // --- Constants ---
-        const ACCOUNTS_KEY = 'tradingAccounts';
+    <script src="assets/app.js"></script>
+</body>
+</html>
         const ACTIVE_ACCOUNT_KEY = 'tradingActiveAccount';
        
 function getChecklistItemsForAccount() {
@@ -3383,9 +3366,3 @@ window.openTab = function(tabName) {
     if (tabName === 'Retos' && !window.app) {
         window.app = new RetosSemanales();
     }
-}
-
-
-    </script>
-</body>
-</html>
