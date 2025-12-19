@@ -1,4 +1,3 @@
-
 // --- Constants ---
 const ACCOUNTS_KEY = 'tradingAccounts';
 const ACTIVE_ACCOUNT_KEY = 'tradingActiveAccount';
@@ -6,7 +5,7 @@ const ACTIVE_ACCOUNT_KEY = 'tradingActiveAccount';
 function getChecklistItemsForAccount() {
     const key = `checklist_items_${currentAccountId}`;
     const storedItems = localStorage.getItem(key);
-    
+
     if (storedItems) {
         return JSON.parse(storedItems);
     } else {
@@ -94,21 +93,21 @@ function readFileAsDataURL(file, callback) {
 
     if (file.type.startsWith('image/')) {
         const reader = new FileReader();
-        
+
         reader.onload = function(event) {
             const img = new Image();
             img.src = event.target.result;
-            
+
             img.onload = function() {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
-                
+
                 const MAX_WIDTH = 800;
                 const MAX_HEIGHT = 600;
-                
+
                 let width = img.width;
                 let height = img.height;
-                
+
                 if (width > height) {
                     if (width > MAX_WIDTH) {
                         height *= MAX_WIDTH / width;
@@ -120,18 +119,18 @@ function readFileAsDataURL(file, callback) {
                         height = MAX_HEIGHT;
                     }
                 }
-                
+
                 canvas.width = width;
                 canvas.height = height;
-                
+
                 ctx.drawImage(img, 0, 0, width, height);
-                
+
                 const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
-                
+
                 callback(compressedDataUrl);
             };
         };
-        
+
         reader.readAsDataURL(file);
 
     } else if (file.type.startsWith('video/')) {
@@ -174,7 +173,7 @@ function showChecklist(isEditMode = false) {
     checklistItems.forEach((tarea, index) => {
         const li = document.createElement('li');
         li.className = estadoTareas[index] ? 'completed' : '';
-        
+
         if (isEditMode) {
             li.innerHTML = `
                 <input type="text" class="checklist-edit-input" value="${tarea}" data-index="${index}">
@@ -196,11 +195,11 @@ let isChecklistEditMode = false;
 
 function toggleChecklistEditMode() {
     isChecklistEditMode = !isChecklistEditMode;
-    
+
     document.getElementById('edit-checklist-btn').style.display = isChecklistEditMode ? 'none' : 'inline-block';
     document.getElementById('save-checklist-btn').style.display = isChecklistEditMode ? 'inline-block' : 'none';
     document.getElementById('add-task-container').style.display = isChecklistEditMode ? 'block' : 'none';
-    
+
     showChecklist(isChecklistEditMode);
 }
 
@@ -210,10 +209,10 @@ function saveChecklistChanges() {
     inputs.forEach(input => {
         newChecklistItems.push(input.value);
     });
-    
+
     const key = `checklist_items_${currentAccountId}`;
     localStorage.setItem(key, JSON.stringify(newChecklistItems));
-    
+
     toggleChecklistEditMode();
     alert('¡Lista de tareas guardada!');
 }
@@ -221,14 +220,14 @@ function saveChecklistChanges() {
 function addNewChecklistItem() {
     const input = document.getElementById('new-task-input');
     const newTaskText = input.value.trim();
-    
+
     if (newTaskText) {
         const currentItems = getChecklistItemsForAccount();
         currentItems.push(newTaskText);
-        
+
         const key = `checklist_items_${currentAccountId}`;
         localStorage.setItem(key, JSON.stringify(currentItems));
-        
+
         input.value = '';
         showChecklist(true);
     }
@@ -238,10 +237,10 @@ function removeChecklistItem(indexToRemove) {
     if (confirm('¿Seguro que quieres eliminar esta tarea de la lista?')) {
         let currentItems = getChecklistItemsForAccount();
         currentItems = currentItems.filter((_, index) => index !== indexToRemove);
-        
+
         const key = `checklist_items_${currentAccountId}`;
         localStorage.setItem(key, JSON.stringify(currentItems));
-        
+
         showChecklist(true);
     }
 }
@@ -328,11 +327,11 @@ function setActiveAccount(id) {
     goals = storedGoals ? JSON.parse(storedGoals) : { weekly: 0, monthly: 0 };
     calculateHwmAndDrawdownFloor(true);
     populateAccountSelector();
-    
+
     if (window.app) {
         window.app.reloadForAccount();
     }
-    
+
     updateUI();
 }
 
@@ -417,14 +416,14 @@ function openSettingsModal() {
         alert('Primero debes seleccionar una cuenta.');
         return;
     }
-    
+
     // Mostrar nombre de la cuenta
     const currentAccount = accounts.find(a => a.id === currentAccountId);
     const accountNameElem = document.getElementById('settings-account-name');
     if (accountNameElem && currentAccount) {
         accountNameElem.textContent = `Cuenta: ${currentAccount.name}`;
     }
-    
+
     // Cargar configuración actual de la cuenta activa
     const settingsKey = getSettingsKey(currentAccountId);
     const storedSettings = localStorage.getItem(settingsKey);
@@ -433,7 +432,7 @@ function openSettingsModal() {
         consistencyPercentage: 40, 
         trailingDrawdownAmount: 2500 
     };
-    
+
     document.getElementById('initial-balance').value = currentSettings.initialBalance;
     document.getElementById('consistency-percentage').value = currentSettings.consistencyPercentage;
     document.getElementById('trailing-drawdown-amount').value = currentSettings.trailingDrawdownAmount;
@@ -519,15 +518,15 @@ function procesarCSV(data) {
         const numeroTrade = row['Número de trade']?.trim();
         const fecha = parsearFechaNinjaTrader(row['Tiempo de entrada']);
         const horaEntrada = parsearHoraNinjaTrader(row['Tiempo de entrada']);
-        
+
         // Crear clave única: cuenta + fecha + hora + número trade
         const claveAgrupacion = `${nombreCuenta}_${fecha}_${horaEntrada}_${numeroTrade}`;
-        
+
         // Si ya existe este trade, mantener solo la última ejecución
         if (operacionesAgrupadas[claveAgrupacion]) {
             const horaSalidaActual = parsearHoraNinjaTrader(row['Tiempo de salida']);
             const horaSalidaExistente = parsearHoraNinjaTrader(operacionesAgrupadas[claveAgrupacion]['Tiempo de salida']);
-            
+
             // Mantener la ejecución con hora de salida más tardía (la final)
             if (!horaSalidaExistente || horaSalidaActual >= horaSalidaExistente) {
                 operacionesAgrupadas[claveAgrupacion] = row;
@@ -550,7 +549,7 @@ function procesarCSV(data) {
             accounts.push(cuenta);
             saveAccounts();
             cuentasCreadas.push(nombreCuenta);
-            
+
             // Crear configuración por defecto para la cuenta nueva
             const defaultSettings = {
                 initialBalance: 50000,
@@ -624,7 +623,7 @@ function procesarCSV(data) {
         operacionesCuenta.push(operacion);
         operacionesCuenta.sort((a, b) => new Date(a.fecha_de_operacion + 'T' + (a.tiempo_de_entrada || '00:00:00')) - 
                                           new Date(b.fecha_de_operacion + 'T' + (b.tiempo_de_entrada || '00:00:00')));
-        
+
         localStorage.setItem(cuentaOpsKey, JSON.stringify(operacionesCuenta));
         operacionesImportadas++;
     });
@@ -638,27 +637,27 @@ function procesarCSV(data) {
     if (cuentasCreadas.length > 0) {
         mensaje += `- Cuentas creadas: ${cuentasCreadas.join(', ')}`;
     }
-    
+
     alert(mensaje);
-    
+
     // Recargar datos de la cuenta activa
     if (operacionesImportadas > 0) {
         const opsKey = getOperationsKey(currentAccountId);
         const storedOperations = localStorage.getItem(opsKey);
         operations = storedOperations ? JSON.parse(storedOperations) : [];
         operations.sort((a, b) => new Date(a.date + 'T' + (a.entryTime || '00:00:00')) - new Date(b.date + 'T' + (b.entryTime || '00:00:00')));
-        
+
         calculateHwmAndDrawdownFloor(true);
         updateUI();
     }
-    
+
     // Limpiar input
     document.getElementById('csv-file-input').value = '';
 }
 
 function parsearFechaNinjaTrader(fechaHora) {
     if (!fechaHora) return new Date().toISOString().split('T')[0];
-    
+
     // Formato: "01/12/2025 8:31:48"
     const partes = fechaHora.split(' ')[0].split('/');
     if (partes.length === 3) {
@@ -672,7 +671,7 @@ function parsearFechaNinjaTrader(fechaHora) {
 
 function parsearHoraNinjaTrader(fechaHora) {
     if (!fechaHora) return null;
-    
+
     // Formato: "01/12/2025 8:31:48"
     const partes = fechaHora.split(' ');
     if (partes.length === 2) {
@@ -808,7 +807,7 @@ document.getElementById('trading-form').addEventListener('submit', function(e) {
         document.getElementById('custom-entry-type-input').style.display = 'none';
         document.getElementById('custom-exit-type-input').style.display = 'none';
         setNewsRating(0);
-        
+
         // Resetear estado de edición
         delete window.editingOperationId;
         const submitButton = document.querySelector('#trading-form button[type="submit"]');
@@ -831,7 +830,7 @@ function editOperation(id) {
 
     // Llenar el formulario con los datos de la operación
     document.getElementById('date').value = op.fecha_de_operacion || op.date;
-    
+
     // Tipo de operación
     if (op.mercado_pos === 'Long' || op.type === 'bullish') {
         document.getElementById('type').value = 'bullish';
@@ -1018,7 +1017,7 @@ function showJournalEntries() {
     activeJournals.forEach(entry => {
         const div = document.createElement('div');
         div.className = 'entry';
-        
+
         div.innerHTML = `
             <div class="entry-header">
                 <input type="checkbox" onchange="toggleGoalAchieved(${entry.id}, this.checked)" title="Marcar como conseguida">
@@ -1034,7 +1033,7 @@ function showJournalEntries() {
 function saveJournalEntry() {
     const date = document.getElementById('journal-date').value;
     const title = document.getElementById('journal-title').value.trim();
-    
+
     if (!date || !title) {
         alert('Por favor, completa la fecha y el título de la meta.');
         return;
@@ -1051,7 +1050,7 @@ function saveJournalEntry() {
     saveData();
 
     document.getElementById('journal-title').value = '';
-    
+
     updateUI();
     alert('Meta guardada correctamente.');
 }
@@ -1080,7 +1079,7 @@ function renderAchievedGoals() {
     achievedJournals.forEach(entry => {
         const div = document.createElement('div');
         div.className = 'entry completed';
-        
+
         div.innerHTML = `
             <div class="entry-header">
                 <span style="font-size: 20px; color: #10b9b9; margin-right: 10px;">✔</span>
@@ -1210,13 +1209,13 @@ function renderOperations(filteredOps = null) {
     const list = document.getElementById('operations-list');
     list.innerHTML = '';
     const ops = filteredOps || operations;
-    
+
     if (ops.length === 0) {
         list.innerHTML = '<tr><td colspan="9" style="text-align: center;">No hay operaciones para mostrar.</td></tr>';
         renderAchievedGoals(); 
         return;
     }
-    
+
     const sortedOps = ops.sort((a, b) => {
         const dateA = new Date(a.fecha_de_operacion || a.date + 'T' + (a.tiempo_de_entrada || a.entryTime || '00:00:00'));
         const dateB = new Date(b.fecha_de_operacion || b.date + 'T' + (b.tiempo_de_entrada || b.entryTime || '00:00:00'));
@@ -1230,18 +1229,18 @@ function renderOperations(filteredOps = null) {
         const tr = document.createElement('tr');
         const displayAmount = op.con_ganancia_neto !== undefined ? op.con_ganancia_neto : op.amount;
         tr.className = displayAmount > 0 ? 'operation-bullish' : (displayAmount < 0 ? 'operation-bearish' : '');
-        
+
         const mediaHtml = op.media ? 
             (op.media.startsWith('data:image') ? 
                 `<img src="${op.media}" class="media-preview">` :
                 `<video src="${op.media}" class="media-preview" controls></video>`) : 'N/A';
-        
+
         let moodDisplay = op.estado_animo || op.mood || 'N/A';
         if (moodDisplay.includes('😊')) moodDisplay = '😊';
         else if (moodDisplay.includes('😐')) moodDisplay = '😐';
         else if (moodDisplay.includes('😟')) moodDisplay = '😟';
         else if (moodDisplay.includes('😠')) moodDisplay = '😠';
-        
+
         const displayDate = op.fecha_de_operacion || op.date;
         const displayInstrument = op.instrumento || op.activo || 'N/A';
         const displayStrategy = op.estrategia_manual || op.estrategia || 'N/A';
@@ -1249,7 +1248,7 @@ function renderOperations(filteredOps = null) {
         const displayEntryType = op.tipo_entrada_manual || op.entryType || 'N/A';
         const displayExitType = op.tipo_salida_manual || op.exitType || 'N/A';
         const displayDuration = calculateDuration(op.tiempo_de_entrada || op.entryTime, op.tiempo_de_salida || op.exitTime);
-        
+
         tr.innerHTML = `
             <td>${formatDate(displayDate)}</td>
             <td>${formatType(op.mercado_pos === 'Long' ? 'bullish' : (op.mercado_pos === 'Short' ? 'bearish' : null))}</td>
@@ -1284,15 +1283,15 @@ function changeOperationsDisplay() {
 function showOperationDetails(id) {
     const op = operations.find(op => op.id === id || op.numero_de_trade === id);
     if (!op) return;
-    
+
     const mediaHtml = op.media ? 
         (op.media.startsWith('data:image') ? 
             `<img src="${op.media}" style="max-width: 100%; border-radius: 5px; margin-top: 10px;">` :
             `<video src="${op.media}" style="max-width: 100%; border-radius: 5px; margin-top: 10px;" controls></video>`) 
         : '<p><em>Sin media</em></p>';
-    
+
     const starsHtml = '★'.repeat(op.valoracion_noticias || op.newsRating || 0) + '☆'.repeat(4 - (op.valoracion_noticias || op.newsRating || 0));
-    
+
     document.getElementById('operation-details-content').innerHTML = `
         <div style="margin-bottom: 15px;">
             <p><strong>Fecha:</strong> ${formatDate(op.fecha_de_operacion || op.date)}</p>
@@ -1577,15 +1576,15 @@ function renderCapitalGrowthChart() {
 
     const labels = [];
     const balanceData = [];
-    const drawdownData = [];
+    const drawdownFloorData = []; // Renamed for clarity
 
     if (sortedOperations.length > 0) {
         const firstOpDate = new Date(sortedOperations[0].fecha_de_operacion || sortedOperations[0].date);
         firstOpDate.setDate(firstOpDate.getDate() - 1);
-        
+
         labels.push(firstOpDate.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }));
         balanceData.push(settings.initialBalance);
-        drawdownData.push(settings.initialBalance - settings.trailingDrawdownAmount);
+        drawdownFloorData.push(settings.initialBalance - settings.trailingDrawdownAmount);
     }
 
     let currentHWM = settings.initialBalance;
@@ -1599,7 +1598,7 @@ function renderCapitalGrowthChart() {
         } else {
             drawdownValue = Math.max(drawdownValue, settings.initialBalance - settings.trailingDrawdownAmount);
         }
-        drawdownData.push(drawdownValue);
+        drawdownFloorData.push(drawdownValue);
     }
 
     window.capitalGrowthChartInstance = new Chart(canvas.getContext('2d'), {
@@ -1610,19 +1609,23 @@ function renderCapitalGrowthChart() {
                 {
                     label: 'Balance',
                     data: balanceData,
-                    borderColor: '#00f2ea',
-                    backgroundColor: 'rgba(0, 242, 234, 0.1)',
-                    fill: true,
-                    tension: 0.1,
-                    pointRadius: 5,
+                    borderColor: getComputedStyle(document.documentElement).getPropertyValue('--primary-color'),
+                    backgroundColor: 'rgba(74, 157, 168, 0.1)',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
                 },
                 {
                     label: 'Suelo Drawdown',
-                    data: drawdownData,
-                    borderColor: '#ef44bc',
+                    data: drawdownFloorData,
+                    borderColor: getComputedStyle(document.documentElement).getPropertyValue('--secondary-color'),
+                    backgroundColor: 'transparent',
+                    tension: 0.4,
                     borderWidth: 2,
-                    fill: false,
-                    pointRadius: 5,
+                    pointRadius: 3,
+                    pointHoverRadius: 5,
+                    borderDash: [5, 5]
                 }
             ]
         },
@@ -1775,7 +1778,7 @@ class RetosSemanales {
         });
         this.actualizarBotonGuardar();
     }
-    
+
     toggleDia(diaKey, cumplido) {
         const weekData = this.getCurrentWeekData();
         const dia = weekData.dias[diaKey];
@@ -1859,7 +1862,7 @@ class RetosSemanales {
         document.getElementById('diasCumplidosMes').textContent = totalDiasCumplidos;
         document.getElementById('positivosMes').textContent = totalPositivos;
         document.getElementById('cumplimientoMes').textContent = `${totalDiasMarcados > 0 ? Math.round((totalDiasCumplidos / totalDiasMarcados) * 100) : 0}%`;
-        
+
         this.renderMonthlyChart(semanasDelPeriodo);
     }
 
@@ -2044,7 +2047,7 @@ let app;
 const originalOpenTab = window.openTab;
 window.openTab = function(tabName) {
     originalOpenTab(tabName); 
-    
+
     if (tabName === 'Retos' && !window.app) {
         window.app = new RetosSemanales();
     }
@@ -2071,7 +2074,7 @@ openTab('dashboard');
 function initTheme() {
     const savedTheme = localStorage.getItem('theme') || 'light';
     const themeToggle = document.getElementById('theme-toggle');
-    
+
     if (savedTheme === 'dark') {
         document.body.classList.add('dark-mode');
         themeToggle.textContent = '☀️';
@@ -2079,11 +2082,11 @@ function initTheme() {
         document.body.classList.remove('dark-mode');
         themeToggle.textContent = '🌙';
     }
-    
+
     themeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
         const isDark = document.body.classList.contains('dark-mode');
-        
+
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
         themeToggle.textContent = isDark ? '☀️' : '🌙';
     });

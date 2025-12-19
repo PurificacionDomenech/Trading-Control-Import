@@ -180,6 +180,7 @@ body {
         .tab.active {
             color: #ffffff;
             background-color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(74, 157, 168, 0.25);
         }
 
         .tab-content {
@@ -420,11 +421,13 @@ body {
 
         .progress-container {
             width: 100%;
-            background-color: #4b5563;
-            border-radius: 5px;
-            height: 20px;
-            margin-top: 10px;
+            background-color: var(--secondary-bg);
+            border-radius: 8px;
+            height: 24px;
+            margin-top: 12px;
             position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
         }
 
         .progress-bar {
@@ -942,18 +945,35 @@ body {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
     color: white;
+    font-weight: 900;
 }
 
 .btn-no-cumplido-check.active {
     background-color: var(--secondary-color);
     border-color: var(--secondary-color);
     color: white;
+    font-weight: 900;
 }
 
 body.dark-mode .btn-cumplido-check, 
 body.dark-mode .btn-no-cumplido-check {
-    background-color: #3a3a3a;
-    color: #b3b3b3;
+    background-color: #2a3340;
+    color: #6b7280;
+    border-color: #3f4855;
+}
+
+body.dark-mode .btn-cumplido-check.active {
+    background-color: #5ba6b0;
+    border-color: #5ba6b0;
+    color: #0a0e14;
+    font-weight: 900;
+}
+
+body.dark-mode .btn-no-cumplido-check.active {
+    background-color: #9b8aa8;
+    border-color: #9b8aa8;
+    color: #0a0e14;
+    font-weight: 900;
 }
 
 
