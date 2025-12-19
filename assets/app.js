@@ -586,12 +586,17 @@ function procesarCSV(data) {
     
     alert(mensaje);
     
-    // Recargar datos si estamos en la cuenta importada
+    // Recargar datos de la cuenta activa
     if (operacionesImportadas > 0) {
-        const storedActive = localStorage.getItem(ACTIVE_ACCOUNT_KEY);
-        if (storedActive) {
-            setActiveAccount(storedActive);
-        }
+        // Recargar las operaciones de la cuenta actual
+        const opsKey = getOperationsKey(currentAccountId);
+        const storedOperations = localStorage.getItem(opsKey);
+        operations = storedOperations ? JSON.parse(storedOperations) : [];
+        operations.sort((a, b) => new Date(a.date + 'T' + (a.entryTime || '00:00:00')) - new Date(b.date + 'T' + (b.entryTime || '00:00:00')));
+        
+        // Recalcular HWM y actualizar UI
+        calculateHwmAndDrawdownFloor(true);
+        updateUI();
     }
     
     // Limpiar input
@@ -2003,6 +2008,10 @@ if (storedActive && accounts.find(a => a.id === storedActive)) {
     setActiveAccount(accounts[0].id);
 }
 document.getElementById('date').value = new Date().toISOString().split('T')[0];
+
+// Listener para importación CSV
+document.getElementById('csv-file-input').addEventListener('change', iniciarImportacionCSV);
+
 openTab('dashboard');
 
 // --- Theme Toggle ---
