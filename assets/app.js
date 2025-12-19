@@ -413,9 +413,30 @@ function openTab(tabName) {
 
 // --- Modals ---
 function openSettingsModal() {
-    document.getElementById('initial-balance').value = settings.initialBalance;
-    document.getElementById('consistency-percentage').value = settings.consistencyPercentage;
-    document.getElementById('trailing-drawdown-amount').value = settings.trailingDrawdownAmount;
+    if (!currentAccountId) {
+        alert('Primero debes seleccionar una cuenta.');
+        return;
+    }
+    
+    // Mostrar nombre de la cuenta
+    const currentAccount = accounts.find(a => a.id === currentAccountId);
+    const accountNameElem = document.getElementById('settings-account-name');
+    if (accountNameElem && currentAccount) {
+        accountNameElem.textContent = `Cuenta: ${currentAccount.name}`;
+    }
+    
+    // Cargar configuración actual de la cuenta activa
+    const settingsKey = getSettingsKey(currentAccountId);
+    const storedSettings = localStorage.getItem(settingsKey);
+    const currentSettings = storedSettings ? JSON.parse(storedSettings) : { 
+        initialBalance: 50000, 
+        consistencyPercentage: 40, 
+        trailingDrawdownAmount: 2500 
+    };
+    
+    document.getElementById('initial-balance').value = currentSettings.initialBalance;
+    document.getElementById('consistency-percentage').value = currentSettings.consistencyPercentage;
+    document.getElementById('trailing-drawdown-amount').value = currentSettings.trailingDrawdownAmount;
     document.getElementById('settings-modal').style.display = 'flex';
 }
 
@@ -529,6 +550,14 @@ function procesarCSV(data) {
             accounts.push(cuenta);
             saveAccounts();
             cuentasCreadas.push(nombreCuenta);
+            
+            // Crear configuración por defecto para la cuenta nueva
+            const defaultSettings = {
+                initialBalance: 50000,
+                consistencyPercentage: 40,
+                trailingDrawdownAmount: 2500
+            };
+            localStorage.setItem(getSettingsKey(newAccountId), JSON.stringify(defaultSettings));
         }
 
         // Cargar operaciones de esta cuenta
