@@ -1,0 +1,35 @@
+"Hola. Necesito que añadas la funcionalidad de importación de archivos CSV de NinjaTrader a mi aplicación.
+Objetivo: Construir una función de importación robusta que maneje archivos CSV, múltiples cuentas y evite duplicados.
+1. En index.html (Librería e Interfaz):
+Añade el enlace a la librería PapaParse (usa el CDN).
+Añade un botón de 'Importar CSV' en la interfaz.
+Asocia un input de tipo file (oculto) a este botón, que solo acepte archivos .csv.
+2. En assets/app.js (La Lógica de Importación):
+Crea una función principal, por ejemplo, iniciarImportacionCSV(), que se active al seleccionar un archivo.
+Esta función debe usar PapaParse para analizar el archivo CSV.
+3. Lógica de Mapeo y Guardado (Dentro de la función de importación):
+Mapeo de Datos: La función debe mapear los nombres de las columnas del CSV de NinjaTrader a los nombres de campo internos de mi aplicación (los que unificamos):
+Cuenta -> cuenta
+Número de trade -> numero_de_trade
+Instrumento -> instrumento
+Mercado pos. -> mercado_pos
+Cant. -> cant
+Precio de entrada -> precio_de_entrada
+Precio de salida -> precio_de_salida
+Tiempo de entrada -> tiempo_de_entrada
+Tiempo de salida -> tiempo_de_salida
+Con ganancia neto -> con_ganancia_neto
+Comisión -> comision
+Lógica Multi-Cuenta:
+La función debe leer el campo 'Cuenta' de cada fila.
+Debe verificar si esta cuenta existe en la lista de cuentas de la aplicación.
+Si la cuenta no existe, debe llamar a la función que crea una nueva cuenta (ej: crearNuevaCuenta(nombreDeLaCuenta)).
+Prevención de Duplicados:
+La función debe obtener la lista de operaciones solo de la cuenta actual (la que se está importando).
+Para cada operación, debe verificar si ya existe una operación con el mismo 'Número de trade' dentro de esa cuenta.
+Si el 'Número de trade' ya existe, la operación debe ser saltada (no importada).
+Guardado: Las operaciones nuevas deben ser añadidas al localStorage de la cuenta correcta.
+4. Feedback y Recarga:
+Muestra un mensaje de éxito al usuario indicando cuántas operaciones se importaron y cuántas se saltaron por ser duplicadas.
+Después de la importación, la aplicación debe recargar la tabla de historial y el dashboard.
+En resumen: Construye la funcionalidad completa de importación CSV, incluyendo la integración de PapaParse, el mapeo de campos de NinjaTrader, la lógica multi-cuenta (creación/selección) y la prevención de duplicados por 'Número de trade' dentro de cada cuenta."
