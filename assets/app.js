@@ -250,6 +250,9 @@ function markChecklistItem(index, checkbox) {
     const checklistKey = getChecklistKey();
     const checklistItems = getChecklistItemsForAccount();
     let estadoTareas = JSON.parse(localStorage.getItem(checklistKey)) || checklistItems.map(() => false);
+    if (estadoTareas.length !== checklistItems.length) {
+        estadoTareas = checklistItems.map(() => false);
+    }
     estadoTareas[index] = checkbox.checked;
     localStorage.setItem(checklistKey, JSON.stringify(estadoTareas));
     showChecklist();
@@ -1747,10 +1750,10 @@ function initTheme() {
     
     if (savedTheme === 'dark') {
         document.body.classList.add('dark-mode');
-        themeToggle.textContent = 'Claro';
+        themeToggle.innerHTML = '☀️ Claro';
     } else {
         document.body.classList.remove('dark-mode');
-        themeToggle.textContent = 'Oscuro';
+        themeToggle.innerHTML = '🌙 Oscuro';
     }
     
     themeToggle.addEventListener('click', () => {
@@ -1758,7 +1761,7 @@ function initTheme() {
         const isDark = document.body.classList.contains('dark-mode');
         
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        themeToggle.textContent = isDark ? 'Claro' : 'Oscuro';
+        themeToggle.innerHTML = isDark ? '☀️ Claro' : '🌙 Oscuro';
     });
 }
 
