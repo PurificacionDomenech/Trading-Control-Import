@@ -24,24 +24,24 @@ body.dark-mode {
 
 #theme-toggle {
     position: fixed;
-    top: 10px;
-    right: 10px;
+    top: 8px;
+    right: 8px;
     z-index: 1000;
     background-color: var(--primary-color);
     color: #000000;
     border: none;
-    padding: 6px 12px;
+    padding: 4px 8px;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 #theme-toggle:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 body {
@@ -239,16 +239,21 @@ body {
         th, td {
             padding: 10px;
             text-align: left;
-            border-bottom: 1px solid #4b5563;
+            border-bottom: 1px solid var(--border-color);
         }
 
         th {
-            background-color: #2d2d2d;
-            color: #b3b3b3;
+            background-color: var(--secondary-bg);
+            color: var(--text-color);
+            font-weight: 600;
         }
 
         tr:nth-child(even) {
-            background-color: #1f1f1f;
+            background-color: var(--secondary-bg);
+        }
+
+        tr {
+            background-color: var(--card-bg);
         }
 
         .negative {
@@ -448,15 +453,24 @@ body {
             display: flex;
             align-items: center;
             padding: 12px;
-            border-bottom: 1px solid #4b5563;
+            border-bottom: 1px solid var(--border-color);
             font-size: 18px;
-            background-color: #1f1f1f;
+            background-color: var(--card-bg);
             margin-bottom: 5px;
             border-radius: 5px;
             transition: background-color 0.3s;
+            border: 1px solid var(--border-color);
         }
 
         #listaTareas li.completed {
+            background-color: rgba(0, 242, 234, 0.15);
+        }
+
+        body.dark-mode #listaTareas li {
+            background-color: #1f1f1f;
+        }
+
+        body.dark-mode #listaTareas li.completed {
             background-color: rgba(37, 176, 191, 0.2);
         }
 
@@ -649,9 +663,9 @@ body {
 }
 
 .week-nav button {
-    background-color: #3a3a3a;
-    border: none;
-    color: #b3b3b3;
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
     padding: 0.5rem 0.8rem;
     border-radius: 4px;
     cursor: pointer;
@@ -663,21 +677,21 @@ body {
 }
 
 .week-nav button:hover {
-    background-color: #00f2ea;
+    background-color: var(--primary-color);
     color: #000000;
 }
 
 .week-nav button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    background-color: #2d2d2d;
-    color: #6b7280;
+    background-color: var(--secondary-bg);
+    color: var(--text-color);
 }
 
 .current-week {
     font-weight: bold;
     font-size: clamp(0.9rem, 3vw, 1.1rem);
-    color: #00f2ea;
+    color: var(--primary-color);
     text-align: center;
     flex: 2;
     margin: 0 1rem;
@@ -687,7 +701,7 @@ body {
             background-color: var(--card-bg);
             border-radius: 12px;
             padding: 1.5rem;
-            box-shadow: var(--shadow);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             border: 1px solid var(--border-color);
             display: flex;
             flex-wrap: wrap;
@@ -696,7 +710,7 @@ body {
         }
 
 .reto-section h2 {
-    color: #ffffff;
+    color: var(--text-color);
     margin-bottom: 1rem;
     font-size: clamp(1.2rem, 4vw, 1.5rem);
     font-weight: 600;
@@ -707,30 +721,31 @@ body {
     flex: 1;
     min-width: 200px;
     padding: 0.8rem;
-    border: 1px solid #4b5563;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     font-size: clamp(0.9rem, 3vw, 1rem);
     transition: all 0.3s ease;
-    background-color: #1a1a1a;
-    color: #ffffff;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     font-weight: 500;
     box-sizing: border-box;
 }
 
 .reto-input:focus {
     outline: none;
-    border-color: #00f2ea;
+    border-color: var(--primary-color);
 }
 
 .reto-input:disabled {
-    background-color: #2d2d2d;
+    background-color: var(--secondary-bg);
     cursor: not-allowed;
-    opacity: 0.8;
-    color: #6b7280;
+    opacity: 0.7;
+    color: var(--text-color);
 }
 
 .reto-input::placeholder {
-    color: #6b7280;
+    color: var(--text-color);
+    opacity: 0.5;
 }
 
 .dias-grid {
@@ -738,10 +753,10 @@ body {
     flex-direction: column;
     gap: 0.8rem;
     margin: 1.8rem 0;
-    background-color: #2d2d2d;
+    background-color: var(--card-bg);
     padding: 1rem;
     border-radius: 8px;
-    border: 1px solid #4b5563;
+    border: 1px solid var(--border-color);
 }
 
 .dia-linea {
@@ -755,12 +770,12 @@ body {
 }
 
 .dia-linea:hover {
-    background-color: #3a3a3a;
+    background-color: var(--secondary-bg);
 }
 
 .dia-nombre-lineal {
     font-weight: 600;
-    color: #b3b3b3;
+    color: var(--text-color);
     font-size: 0.9rem;
 }
 
@@ -775,9 +790,9 @@ body {
     height: 32px;
     border-radius: 5px;
     cursor: pointer;
-    border: 2px solid #4b5563;
-    background-color: #3a3a3a;
-    color: #b3b3b3;
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -798,29 +813,35 @@ body {
     color: white;
 }
 
+body.dark-mode .btn-cumplido-check, 
+body.dark-mode .btn-no-cumplido-check {
+    background-color: #3a3a3a;
+    color: #b3b3b3;
+}
+
 
 .resultado-selector-lineal select {
     width: 100%;
     max-width: 150px;
     padding: 0.5rem;
     font-size: 0.85rem;
-    background-color: #1a1a1a;
-    color: #ffffff;
-    border: 1px solid #4b5563;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
     border-radius: 4px;
 }
 
 .estadisticas {
-    background-color: #2d2d2d;
+    background-color: var(--card-bg);
     border-radius: 10px;
     padding: 1.5rem;
     margin-top: 1.8rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    border: 1px solid #4b5563;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color);
 }
 
 .estadisticas h2 {
-    color: #ffffff;
+    color: var(--text-color);
     margin-bottom: 1.2rem;
     font-size: clamp(1.2rem, 4vw, 1.5rem);
     font-weight: 600;
@@ -836,10 +857,10 @@ body {
 .stat-card {
     text-align: center;
     padding: 1.2rem;
-    background-color: #1f1f1f;
+    background-color: var(--secondary-bg);
     border-radius: 5px;
     transition: all 0.3s ease;
-    border: 1px solid #4b5563;
+    border: 1px solid var(--border-color);
 }
 
 .stat-card:hover {
@@ -850,37 +871,42 @@ body {
 .stat-number {
     font-size: clamp(1.5rem, 5vw, 1.8rem);
     font-weight: 700;
-    color: #00f2ea;
+    color: var(--primary-color);
     margin-bottom: 0.3rem;
 }
 
 .stat-label {
     font-size: clamp(0.75rem, 2.5vw, 0.85rem);
-    color: #b3b3b3;
+    color: var(--text-color);
+    opacity: 0.8;
     font-weight: 500;
 }
 
 .chart-container {
     position: relative;
     height: 300px;
-    background-color: #1f1f1f;
+    background-color: var(--card-bg);
     border-radius: 5px;
     padding: 1.5rem;
     margin-top: 1.5rem;
-    border: 1px solid #4b5563;
+    border: 1px solid var(--border-color);
+}
+
+body.dark-mode .chart-container {
+    background-color: #1f1f1f;
 }
 
 .historial {
-    background-color: #2d2d2d;
+    background-color: var(--card-bg);
     border-radius: 10px;
     padding: 1.5rem;
     margin-top: 1.8rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    border: 1px solid #4b5563;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color);
 }
 
 .historial h2 {
-    color: #ffffff;
+    color: var(--text-color);
     margin-bottom: 1.2rem;
     font-size: clamp(1.2rem, 4vw, 1.5rem);
     font-weight: 600;
@@ -888,7 +914,7 @@ body {
 
 .historial-item {
     padding: 1rem;
-    border-bottom: 1px solid #4b5563;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -899,7 +925,7 @@ body {
 }
 
 .historial-item:hover {
-    background-color: #1f1f1f;
+    background-color: var(--secondary-bg);
     transform: translateX(0.3rem);
 }
 
@@ -909,19 +935,21 @@ body {
 
 .historial-fecha {
     font-weight: 600;
-    color: #00f2ea;
+    color: var(--primary-color);
     font-size: clamp(0.9rem, 3vw, 1rem);
 }
 
 .historial-stats {
     font-size: clamp(0.8rem, 2.5vw, 0.9rem);
-    color: #b3b3b3;
+    color: var(--text-color);
+    opacity: 0.7;
     margin-top: 0.2rem;
 }
 
 .historial-reto {
     font-size: clamp(0.7rem, 2vw, 0.8rem);
-    color: #b3b3b3;
+    color: var(--text-color);
+    opacity: 0.6;
     margin-top: 0.3rem;
     max-width: 100%;
     overflow: hidden;
@@ -1013,12 +1041,12 @@ body {
 }
 
 .monthly-stats {
-    background-color: #2d2d2d;
+    background-color: var(--card-bg);
     border-radius: 10px;
     padding: 1.5rem;
     margin-top: 1.8rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    border: 1px solid #4b5563;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color);
 }
 
 .month-selector {
@@ -1096,14 +1124,15 @@ body {
     align-items: center;
     gap: 1rem;
     padding: 0 0.5rem 0.5rem;
-    border-bottom: 1px solid #4b5563;
+    border-bottom: 1px solid var(--border-color);
     margin-bottom: 0.5rem;
 }
 
 .dias-grid-header span {
     font-size: 0.8rem;
     font-weight: bold;
-    color: #b3b3b3;
+    color: var(--text-color);
+    opacity: 0.7;
     text-transform: uppercase;
     text-align: center;
 }

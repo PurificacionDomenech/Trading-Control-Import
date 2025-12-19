@@ -248,8 +248,8 @@ function removeChecklistItem(indexToRemove) {
 
 function markChecklistItem(index, checkbox) {
     const checklistKey = getChecklistKey();
-    const items = getChecklistItemsForAccount();
-    let estadoTareas = JSON.parse(localStorage.getItem(checklistKey)) || items.map(() => false);
+    const checklistItems = getChecklistItemsForAccount();
+    let estadoTareas = JSON.parse(localStorage.getItem(checklistKey)) || checklistItems.map(() => false);
     estadoTareas[index] = checkbox.checked;
     localStorage.setItem(checklistKey, JSON.stringify(estadoTareas));
     showChecklist();
