@@ -51,8 +51,14 @@
                     <button onclick="openSettingsModal()" class="button-secondary button-small">⚙️ Ajustes</button>
                 </div>
             </div>
+            
             <div class="dashboard-card">
-                <h3>Seguimiento de Drawdown</h3>
+                <h3>📊 Estadísticas Generales</h3>
+                <div class="card-stats" id="journal-stats-container"></div>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>🎯 Seguimiento de Drawdown</h3>
                 <div class="card-stats">
                     <div class="stat-box"><h4>Pico de Saldo (HWM)</h4><p id="high-water-mark">0.00 €</p></div>
                     <div class="stat-box"><h4>Suelo Drawdown</h4><p id="drawdown-floor">0.00 €</p></div>
@@ -60,8 +66,9 @@
                 </div>
                 <p class="drawdown-info" id="drawdown-explanation">El suelo de drawdown es el saldo mínimo permitido.</p>
             </div>
+            
             <div class="dashboard-card">
-                <h3 id="consistency-title">Regla de Consistencia</h3>
+                <h3>📈 Regla de Consistencia</h3>
                 <p>El día más rentable no debe superar el <span id="consistency-limit-display">40</span>% de las ganancias totales.</p>
                 <div id="consistency-rule-container">
                     <div class="progress-container">
@@ -71,30 +78,36 @@
                     <p id="consistency-details" style="margin-top: 10px; font-size: 0.9em;">No hay suficientes datos para calcular la consistencia.</p>
                 </div>
             </div>
+            
             <div class="dashboard-card">
-                <h3>Objetivos</h3>
+                <h3>🎯 Objetivos y Metas</h3>
                 <div class="card-stats">
-                    <div class="stat-box"><h4>Objetivo Semanal</h4><p id="weekly-goal-display">0.00 €</p>
-                    <p id="weekly-progress-percentage">0%</p></div>
-                    <div class="stat-box"><h4>Objetivo Mensual</h4><p id="monthly-goal-display">0.00 €</p>
-                    <p id="monthly-progress-percentage">0%</p></div>
+                    <div class="stat-box">
+                        <h4>Objetivo Semanal</h4>
+                        <p id="weekly-goal-display">0.00 €</p>
+                        <p id="weekly-progress-percentage">0%</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Objetivo Mensual</h4>
+                        <p id="monthly-goal-display">0.00 €</p>
+                        <p id="monthly-progress-percentage">0%</p>
+                    </div>
                 </div>
-
-                    <h3 style="margin-top: 20px;">Metas</h3>
-                    <div id="journal-entries"></div>
+                <h3 style="margin-top: 20px;">📝 Metas Activas</h3>
+                <div id="journal-entries"></div>
             </div>
-                  <div class="dashboard-card">
-               <h3>Crecimiento de Capital y Seguimiento de Drawdown</h3>
-               <div class="chart-container">  
-              <canvas id="capitalGrowthChart"></canvas>
+            
+            <div class="dashboard-card">
+                <h3>📊 Crecimiento de Capital</h3>
+                <div class="chart-container">  
+                    <canvas id="capitalGrowthChart"></canvas>
                 </div>
             </div>
 
             <div class="dashboard-card">
-                <h3>Operaciones Recientes</h3>
+                <h3>🕒 Operaciones Recientes</h3>
                 <div id="recent-operations"><p>No hay operaciones recientes para mostrar.</p></div>
             </div>
-
         </div>
         <!-- Checklist -->
      <!-- Checklist -->
@@ -331,7 +344,7 @@
     </div>
 
     <div class="dashboard-card">
-        <h3>Objetivos</h3>
+        <h3>🎯 Configurar Objetivos</h3>
         <div class="form-group">
             <label for="weekly-goal">Objetivo Semanal (€):</label>
             <input type="number" id="weekly-goal" step="0.01" placeholder="Ej: 1000">
@@ -343,11 +356,6 @@
             <p id="monthly-progress-detailed">Progreso: 0.00 € / 0.00 € (0%)</p>
         </div>
         <button onclick="saveGoals()">Guardar Objetivos</button>
-    </div>
-
-    <div class="dashboard-card">
-        <h3>Estadísticas Generales</h3>
-        <div class="card-stats" id="journal-stats-container"></div>
     </div>
 </div>
 
