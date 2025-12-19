@@ -1,0 +1,20 @@
+Ahora que la estructura de archivos y la lógica de datos están correctas, necesito que implementes el diseño visual y la funcionalidad de modo claro/oscuro.
+Objetivo: Aplicar el diseño de tarjetas (cards) que se ve en la imagen proporcionada y añadir un botón para alternar entre el modo claro (por defecto) y el modo oscuro.
+1. En assets/style.css (El Diseño):
+Variables CSS: Define un conjunto de variables CSS para los colores.
+--primary-color: El color turquesa/verde brillante (para botones y acentos).
+--bg-color: El color de fondo principal (blanco roto o gris claro).
+--card-bg: El color de fondo de las tarjetas (blanco puro).
+--text-color: El color del texto principal (negro o gris oscuro).
+Modo Oscuro: Crea un selector .dark-mode en el body que redefina estas variables para el tema oscuro (ej: --bg-color a gris oscuro, --card-bg a un gris más claro, --text-color a blanco).
+Estilo de Tarjetas: Aplica estilos a los contenedores principales para que se vean como las 'cards' de la imagen: bordes redondeados, sombras suaves y un padding interno generoso.
+Estilo del Toggle: Asegúrate de que el botón de alternar (el icono de luna/sol) esté bien posicionado, preferiblemente en la esquina inferior derecha o superior derecha, como en la imagen.
+2. En index.html (El Botón):
+Añade un botón o un elemento con un icono (preferiblemente un icono de luna/sol) en una posición fija (fixed) para que el usuario pueda alternar el modo. Dale un id fácil de usar, como theme-toggle.
+3. En assets/app.js (La Lógica):
+Función de Toggle: Crea una función que:
+Detecte el clic en el botón theme-toggle.
+Al hacer clic, añada o quite la clase dark-mode del elemento <body>.
+Guarde la preferencia del usuario (light o dark) en localStorage (por ejemplo, en la clave theme).
+Carga Inicial: Al cargar la página, la aplicación debe leer la clave theme de localStorage y aplicar la clase dark-mode al <body> si el usuario la había seleccionado previamente.
+En resumen: Implementa el diseño visual de tarjetas y la funcionalidad completa de modo claro/oscuro, incluyendo la persistencia de la preferencia en localStorage, modificando los tres archivos principales.
