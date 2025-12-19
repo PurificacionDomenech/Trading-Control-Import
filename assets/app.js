@@ -488,15 +488,43 @@ function procesarCSV(data) {
     let operacionesDuplicadas = 0;
     let cuentasCreadas = [];
 
+    // PASO 1: Agrupar operaciones por trade único
+    // NinjaTrader genera múltiples líneas para el mismo trade
+    const operacionesAgrupadas = {};
+
     data.forEach(row => {
-        // Mapeo de campos CSV a campos internos
+        const nombreCuenta = row['Cuenta']?.trim();
+        if (!nombreCuenta) return;
+
+        const numeroTrade = row['Número de trade']?.trim();
+        const fecha = parsearFechaNinjaTrader(row['Tiempo de entrada']);
+        const horaEntrada = parsearHoraNinjaTrader(row['Tiempo de entrada']);
+        
+        // Crear clave única: cuenta + fecha + hora + número trade
+        const claveAgrupacion = `${nombreCuenta}_${fecha}_${horaEntrada}_${numeroTrade}`;
+        
+        // Si ya existe este trade, mantener solo la última ejecución
+        if (operacionesAgrupadas[claveAgrupacion]) {
+            const horaSalidaActual = parsearHoraNinjaTrader(row['Tiempo de salida']);
+            const horaSalidaExistente = parsearHoraNinjaTrader(operacionesAgrupadas[claveAgrupacion]['Tiempo de salida']);
+            
+            // Mantener la ejecución con hora de salida más tardía (la final)
+            if (!horaSalidaExistente || horaSalidaActual >= horaSalidaExistente) {
+                operacionesAgrupadas[claveAgrupacion] = row;
+            }
+        } else {
+            operacionesAgrupadas[claveAgrupacion] = row;
+        }
+    });
+
+    // PASO 2: Procesar solo las operaciones únicas (una por trade)
+    Object.values(operacionesAgrupadas).forEach(row => {
         const nombreCuenta = row['Cuenta']?.trim();
         if (!nombreCuenta) return;
 
         // Verificar si la cuenta existe
         let cuenta = accounts.find(acc => acc.name === nombreCuenta);
         if (!cuenta) {
-            // Crear nueva cuenta
             const newAccountId = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9);
             cuenta = { id: newAccountId, name: nombreCuenta };
             accounts.push(cuenta);
@@ -509,16 +537,16 @@ function procesarCSV(data) {
         const cuentaOps = localStorage.getItem(cuentaOpsKey);
         const operacionesCuenta = cuentaOps ? JSON.parse(cuentaOps) : [];
 
-        // Mapear datos del CSV
         const numeroTrade = row['Número de trade']?.trim();
         const fecha = parsearFechaNinjaTrader(row['Tiempo de entrada']);
         const horaEntrada = parsearHoraNinjaTrader(row['Tiempo de entrada']);
         const horaSalida = parsearHoraNinjaTrader(row['Tiempo de salida']);
 
-        // Verificar duplicados
+        // Verificar duplicados (mejorado)
         const existeDuplicado = operacionesCuenta.some(op => 
             op.numero_de_trade == numeroTrade && 
-            op.fecha_de_operacion === fecha
+            op.fecha_de_operacion === fecha &&
+            op.tiempo_de_entrada === horaEntrada
         );
 
         if (existeDuplicado) {
@@ -526,11 +554,10 @@ function procesarCSV(data) {
             return;
         }
 
-        // Parsear ganancia neta (eliminar símbolos de moneda y convertir)
-        const gananciaTexto = row['Con ganancia neto']?.replace(/[^0-9,.\-]/g, '').replace(',', '.');
+        // CRÍTICO: Usar "Ganancias" (profit del trade) NO "Con ganancia neto" (profit acumulado cuenta)
+        const gananciaTexto = row['Ganancias']?.replace(/[^0-9,.\-]/g, '').replace(',', '.');
         const ganancia = parseFloat(gananciaTexto) || 0;
 
-        // Parsear comisión
         const comisionTexto = row['Comisión']?.replace(/[^0-9,.\-]/g, '').replace(',', '.');
         const comision = parseFloat(comisionTexto) || 0;
 
@@ -588,13 +615,11 @@ function procesarCSV(data) {
     
     // Recargar datos de la cuenta activa
     if (operacionesImportadas > 0) {
-        // Recargar las operaciones de la cuenta actual
         const opsKey = getOperationsKey(currentAccountId);
         const storedOperations = localStorage.getItem(opsKey);
         operations = storedOperations ? JSON.parse(storedOperations) : [];
         operations.sort((a, b) => new Date(a.date + 'T' + (a.entryTime || '00:00:00')) - new Date(b.date + 'T' + (b.entryTime || '00:00:00')));
         
-        // Recalcular HWM y actualizar UI
         calculateHwmAndDrawdownFloor(true);
         updateUI();
     }
