@@ -155,8 +155,9 @@ body {
             padding: 10px 12px;
             border-radius: 6px;
             transition: all 0.3s;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 2px 12px rgba(74, 157, 168, 0.15);
         }
 
         .btn-settings-inline {
@@ -431,6 +432,48 @@ body {
         .stat-box:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgb(69, 190, 211, 0.1);
+        }
+
+        .stat-box.highlighted {
+            background: linear-gradient(135deg, var(--secondary-bg) 0%, var(--secondary-bg) 100%);
+            box-shadow: 0 4px 16px rgba(74, 157, 168, 0.25), 
+                        0 0 20px rgba(74, 157, 168, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(74, 157, 168, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-box.highlighted::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(74, 157, 168, 0.1),
+                transparent
+            );
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        body.dark-mode .stat-box.highlighted {
+            box-shadow: 0 4px 16px rgba(91, 166, 176, 0.35), 
+                        0 0 20px rgba(91, 166, 176, 0.2),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(91, 166, 176, 0.4);
         }
 
         .stat-box h4 {

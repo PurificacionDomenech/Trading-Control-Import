@@ -532,6 +532,16 @@ function iniciarImportacionCSV(event) {
         skipEmptyLines: true,
         complete: function(results) {
             procesarCSV(results.data);
+            
+            // Recargar datos de la cuenta activa y actualizar UI
+            const opsKey = getOperationsKey(currentAccountId);
+            const storedOperations = localStorage.getItem(opsKey);
+            operations = storedOperations ? JSON.parse(storedOperations) : [];
+            operations.sort((a, b) => new Date(a.date + 'T' + (a.entryTime || '00:00:00')) - new Date(b.date + 'T' + (b.entryTime || '00:00:00')));
+            
+            calculateHwmAndDrawdownFloor(true);
+            updateUI();
+            
             // Eliminar indicador de carga
             document.getElementById('csv-loading-indicator')?.remove();
             document.getElementById('csv-loading-backdrop')?.remove();
@@ -682,17 +692,6 @@ function procesarCSV(data) {
     }
 
     alert(mensaje);
-
-    // Recargar datos de la cuenta activa
-    if (operacionesImportadas > 0) {
-        const opsKey = getOperationsKey(currentAccountId);
-        const storedOperations = localStorage.getItem(opsKey);
-        operations = storedOperations ? JSON.parse(storedOperations) : [];
-        operations.sort((a, b) => new Date(a.date + 'T' + (a.entryTime || '00:00:00')) - new Date(b.date + 'T' + (b.entryTime || '00:00:00')));
-
-        calculateHwmAndDrawdownFloor(true);
-        updateUI();
-    }
 
     // Limpiar input
     document.getElementById('csv-file-input').value = '';
@@ -1436,7 +1435,14 @@ function updateDashboard() {
     const roi = initialBalance > 0 ? (totalPL / initialBalance * 100) : 0;
 
     document.getElementById('initial-balance-display').textContent = formatCurrency(initialBalance);
-    document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
+    
+    // Saldo Actual con clase highlighted
+    const currentBalanceElem = document.getElementById('current-balance');
+    currentBalanceElem.textContent = formatCurrency(currentBalance);
+    if (!currentBalanceElem.parentElement.classList.contains('highlighted')) {
+        currentBalanceElem.parentElement.classList.add('highlighted');
+    }
+    
     const plElem = document.getElementById('profit-loss');
     plElem.textContent = formatCurrency(totalPL);
     plElem.className = totalPL > 0 ? 'positive' : (totalPL < 0 ? 'negative' : '');
@@ -1446,10 +1452,15 @@ function updateDashboard() {
 
     document.getElementById('high-water-mark').textContent = formatCurrency(highWaterMark);
     document.getElementById('drawdown-floor').textContent = formatCurrency(drawdownFloor);
+    
+    // Margen hasta Suelo con clase highlighted
     const marginToFloor = currentBalance - drawdownFloor;
     const marginElem = document.getElementById('margin-to-floor');
     marginElem.textContent = formatCurrency(marginToFloor);
     marginElem.className = marginToFloor > 0 ? 'positive' : 'negative';
+    if (!marginElem.parentElement.classList.contains('highlighted')) {
+        marginElem.parentElement.classList.add('highlighted');
+    }
 
     const explanationElem = document.getElementById('drawdown-explanation');
     if (currentBalance < drawdownFloor) {
