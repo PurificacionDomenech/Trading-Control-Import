@@ -28,7 +28,7 @@
                 <select id="account-selector" onchange="setActiveAccount(this.value)"></select>
                 <button onclick="openCreateAccountModal()" class="button-small button-secondary">Nueva Cuenta</button>
                 <button onclick="confirmDeleteAccount()" class="button-small button-danger">Eliminar</button>
-                <input type="file" id="csv-file-input" accept=".csv" style="display: none;" onchange="handleCSVUpload(event)">
+                <input type="file" id="csv-file-input" accept=".csv" style="display: none;" onchange="iniciarImportacionCSV(event)">
                 <button onclick="document.getElementById('csv-file-input').click()" class="button-small button-secondary">Importar CSV</button>
             </div>
             <div class="account-controls-row-secondary">
