@@ -696,8 +696,14 @@ function procesarCSV(data) {
     if (cuentasCreadas.length > 0) {
         mensaje += `\n🆕 Cuentas creadas:\n${cuentasCreadas.map(c => '   • ' + c).join('\n')}`;
     }
+    mensaje += `\n\n🔄 Por favor, actualiza la página para ver los datos importados.`;
 
     alert(mensaje);
+    
+    // Ofrecer actualización automática
+    if (confirm('¿Quieres actualizar la página ahora para ver los datos importados?')) {
+        window.location.reload();
+    }
 }
 
 function parsearFechaNinjaTrader(fechaHora) {
