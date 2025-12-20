@@ -140,61 +140,31 @@ body {
 
         .account-controls {
             display: flex;
-            align-items: center;
-            justify-content: flex-start;
+            flex-direction: column;
             margin-bottom: 16px;
             padding: 0;
             background-color: transparent;
+            gap: 12px;
+        }
+
+        .account-controls-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
             gap: 8px;
             flex-wrap: wrap;
         }
 
-        .account-selector-group {
+        .account-controls-row-secondary {
             display: flex;
             align-items: center;
-            gap: 4px;
+            justify-content: flex-start;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .account-controls-row select {
             flex: 1 1 auto;
-            min-width: 200px;
-        }
-
-        @media (max-width: 768px) {
-            .account-controls {
-                gap: 4px;
-                flex-wrap: wrap;
-            }
-
-            .account-controls .button-small {
-                padding: 6px 8px;
-                font-size: 10px;
-                white-space: nowrap;
-                flex: 0 1 auto;
-                min-width: fit-content;
-                max-width: calc(50% - 4px);
-            }
-
-            .btn-settings-inline {
-                padding: 4px 6px !important;
-                font-size: 14px !important;
-                min-width: 28px !important;
-                width: 28px !important;
-            }
-
-            .account-selector-group {
-                min-width: 0;
-                flex: 1 1 100%;
-                max-width: 100%;
-            }
-
-            .account-controls select {
-                min-width: 0;
-                font-size: 14px;
-                flex: 1;
-            }
-        }
-
-        .account-controls select {
-            flex-grow: 1;
-            max-width: 100%;
             min-width: 180px;
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -207,15 +177,7 @@ body {
             box-shadow: 0 2px 12px rgba(74, 157, 168, 0.15);
         }
 
-        .btn-settings-inline {
-            padding: 6px 8px;
-            font-size: 16px;
-            min-width: 32px;
-            width: 32px;
-            flex-shrink: 0;
-        }
-
-        .account-controls select:focus {
+        .account-controls-row select:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgb(78, 162, 177, 0.1);
@@ -226,6 +188,39 @@ body {
             padding: 8px 12px;
             font-size: 12px;
             white-space: nowrap;
+        }
+
+        .btn-settings-inline {
+            padding: 8px 12px;
+            font-size: 14px;
+            width: auto;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .account-controls-row,
+            .account-controls-row-secondary {
+                gap: 4px;
+            }
+
+            .account-controls .button-small {
+                padding: 6px 8px;
+                font-size: 10px;
+                white-space: nowrap;
+                flex: 0 1 auto;
+                min-width: fit-content;
+            }
+
+            .btn-settings-inline {
+                padding: 6px 8px;
+                font-size: 12px;
+            }
+
+            .account-controls-row select {
+                min-width: 0;
+                font-size: 14px;
+                flex: 1 1 100%;
+            }
         }
 
         .tabs {

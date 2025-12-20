@@ -24,16 +24,17 @@
             <button id="theme-toggle" aria-label="Toggle theme">☀️</button>
         </div>
         <div class="account-controls">
-            <div class="account-selector-group">
+            <div class="account-controls-row">
                 <select id="account-selector" onchange="setActiveAccount(this.value)"></select>
-                <button onclick="openSettingsModal()" class="button-secondary btn-settings-inline" title="Ajustes de cuenta">⚙️</button>
+                <button onclick="openCreateAccountModal()" class="button-small button-secondary">Nueva Cuenta</button>
+                <button onclick="confirmDeleteAccount()" class="button-small button-danger">Eliminar</button>
+                <input type="file" id="csv-file-input" accept=".csv" style="display: none;" onchange="iniciarImportacionCSV(event)">
+                <button onclick="document.getElementById('csv-file-input').click()" class="button-small button-secondary">Importar CSV</button>
             </div>
-            <button onclick="openCreateAccountModal()" class="button-small button-secondary">Nueva Cuenta</button>
-            <button onclick="confirmDeleteAccount()" class="button-small button-danger">Eliminar</button>
-            <!-- Botón para importar CSV -->
-            <input type="file" id="csv-file-input" accept=".csv" style="display: none;" onchange="iniciarImportacionCSV(event)">
-            <button onclick="document.getElementById('csv-file-input').click()" class="button-small button-secondary">Importar CSV</button>
-            <button onclick="openNinjaHelpModal()" class="button-small button-secondary" title="Guía de exportación">ℹ️ ¿Cómo exportar de Ninja?</button>
+            <div class="account-controls-row-secondary">
+                <button onclick="openSettingsModal()" class="button-secondary btn-settings-inline" title="Ajustes de cuenta">⚙️ Ajustes</button>
+                <button onclick="openNinjaHelpModal()" class="button-small button-secondary" title="Guía de exportación">ℹ️ ¿Cómo exportar de Ninja?</button>
+            </div>
         </div>
 
         <div class="tabs">
