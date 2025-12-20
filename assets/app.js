@@ -489,14 +489,57 @@ function iniciarImportacionCSV(event) {
     const file = event.target.files[0];
     if (!file) return;
 
+    // Mostrar indicador de carga
+    const loadingIndicator = document.createElement('div');
+    loadingIndicator.id = 'csv-loading-indicator';
+    loadingIndicator.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--card-bg);
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        z-index: 9999;
+        text-align: center;
+        border: 2px solid var(--primary-color);
+    `;
+    loadingIndicator.innerHTML = `
+        <div style="font-size: 40px; margin-bottom: 15px;">⏳</div>
+        <div style="color: var(--text-color); font-size: 18px; font-weight: 600; margin-bottom: 10px;">Importando operaciones...</div>
+        <div style="color: var(--text-muted); font-size: 14px;">Por favor, espera mientras procesamos el archivo CSV</div>
+    `;
+    document.body.appendChild(loadingIndicator);
+
+    // Añadir backdrop
+    const backdrop = document.createElement('div');
+    backdrop.id = 'csv-loading-backdrop';
+    backdrop.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9998;
+    `;
+    document.body.appendChild(backdrop);
+
     Papa.parse(file, {
         header: true,
         delimiter: ';',
         skipEmptyLines: true,
         complete: function(results) {
             procesarCSV(results.data);
+            // Eliminar indicador de carga
+            document.getElementById('csv-loading-indicator')?.remove();
+            document.getElementById('csv-loading-backdrop')?.remove();
         },
         error: function(error) {
+            // Eliminar indicador de carga
+            document.getElementById('csv-loading-indicator')?.remove();
+            document.getElementById('csv-loading-backdrop')?.remove();
             alert('Error al leer el archivo CSV: ' + error.message);
         }
     });

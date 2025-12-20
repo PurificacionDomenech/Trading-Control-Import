@@ -35,8 +35,8 @@ body.dark-mode {
 }
 
 #theme-toggle {
-    background: var(--primary-color);
-    color: #ffffff;
+    background: #ffffff;
+    color: #1a1a1a;
     border: none;
     width: 42px;
     height: 42px;
@@ -44,15 +44,25 @@ body.dark-mode {
     cursor: pointer;
     font-size: 18px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(74, 157, 168, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+body.dark-mode #theme-toggle {
+    background: #000000;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15);
+}
+
 #theme-toggle:hover {
     transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(74, 157, 168, 0.35);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+body.dark-mode #theme-toggle:hover {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
 }
 
 .header-container {
@@ -123,22 +133,37 @@ body {
             margin-bottom: 16px;
             padding: 0;
             background-color: transparent;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .account-selector-group {
+            display: flex;
+            align-items: center;
             gap: 6px;
-            flex-wrap: nowrap;
+            flex: 1 1 auto;
+            min-width: 200px;
         }
 
         .account-controls select {
             flex-grow: 1;
-            max-width: 250px;
-            min-width: 150px;
+            max-width: 100%;
+            min-width: 180px;
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             color: var(--text-color);
-            padding: 8px 10px;
+            padding: 10px 12px;
             border-radius: 6px;
             transition: all 0.3s;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 500;
+        }
+
+        .btn-settings-inline {
+            padding: 10px 12px;
+            font-size: 14px;
+            min-width: auto;
+            flex-shrink: 0;
         }
 
         .account-controls select:focus {
