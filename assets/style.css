@@ -144,7 +144,7 @@ body {
             margin-bottom: 16px;
             padding: 0;
             background-color: transparent;
-            gap: 12px;
+            gap: 8px;
         }
 
         .account-controls-row {
@@ -161,6 +161,28 @@ body {
             justify-content: flex-start;
             gap: 8px;
             flex-wrap: wrap;
+        }
+
+        .btn-settings-icon {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .btn-settings-icon:hover {
+            background-color: var(--hover-bg);
+            border-color: var(--primary-color);
         }
 
         .account-controls-row select {
@@ -190,14 +212,11 @@ body {
             white-space: nowrap;
         }
 
-        .btn-settings-inline {
-            padding: 8px 12px;
-            font-size: 14px;
-            width: auto;
-            flex-shrink: 0;
-        }
-
         @media (max-width: 768px) {
+            .account-controls {
+                gap: 6px;
+            }
+
             .account-controls-row,
             .account-controls-row-secondary {
                 gap: 4px;
@@ -211,9 +230,10 @@ body {
                 min-width: fit-content;
             }
 
-            .btn-settings-inline {
-                padding: 6px 8px;
-                font-size: 12px;
+            .btn-settings-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
             }
 
             .account-controls-row select {
