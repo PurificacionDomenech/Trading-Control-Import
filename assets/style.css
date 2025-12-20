@@ -82,16 +82,8 @@ body.dark-mode {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.account-selector-row {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    width: 100%;
-}
-
 .account-selector-wrapper {
-    flex: 1;
-    min-width: 0;
+    width: 100%;
 }
 
 .settings-btn-full {
