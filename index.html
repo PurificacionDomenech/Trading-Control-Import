@@ -33,11 +33,13 @@
 
         <!-- Controles de cuenta -->
         <div class="account-controls">
-            <div class="account-selector-wrapper">
-                <select id="account-selector" onchange="setActiveAccount(this.value)" aria-label="Seleccionar cuenta"></select>
+            <div class="account-selector-row">
+                <div class="account-selector-wrapper">
+                    <select id="account-selector" onchange="setActiveAccount(this.value)" aria-label="Seleccionar cuenta"></select>
+                </div>
+                <button onclick="openSettingsModal()" class="icon-button settings-btn" title="Ajustes de cuenta" aria-label="Ajustes de cuenta">⚙️</button>
             </div>
             <div class="account-actions">
-                <button onclick="openSettingsModal()" class="icon-button" title="Configuración" aria-label="Configuración">⚙️</button>
                 <button onclick="openCreateAccountModal()" class="action-button">Nueva Cuenta</button>
                 <button onclick="confirmDeleteAccount()" class="action-button danger">Eliminar</button>
                 <input type="file" id="csv-file-input" accept=".csv" style="display: none;">

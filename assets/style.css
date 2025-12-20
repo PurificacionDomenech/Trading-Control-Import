@@ -82,8 +82,20 @@ body.dark-mode {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.account-selector-wrapper {
+.account-selector-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
     width: 100%;
+}
+
+.account-selector-wrapper {
+    flex: 1;
+    min-width: 0;
+}
+
+.settings-btn {
+    flex-shrink: 0;
 }
 
 .account-selector-wrapper select {
@@ -110,10 +122,11 @@ body.dark-mode {
 }
 
 .account-actions {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 8px;
     align-items: center;
+    width: 100%;
 }
 
 .action-button {
@@ -127,6 +140,9 @@ body.dark-mode {
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
+    text-align: center;
+    min-width: 0;
+    width: 100%;
 }
 
 .action-button:hover {
@@ -307,8 +323,12 @@ h3 {
         font-size: 14px;
     }
 
+    .account-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .action-button {
-        padding: 8px 12px;
+        padding: 10px 12px;
         font-size: 13px;
     }
 
@@ -349,8 +369,21 @@ h3 {
         font-size: 13px;
     }
 
+    .account-actions {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+
+    .account-actions .icon-button {
+        grid-column: span 2;
+        width: 100%;
+        border-radius: 8px;
+        height: auto;
+        padding: 10px;
+    }
+
     .action-button {
-        padding: 7px 10px;
+        padding: 10px 8px;
         font-size: 12px;
     }
 }
