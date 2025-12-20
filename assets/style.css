@@ -794,7 +794,7 @@ input[type="date"], input[type="time"] {
    ============================================================================ */
 
 .ninja-help-modal {
-    display: none !important;
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -803,14 +803,12 @@ input[type="date"], input[type="time"] {
     background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(4px);
     z-index: 1000;
-    align-items: center;
-    justify-content: center;
     overflow-y: auto;
     padding: 20px;
 }
 
-.ninja-help-modal[style*="display: flex"] {
-    display: flex !important;
+.ninja-help-modal.active {
+    display: block;
 }
 
 .ninja-modal-content {
@@ -819,12 +817,13 @@ input[type="date"], input[type="time"] {
     border-radius: 16px;
     width: 90%;
     max-width: 900px;
-    margin: 20px auto;
+    margin: 40px auto;
     border: 1px solid var(--border-color);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    max-height: 90vh;
+    max-height: calc(100vh - 80px);
     overflow-y: auto;
     box-sizing: border-box;
+    position: relative;
 }
 
 .ninja-modal-content h2 {

@@ -461,23 +461,43 @@ function openSettingsModal() {
 }
 
 function closeSettingsModal() {
-    document.getElementById('settings-modal').style.display = 'none';
+    const modal = document.getElementById('settings-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
 }
 
 function openDetailsModal() {
-    document.getElementById('details-modal').style.display = 'flex';
+    const modal = document.getElementById('details-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closeDetailsModal() {
-    document.getElementById('details-modal').style.display = 'none';
+    const modal = document.getElementById('details-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
 }
 
 function openNinjaHelpModal() {
-    document.getElementById('modal-ayuda-ninja').style.display = 'flex';
+    const modal = document.getElementById('modal-ayuda-ninja');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closeNinjaHelpModal() {
-    document.getElementById('modal-ayuda-ninja').style.display = 'none';
+    const modal = document.getElementById('modal-ayuda-ninja');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 }
 
 function saveSettings() {
@@ -2232,12 +2252,19 @@ if ('serviceWorker' in navigator) {
 function openImageModal(src) {
     const modal = document.getElementById('image-modal');
     const modalImg = document.getElementById('modal-image');
-    modal.style.display = 'block';
-    modalImg.src = src;
+    if (modal && modalImg) {
+        modal.style.display = 'block';
+        modalImg.src = src;
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closeImageModal() {
-    document.getElementById('image-modal').style.display = 'none';
+    const modal = document.getElementById('image-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
 }
 
 // Cerrar modal con tecla Escape
