@@ -139,37 +139,49 @@ body {
         }
 
         .account-controls {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
+            display: grid;
+            grid-template-columns: 1fr auto auto;
             margin-bottom: 16px;
             padding: 0;
             background-color: transparent;
             gap: 8px;
-            flex-wrap: wrap;
+            align-items: start;
         }
 
         .account-selector-group {
             display: flex;
             align-items: center;
             gap: 4px;
-            flex: 1 1 auto;
-            min-width: 200px;
+        }
+
+        .account-actions-group,
+        .import-actions-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         @media (max-width: 768px) {
             .account-controls {
-                gap: 4px;
-                flex-wrap: wrap;
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .account-selector-group {
+                grid-column: 1;
+            }
+
+            .account-actions-group,
+            .import-actions-group {
+                grid-column: 1;
+                width: 100%;
             }
 
             .account-controls .button-small {
-                padding: 6px 8px;
-                font-size: 10px;
+                padding: 8px 12px;
+                font-size: 12px;
                 white-space: nowrap;
-                flex: 0 1 auto;
-                min-width: fit-content;
-                max-width: calc(50% - 4px);
+                flex: 1 1 auto;
             }
 
             .btn-settings-inline {
@@ -183,12 +195,6 @@ body {
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
-            }
-
-            .account-selector-group {
-                min-width: 0;
-                flex: 1 1 100%;
-                max-width: 100%;
             }
 
             .account-controls select {
