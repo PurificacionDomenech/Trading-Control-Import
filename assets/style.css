@@ -66,111 +66,161 @@ body.dark-mode {
     --text-muted: #9ca3af;
 }
 
-.header-buttons {
-    display: flex !important;
-    gap: 10px;
-    align-items: center;
-    flex-shrink: 0;
-    visibility: visible !important;
-    opacity: 1 !important;
+/* ============================================================================
+   CONTROLES DE CUENTA
+   ============================================================================ */
+
+.account-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding: 16px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.header-buttons .button-small,
-.header-buttons button {
+.account-selector-wrapper {
+    width: 100%;
+}
+
+.account-selector-wrapper select {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 8px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.account-selector-wrapper select:hover {
+    border-color: var(--primary-color);
+}
+
+.account-selector-wrapper select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 157, 168, 0.1);
+}
+
+.account-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.action-button {
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    background: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.action-button:hover {
+    background: #3e8a94;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(74, 157, 168, 0.3);
+}
+
+.action-button.danger {
+    background: var(--danger-color);
+}
+
+.action-button.danger:hover {
+    background: #dc2626;
+}
+
+/* ============================================================================
+   HEADER
+   ============================================================================ */
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    margin-bottom: 24px;
+    gap: 16px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+}
+
+.app-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+h1 {
+    color: var(--primary-color);
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.icon-button {
     width: 44px;
     height: 44px;
     min-width: 44px;
-    max-width: 44px;
-    padding: 0 !important;
-    display: flex !important;
+    padding: 0;
+    display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     font-size: 20px;
-    visibility: visible !important;
-    opacity: 1 !important;
     background: var(--card-bg);
     color: var(--text-color);
     border: 1px solid var(--border-color);
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    flex-shrink: 0;
 }
 
-.header-buttons .button-small:hover,
-.header-buttons button:hover {
+.icon-button:hover {
     background-color: var(--hover-bg);
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 #theme-toggle {
-    background: #ffffff;
-    color: #1a1a1a;
-    border: 1px solid #e0e0e0;
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
-    max-width: 44px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 20px;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    padding: 0 !important;
+    background: var(--card-bg);
+    color: var(--text-color);
 }
 
 body.dark-mode #theme-toggle {
-    background: #000000;
-    color: #ffffff;
-    border-color: #1f2937;
-    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15);
-}
-
-#theme-toggle:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-}
-
-.header-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    gap: 12px;
-    width: 100%;
-    max-width: 100%;
-    position: relative;
-    z-index: 100;
-}
-
-h1 {
-    text-align: left;
-    color: #5cd5e6;
-    font-size: 26px;
-    font-weight: 700;
-    margin: 0;
-    letter-spacing: -0.5px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex: 1;
-    min-width: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-h1 img {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-    flex-shrink: 0;
+    background: var(--card-bg);
+    color: var(--text-color);
 }
 
 body {
@@ -211,185 +261,90 @@ h3 {
     margin-bottom: 12px;
 }
 
-.account-controls {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-    gap: 10px;
-    width: 100%;
-    max-width: 100%;
-    overflow: visible;
-}
 
-.account-controls-row,
-.account-controls-row-secondary {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    width: 100%;
-    max-width: 100%;
-    overflow: visible;
-    z-index: 1;
-    min-height: 44px;
-}
-
-.account-controls-row select {
-    flex: 1 1 auto;
-    min-width: 140px;
-    max-width: 100%;
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    padding: 9px 12px;
-    border-radius: 8px;
-    transition: all 0.3s;
-    font-size: 14px;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(74, 157, 168, 0.1);
-}
-
-.account-controls-row select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(78, 162, 177, 0.1);
-}
-
-.account-controls button {
-    padding: 9px 12px;
-    font-size: 13px;
-    white-space: nowrap;
-    flex-shrink: 0;
-    border-radius: 8px;
-    transition: all 0.2s;
-    cursor: pointer;
-    position: relative;
-    z-index: 1;
-    min-height: 38px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.account-controls .button-small {
-    padding: 9px 12px;
-    font-size: 13px;
-    min-height: 38px;
-}
-
-/* Eliminar tooltips nativos que causan overflow */
-[title] {
-    position: relative;
-}
 
 @media (max-width: 768px) {
     .header-container {
-        gap: 10px;
-        margin-bottom: 12px;
+        padding: 12px 0;
+        margin-bottom: 16px;
+        gap: 12px;
+    }
+
+    .app-icon {
+        width: 36px;
+        height: 36px;
     }
 
     h1 {
-        font-size: 20px;
-        gap: 8px;
+        font-size: 22px;
     }
 
-    h1 img {
-        width: 28px;
-        height: 28px;
+    .header-right {
+        gap: 6px;
     }
 
-    .header-buttons {
-        gap: 8px;
-        display: flex !important;
-        visibility: visible !important;
-    }
-
-    .header-buttons .button-small,
-    .header-buttons button,
-    #theme-toggle {
+    .icon-button {
         width: 40px;
         height: 40px;
         min-width: 40px;
-        max-width: 40px;
         font-size: 18px;
-        display: flex !important;
-        visibility: visible !important;
     }
 
     .account-controls {
-        gap: 8px;
+        padding: 12px;
+        gap: 10px;
     }
-    
+
+    .account-selector-wrapper select {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .action-button {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
     .button-small {
         font-size: 13px !important;
         padding: 10px 14px !important;
-        white-space: nowrap;
-    }
-
-    .account-controls-row,
-    .account-controls-row-secondary {
-        gap: 6px;
-        overflow: visible;
-        min-height: 40px;
-    }
-
-    .account-controls button,
-    .account-controls .button-small {
-        padding: 8px 10px;
-        font-size: 12px;
-        min-height: 36px;
-        flex: 0 0 auto;
-    }
-
-    .account-controls-row select {
-        min-width: 0;
-        font-size: 13px;
-        padding: 8px 10px;
-        min-height: 36px;
-    }
-    
-    .account-controls-row-secondary {
-        justify-content: flex-start;
     }
 }
 
 @media (max-width: 480px) {
     .header-container {
+        padding: 8px 0;
         gap: 8px;
+    }
+
+    .app-icon {
+        width: 32px;
+        height: 32px;
     }
 
     h1 {
         font-size: 18px;
-        gap: 6px;
     }
 
-    h1 img {
-        width: 24px;
-        height: 24px;
-    }
-
-    .header-buttons {
-        gap: 6px;
-    }
-
-    .header-buttons .button-small,
-    .header-buttons button,
-    #theme-toggle {
+    .icon-button {
         width: 36px;
         height: 36px;
         min-width: 36px;
-        max-width: 36px;
         font-size: 16px;
     }
 
-    .account-controls button,
-    .account-controls .button-small {
-        padding: 7px 8px;
-        font-size: 11px;
+    .account-controls {
+        padding: 10px;
     }
 
-    .account-controls-row {
-        gap: 4px;
+    .account-selector-wrapper select {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    .action-button {
+        padding: 7px 10px;
+        font-size: 12px;
     }
 }
 
