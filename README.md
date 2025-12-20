@@ -89,10 +89,10 @@ La aplicación estará disponible en `http://localhost:5000`
 
 ### Paso 1: Exportar desde NinjaTrader
 
-1. En NinjaTrader, ve a **Tools** → **Account Performance**
+1. En NinjaTrader,Conéctate, ve a **Nuevo** → **Resultado de operaciones **
 2. Selecciona la cuenta y el rango de fechas deseado
-3. Haz clic en **Export** (esquina inferior derecha)
-4. Guarda el archivo CSV en tu computadora
+3. Haz clic en **Exportar** (sobre los datos generados pincha en el ratón botón derecho)
+4. Guarda el archivo CSV en tu computadora( recuerda cambiar el nombre para que te sea facil)
 
 **Capturas de referencia:**
 
