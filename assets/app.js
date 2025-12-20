@@ -1,4 +1,7 @@
-// --- Constants ---
+// ============================================================================
+// CONSTANTES Y CONFIGURACIÓN GLOBAL
+// ============================================================================
+
 const ACCOUNTS_KEY = 'tradingAccounts';
 const ACTIVE_ACCOUNT_KEY = 'tradingActiveAccount';
 
@@ -24,7 +27,10 @@ function getChecklistItemsForAccount() {
     }
 }
 
-// --- State ---
+// ============================================================================
+// ESTADO DE LA APLICACIÓN
+// ============================================================================
+
 let accounts = [];
 let currentAccountId = null;
 let operations = [];
@@ -35,7 +41,10 @@ let highWaterMark = 0;
 let drawdownFloor = 0;
 let showAllOperations = false;
 
-// --- Helpers ---
+// ============================================================================
+// FUNCIONES DE UTILIDAD Y FORMATO
+// ============================================================================
+
 function formatCurrency(value) {
     return (typeof value === 'number' ? value.toFixed(2) : '0.00') + ' €';
 }
@@ -156,7 +165,10 @@ function getDayOfWeek(dateString) {
     return days[new Date(dateString).getDay()];
 }
 
-// --- Checklist ---
+// ============================================================================
+// GESTIÓN DE CHECKLIST DIARIO
+// ============================================================================
+
 function getChecklistKey() {
     const today = new Date().toISOString().split('T')[0];
     return `checklist_${currentAccountId}_${today}`;
@@ -260,7 +272,10 @@ function resetChecklist() {
     showChecklist();
 }
 
-// --- Persistence and Accounts ---
+// ============================================================================
+// PERSISTENCIA DE DATOS Y GESTIÓN DE CUENTAS
+// ============================================================================
+
 function getOperationsKey(accountId) {
     return `tradingOperations_${accountId}`;
 }
@@ -386,7 +401,10 @@ function saveData() {
     }
 }
 
-// --- Tabs ---
+// ============================================================================
+// NAVEGACIÓN ENTRE PESTAÑAS
+// ============================================================================
+
 function openTab(tabName) {
     const tabContents = document.querySelectorAll('.tab-content');
     const tabs = document.querySelectorAll('.tab');
@@ -410,7 +428,10 @@ function openTab(tabName) {
     }
 }
 
-// --- Modals ---
+// ============================================================================
+// GESTIÓN DE VENTANAS MODALES
+// ============================================================================
+
 function openSettingsModal() {
     if (!currentAccountId) {
         alert('Primero debes seleccionar una cuenta.');
@@ -484,7 +505,10 @@ function resetAllData() {
     }
 }
 
-// --- CSV Import ---
+// ============================================================================
+// IMPORTACIÓN DE DATOS CSV (NINJATRADER)
+// ============================================================================
+
 function iniciarImportacionCSV(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -734,7 +758,9 @@ function parsearHoraNinjaTrader(fechaHora) {
     return null;
 }
 
-// --- Operations ---
+// ============================================================================
+// GESTIÓN DE OPERACIONES DE TRADING
+// ============================================================================
 
 document.getElementById('trading-form').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -996,7 +1022,10 @@ function handleAssetSelection(selectElement) {
     }
 }
 
-// --- Drawdown Logic ---
+// ============================================================================
+// CÁLCULO DE DRAWDOWN Y HIGH WATER MARK
+// ============================================================================
+
 function calculateHwmAndDrawdownFloor(fullRecalculate = false) {
     let currentBalance = settings.initialBalance;
     let peakBalance = settings.initialBalance;
@@ -1040,7 +1069,10 @@ function calculateHwmAndDrawdownFloor(fullRecalculate = false) {
     }
 }
 
-// --- Journals ---
+// ============================================================================
+// GESTIÓN DE DIARIOS Y OBJETIVOS
+// ============================================================================
+
 function setNewsRating(value) {
     const stars = document.querySelectorAll('.star');
     stars.forEach(star => {
@@ -1216,7 +1248,10 @@ function toggleGoalAchieved(id, isAchieved) {
     }
 }
 
-// --- UI Updates ---
+// ============================================================================
+// ACTUALIZACIÓN DE INTERFAZ DE USUARIO
+// ============================================================================
+
 function updateUI() {
     updateDashboard(); 
     renderCapitalGrowthChart();
@@ -1255,7 +1290,10 @@ function populateYearFilter() {
     sel.value = sorted.includes(cur) ? cur : '';
 }
 
-// --- Historial Operations ---
+// ============================================================================
+// RENDERIZADO DE HISTORIAL DE OPERACIONES
+// ============================================================================
+
 function renderOperations(filteredOps = null) {
     const list = document.getElementById('operations-list');
     list.innerHTML = '';
@@ -1434,7 +1472,10 @@ function updateGoalProgress() {
     (${formatPercentage(monthlyPerc)})`;
 }
 
-// --- Dashboard Updates ---
+// ============================================================================
+// ACTUALIZACIÓN DEL DASHBOARD
+// ============================================================================
+
 function updateDashboard() {
     if (!currentAccountId) return;
 
@@ -2106,7 +2147,10 @@ class RetosSemanales {
     }
 }
 
-// --- INICIALIZACIÓN CONTROLADA ---
+// ============================================================================
+// INICIALIZACIÓN DE LA APLICACIÓN
+// ============================================================================
+
 let app; 
 
 const originalOpenTab = window.openTab;
@@ -2118,7 +2162,7 @@ window.openTab = function(tabName) {
     }
 }
 
-// --- Inicialización ---
+// Inicialización al cargar la página
 loadAccounts();
 const storedActive = localStorage.getItem(ACTIVE_ACCOUNT_KEY);
 if (storedActive && accounts.find(a => a.id === storedActive)) {
@@ -2135,7 +2179,10 @@ document.getElementById('csv-file-input').addEventListener('change', iniciarImpo
 
 openTab('dashboard');
 
-// --- Theme Toggle ---
+// ============================================================================
+// GESTIÓN DE TEMA CLARO/OSCURO
+// ============================================================================
+
 function initTheme() {
     const savedTheme = localStorage.getItem('theme') || 'light';
     const themeToggle = document.getElementById('theme-toggle');
@@ -2157,7 +2204,10 @@ function initTheme() {
     });
 }
 
-// Registro del Service Worker
+// ============================================================================
+// REGISTRO DE SERVICE WORKER PARA PWA
+// ============================================================================
+
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
