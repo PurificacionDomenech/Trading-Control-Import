@@ -66,6 +66,25 @@ body.dark-mode {
     --text-muted: #9ca3af;
 }
 
+.header-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.header-buttons .button-small {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 18px;
+}
+
 #theme-toggle {
     background: #ffffff;
     color: #1a1a1a;
@@ -256,6 +275,11 @@ h3 {
         height: 28px;
     }
 
+    .header-buttons {
+        gap: 6px;
+    }
+
+    .header-buttons .button-small,
     #theme-toggle {
         width: 36px;
         height: 36px;

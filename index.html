@@ -22,14 +22,10 @@
         <!-- Header con título y tema -->
         <div class="header-container">
             <h1><img src="icon.png" alt="Trading Control Icon">Trading Control</h1>
-            <button id="theme-toggle" aria-label="Cambiar tema">☀️</button>
-        </div>
-
-        <!-- Botón de ayuda visible -->
-        <div style="margin-bottom: 16px; display: flex; justify-content: flex-end;">
-            <button onclick="openNinjaHelpModal()" class="button-small button-secondary" style="min-width: auto; padding: 10px 16px; font-size: 14px;">
-                ❓ Ayuda NinjaTrader
-            </button>
+            <div class="header-buttons">
+                <button onclick="openNinjaHelpModal()" class="button-small button-secondary" title="Ayuda NinjaTrader">❓</button>
+                <button id="theme-toggle" aria-label="Cambiar tema">☀️</button>
+            </div>
         </div>
 
         <!-- Controles de cuenta optimizados -->
