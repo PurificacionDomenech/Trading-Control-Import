@@ -1,0 +1,35 @@
+Necesito corregir la secuencia de los primeros pasos en la ventana modal de ayuda de NinjaTrader.
+Objetivo: Asegurar que la guía de exportación refleje el orden exacto de las acciones: Abrir NinjaTrader, Conectarse, y luego ir a Nuevo.
+1. En index.html (Contenido de la Modal):
+Modifica el contenido de la ventana modal (#modal-ayuda-ninja) para que la lista de pasos comience con la secuencia correcta.
+HTML
+<h2>Guía de Exportación de Datos desde NinjaTrader</h2>
+<p>Para importar tus operaciones a Trading Control, sigue estos sencillos pasos para exportar el archivo CSV de "Account Performance" desde NinjaTrader:</p>
+
+<ol>
+    <li><strong>Paso 1: Abrir y Conectar.</strong> Abre NinjaTrader. **Conéctate** a una cuenta (aunque sea de simulación).</li>
+    <li><strong>Paso 2: Abrir Resultados de Operaciones.</strong> Ve a <code>Nuevo</code> -> <code>Resultado de Operaciones</code>.</li>
+    <li><img src="Fotos/info1.png" alt="Imagen 1: Resultado de Operaciones" style="max-width: 100%;"></li>
+
+    <li><strong>Paso 3: Seleccionar Trades.</strong> Se abrirá la ventana <code>Datos de cuenta</code>. Elige la opción <code>Trades</code>.</li>
+    <li><img src="Fotos/info2.png" alt="Imagen 2: Seleccionar Trades" style="max-width: 100%;"></li>
+
+    <li><strong>Paso 4: Filtrar y Generar.</strong> Haz la ventana grande para ver la sección de filtros. Elige las cuentas y el rango de fechas. Haz clic en <code>Generar</code>.</li>
+    <li><img src="Fotos/info3.png" alt="Imagen 3: Filtros y Generar" style="max-width: 100%;"></li>
+
+    <li><strong>Paso 5: Exportar.</strong> Pincha sobre los datos generados con el ratón derecho y selecciona <code>Exportar</code>.</li>
+    <li><img src="Fotos/info4.png" alt="Imagen 4: Clic Derecho Exportar" style="max-width: 100%;"></li>
+
+    <li><strong>Paso 6: Guardar CSV.</strong> Guarda el archivo con un nombre descriptivo (ej: <code>cuenta-fechas.csv</code>).</li>
+    <li><img src="Fotos/info5.png" alt="Imagen 5: Guardar Archivo" style="max-width: 100%;"></li>
+</ol>
+
+<h3>Vídeo Explicativo</h3>
+<p>Si prefieres una guía visual, aquí tienes un vídeo:</p>
+<video controls style="max-width: 100%;">
+    <source src="Fotos/info.mp4" type="video/mp4">
+    Tu navegador no soporta la etiqueta de video.
+</video>
+2. En assets/style.css y assets/app.js:
+No se requiere ningún cambio en estos archivos, ya que la lógica de la modal ya está implementada. Solo se corrige el contenido HTML.
+En resumen: Corrige el contenido HTML de la ventana modal para que los primeros pasos de la guía de exportación de NinjaTrader sigan la secuencia: Abrir, Conectar, y luego ir a Nuevo -> Resultado de Operaciones."
