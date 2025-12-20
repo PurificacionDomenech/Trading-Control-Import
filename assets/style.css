@@ -9,6 +9,14 @@
     padding: 0;
 }
 
+/* Prevenir scroll horizontal en toda la página */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+    position: relative;
+}
+
 html {
     overflow-x: hidden;
     width: 100%;
@@ -62,8 +70,9 @@ body.dark-mode {
     background: #ffffff;
     color: #1a1a1a;
     border: none;
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
     border-radius: 50%;
     cursor: pointer;
     font-size: 18px;
@@ -86,16 +95,12 @@ body.dark-mode #theme-toggle {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
-body.dark-mode #theme-toggle:hover {
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
-}
-
 .header-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 24px;
-    gap: 16px;
+    margin-bottom: 20px;
+    gap: 12px;
     width: 100%;
     max-width: 100%;
 }
@@ -103,20 +108,23 @@ body.dark-mode #theme-toggle:hover {
 h1 {
     text-align: left;
     color: #5cd5e6;
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 700;
-    margin-bottom: 24px;
+    margin: 0;
     letter-spacing: -0.5px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    flex-shrink: 1;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 h1 img {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     object-fit: contain;
     flex-shrink: 0;
 }
@@ -135,10 +143,11 @@ body {
     max-width: 1400px;
     margin: 0 auto;
     background-color: transparent;
-    padding: 24px 16px;
+    padding: 20px 16px;
     transition: background-color 0.3s;
     width: 100%;
     overflow-x: hidden;
+    position: relative;
 }
 
 h2 {
@@ -161,94 +170,73 @@ h3 {
 .account-controls {
     display: flex;
     flex-direction: column;
-    margin-bottom: 16px;
-    padding: 0;
-    background-color: transparent;
-    gap: 8px;
+    margin-bottom: 20px;
+    gap: 10px;
     width: 100%;
     max-width: 100%;
     overflow: visible;
 }
 
-.account-controls-row {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-    flex-wrap: wrap;
-    width: 100%;
-    max-width: 100%;
-}
-
+.account-controls-row,
 .account-controls-row-secondary {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
     gap: 8px;
     flex-wrap: wrap;
     width: 100%;
     max-width: 100%;
-}
-
-.btn-settings-icon {
-    background-color: var(--card-bg);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    flex-shrink: 0;
-}
-
-.btn-settings-icon:hover {
-    background-color: var(--hover-bg);
-    border-color: var(--primary-color);
 }
 
 .account-controls-row select {
     flex: 1 1 auto;
-    min-width: 180px;
+    min-width: 140px;
     max-width: 100%;
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     color: var(--text-color);
-    padding: 10px 12px;
-    border-radius: 6px;
+    padding: 9px 12px;
+    border-radius: 8px;
     transition: all 0.3s;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
-    box-shadow: 0 2px 12px rgba(74, 157, 168, 0.15);
+    box-shadow: 0 2px 8px rgba(74, 157, 168, 0.1);
 }
 
 .account-controls-row select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgb(78, 162, 177, 0.1);
+    box-shadow: 0 0 0 3px rgba(78, 162, 177, 0.1);
 }
 
 .account-controls button {
-    margin-left: 0;
-    padding: 8px 12px;
-    font-size: 12px;
+    padding: 9px 12px;
+    font-size: 13px;
     white-space: nowrap;
     flex-shrink: 0;
+    border-radius: 8px;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.account-controls .button-small {
+    padding: 9px 12px;
+    font-size: 13px;
+}
+
+/* Eliminar tooltips nativos que causan overflow */
+[title] {
+    position: relative;
 }
 
 @media (max-width: 768px) {
     .header-container {
         gap: 8px;
+        margin-bottom: 16px;
     }
 
     h1 {
-        font-size: 22px;
-        margin-bottom: 16px;
+        font-size: 20px;
+        gap: 8px;
     }
 
     h1 img {
@@ -256,33 +244,61 @@ h3 {
         height: 28px;
     }
 
+    #theme-toggle {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        font-size: 16px;
+    }
+
     .account-controls {
-        gap: 6px;
+        gap: 8px;
     }
 
     .account-controls-row,
     .account-controls-row-secondary {
-        gap: 4px;
+        gap: 6px;
     }
 
+    .account-controls button,
     .account-controls .button-small {
-        padding: 6px 8px;
-        font-size: 10px;
-        white-space: nowrap;
-        flex: 0 1 auto;
-        min-width: fit-content;
-    }
-
-    .btn-settings-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 16px;
+        padding: 8px 10px;
+        font-size: 12px;
     }
 
     .account-controls-row select {
         min-width: 0;
-        font-size: 14px;
-        flex: 1 1 100%;
+        font-size: 13px;
+        padding: 8px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 18px;
+        gap: 6px;
+    }
+
+    h1 img {
+        width: 24px;
+        height: 24px;
+    }
+
+    #theme-toggle {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        font-size: 15px;
+    }
+
+    .account-controls button,
+    .account-controls .button-small {
+        padding: 7px 8px;
+        font-size: 11px;
+    }
+
+    .account-controls-row {
+        gap: 4px;
     }
 }
 
