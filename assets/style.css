@@ -68,48 +68,67 @@ body.dark-mode {
 
 .header-buttons {
     display: flex !important;
-    gap: 8px;
+    gap: 10px;
     align-items: center;
     flex-shrink: 0;
     visibility: visible !important;
     opacity: 1 !important;
 }
 
-.header-buttons .button-small {
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
+.header-buttons .button-small,
+.header-buttons button {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    max-width: 44px;
     padding: 0 !important;
     display: flex !important;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    font-size: 18px;
+    font-size: 20px;
     visibility: visible !important;
     opacity: 1 !important;
+    background: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.header-buttons .button-small:hover,
+.header-buttons button:hover {
+    background-color: var(--hover-bg);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 #theme-toggle {
     background: #ffffff;
     color: #1a1a1a;
-    border: none;
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
+    border: 1px solid #e0e0e0;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    max-width: 44px;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 20px;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    padding: 0 !important;
 }
 
 body.dark-mode #theme-toggle {
     background: #000000;
     color: #ffffff;
+    border-color: #1f2937;
     box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15);
 }
 
@@ -265,7 +284,7 @@ h3 {
 
 @media (max-width: 768px) {
     .header-container {
-        gap: 8px;
+        gap: 10px;
         margin-bottom: 12px;
     }
 
@@ -280,17 +299,19 @@ h3 {
     }
 
     .header-buttons {
-        gap: 6px;
+        gap: 8px;
         display: flex !important;
         visibility: visible !important;
     }
 
     .header-buttons .button-small,
+    .header-buttons button,
     #theme-toggle {
-        width: 36px;
-        height: 36px;
-        min-width: 36px;
-        font-size: 16px;
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        max-width: 40px;
+        font-size: 18px;
         display: flex !important;
         visibility: visible !important;
     }
@@ -333,6 +354,10 @@ h3 {
 }
 
 @media (max-width: 480px) {
+    .header-container {
+        gap: 8px;
+    }
+
     h1 {
         font-size: 18px;
         gap: 6px;
@@ -343,11 +368,18 @@ h3 {
         height: 24px;
     }
 
+    .header-buttons {
+        gap: 6px;
+    }
+
+    .header-buttons .button-small,
+    .header-buttons button,
     #theme-toggle {
-        width: 34px;
-        height: 34px;
-        min-width: 34px;
-        font-size: 15px;
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        max-width: 36px;
+        font-size: 16px;
     }
 
     .account-controls button,
