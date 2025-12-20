@@ -526,33 +526,50 @@ function iniciarImportacionCSV(event) {
     `;
     document.body.appendChild(backdrop);
 
-    Papa.parse(file, {
-        header: true,
-        delimiter: ';',
-        skipEmptyLines: true,
-        complete: function(results) {
-            procesarCSV(results.data);
-            
-            // Recargar datos de la cuenta activa y actualizar UI
-            const opsKey = getOperationsKey(currentAccountId);
-            const storedOperations = localStorage.getItem(opsKey);
-            operations = storedOperations ? JSON.parse(storedOperations) : [];
-            operations.sort((a, b) => new Date(a.date + 'T' + (a.entryTime || '00:00:00')) - new Date(b.date + 'T' + (b.entryTime || '00:00:00')));
-            
-            calculateHwmAndDrawdownFloor(true);
-            updateUI();
-            
-            // Eliminar indicador de carga
-            document.getElementById('csv-loading-indicator')?.remove();
-            document.getElementById('csv-loading-backdrop')?.remove();
-        },
-        error: function(error) {
-            // Eliminar indicador de carga
-            document.getElementById('csv-loading-indicator')?.remove();
-            document.getElementById('csv-loading-backdrop')?.remove();
-            alert('Error al leer el archivo CSV: ' + error.message);
-        }
-    });
+    // Pequeño delay para asegurar que el indicador se muestre
+    setTimeout(() => {
+        Papa.parse(file, {
+            header: true,
+            delimiter: ';',
+            skipEmptyLines: true,
+            complete: function(results) {
+                try {
+                    procesarCSV(results.data);
+                    
+                    // Recargar datos de la cuenta activa
+                    const opsKey = getOperationsKey(currentAccountId);
+                    const storedOperations = localStorage.getItem(opsKey);
+                    operations = storedOperations ? JSON.parse(storedOperations) : [];
+                    operations.sort((a, b) => new Date(a.fecha_de_operacion + 'T' + (a.tiempo_de_entrada || '00:00:00')) - new Date(b.fecha_de_operacion + 'T' + (b.tiempo_de_entrada || '00:00:00')));
+                    
+                    calculateHwmAndDrawdownFloor(true);
+                    
+                    // Eliminar indicador de carga
+                    setTimeout(() => {
+                        document.getElementById('csv-loading-indicator')?.remove();
+                        document.getElementById('csv-loading-backdrop')?.remove();
+                        
+                        // Actualizar UI
+                        updateUI();
+                        
+                        // Limpiar input
+                        event.target.value = '';
+                    }, 500);
+                    
+                } catch (error) {
+                    document.getElementById('csv-loading-indicator')?.remove();
+                    document.getElementById('csv-loading-backdrop')?.remove();
+                    alert('Error procesando el archivo: ' + error.message);
+                }
+            },
+            error: function(error) {
+                document.getElementById('csv-loading-indicator')?.remove();
+                document.getElementById('csv-loading-backdrop')?.remove();
+                alert('Error al leer el archivo CSV: ' + error.message);
+                event.target.value = '';
+            }
+        });
+    }, 100);
 }
 
 function procesarCSV(data) {
@@ -561,7 +578,6 @@ function procesarCSV(data) {
     let cuentasCreadas = [];
 
     // PASO 1: Agrupar operaciones por trade único
-    // NinjaTrader genera múltiples líneas para el mismo trade
     const operacionesAgrupadas = {};
 
     data.forEach(row => {
@@ -572,15 +588,12 @@ function procesarCSV(data) {
         const fecha = parsearFechaNinjaTrader(row['Tiempo de entrada']);
         const horaEntrada = parsearHoraNinjaTrader(row['Tiempo de entrada']);
 
-        // Crear clave única: cuenta + fecha + hora + número trade
         const claveAgrupacion = `${nombreCuenta}_${fecha}_${horaEntrada}_${numeroTrade}`;
 
-        // Si ya existe este trade, mantener solo la última ejecución
         if (operacionesAgrupadas[claveAgrupacion]) {
             const horaSalidaActual = parsearHoraNinjaTrader(row['Tiempo de salida']);
             const horaSalidaExistente = parsearHoraNinjaTrader(operacionesAgrupadas[claveAgrupacion]['Tiempo de salida']);
 
-            // Mantener la ejecución con hora de salida más tardía (la final)
             if (!horaSalidaExistente || horaSalidaActual >= horaSalidaExistente) {
                 operacionesAgrupadas[claveAgrupacion] = row;
             }
@@ -589,12 +602,11 @@ function procesarCSV(data) {
         }
     });
 
-    // PASO 2: Procesar solo las operaciones únicas (una por trade)
+    // PASO 2: Procesar operaciones únicas
     Object.values(operacionesAgrupadas).forEach(row => {
         const nombreCuenta = row['Cuenta']?.trim();
         if (!nombreCuenta) return;
 
-        // Verificar si la cuenta existe
         let cuenta = accounts.find(acc => acc.name === nombreCuenta);
         if (!cuenta) {
             const newAccountId = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9);
@@ -603,7 +615,6 @@ function procesarCSV(data) {
             saveAccounts();
             cuentasCreadas.push(nombreCuenta);
 
-            // Crear configuración por defecto para la cuenta nueva
             const defaultSettings = {
                 initialBalance: 50000,
                 consistencyPercentage: 40,
@@ -612,7 +623,6 @@ function procesarCSV(data) {
             localStorage.setItem(getSettingsKey(newAccountId), JSON.stringify(defaultSettings));
         }
 
-        // Cargar operaciones de esta cuenta
         const cuentaOpsKey = getOperationsKey(cuenta.id);
         const cuentaOps = localStorage.getItem(cuentaOpsKey);
         const operacionesCuenta = cuentaOps ? JSON.parse(cuentaOps) : [];
@@ -622,7 +632,6 @@ function procesarCSV(data) {
         const horaEntrada = parsearHoraNinjaTrader(row['Tiempo de entrada']);
         const horaSalida = parsearHoraNinjaTrader(row['Tiempo de salida']);
 
-        // Verificar duplicados (mejorado)
         const existeDuplicado = operacionesCuenta.some(op => 
             op.numero_de_trade == numeroTrade && 
             op.fecha_de_operacion === fecha &&
@@ -634,14 +643,12 @@ function procesarCSV(data) {
             return;
         }
 
-        // CRÍTICO: Usar "Ganancias" (profit del trade) NO "Con ganancia neto" (profit acumulado cuenta)
         const gananciaTexto = row['Ganancias']?.replace(/[^0-9,.\-]/g, '').replace(',', '.');
         const ganancia = parseFloat(gananciaTexto) || 0;
 
         const comisionTexto = row['Comisión']?.replace(/[^0-9,.\-]/g, '').replace(',', '.');
         const comision = parseFloat(comisionTexto) || 0;
 
-        // Crear operación
         const operacion = {
             id: Date.now() + Math.random(),
             numero_de_trade: numeroTrade || Date.now(),
@@ -657,7 +664,6 @@ function procesarCSV(data) {
             fecha_de_operacion: fecha,
             con_ganancia_neto: ganancia,
             comision: comision,
-            // Campos heredados para compatibilidad
             date: fecha,
             type: row['Mercado pos.']?.toLowerCase() === 'long' ? 'bullish' : 
                   (row['Mercado pos.']?.toLowerCase() === 'short' ? 'bearish' : null),
@@ -682,19 +688,16 @@ function procesarCSV(data) {
     });
 
     // Mensaje de resumen
-    let mensaje = `✅ Importación completada:\n`;
-    mensaje += `- ${operacionesImportadas} operaciones importadas\n`;
+    let mensaje = `✅ Importación completada:\n\n`;
+    mensaje += `📊 ${operacionesImportadas} operaciones importadas\n`;
     if (operacionesDuplicadas > 0) {
-        mensaje += `- ${operacionesDuplicadas} operaciones duplicadas (omitidas)\n`;
+        mensaje += `⚠️ ${operacionesDuplicadas} operaciones duplicadas (omitidas)\n`;
     }
     if (cuentasCreadas.length > 0) {
-        mensaje += `- Cuentas creadas: ${cuentasCreadas.join(', ')}`;
+        mensaje += `\n🆕 Cuentas creadas:\n${cuentasCreadas.map(c => '   • ' + c).join('\n')}`;
     }
 
     alert(mensaje);
-
-    // Limpiar input
-    document.getElementById('csv-file-input').value = '';
 }
 
 function parsearFechaNinjaTrader(fechaHora) {
