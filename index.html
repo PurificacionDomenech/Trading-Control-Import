@@ -31,7 +31,7 @@
             <button onclick="openCreateAccountModal()" class="button-small button-secondary">Nueva Cuenta</button>
             <button onclick="confirmDeleteAccount()" class="button-small button-danger">Eliminar</button>
             <!-- Botón para importar CSV -->
-            <input type="file" id="csv-file-input" accept=".csv" style="display: none;">
+            <input type="file" id="csv-file-input" accept=".csv" style="display: none;" onchange="iniciarImportacionCSV(event)">
             <button onclick="document.getElementById('csv-file-input').click()" class="button-small button-secondary">Importar CSV</button>
             <button onclick="openNinjaHelpModal()" class="button-small button-secondary" title="Guía de exportación">ℹ️ ¿Cómo exportar de Ninja?</button>
         </div>
