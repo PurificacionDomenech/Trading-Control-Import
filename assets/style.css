@@ -185,6 +185,8 @@ h3 {
     flex-wrap: wrap;
     width: 100%;
     max-width: 100%;
+    overflow: visible;
+    z-index: 1;
 }
 
 .account-controls-row select {
@@ -216,6 +218,8 @@ h3 {
     border-radius: 8px;
     transition: all 0.2s;
     cursor: pointer;
+    position: relative;
+    z-index: 1;
 }
 
 .account-controls .button-small {
@@ -258,12 +262,14 @@ h3 {
     .account-controls-row,
     .account-controls-row-secondary {
         gap: 6px;
+        overflow: visible;
     }
 
     .account-controls button,
     .account-controls .button-small {
         padding: 8px 10px;
         font-size: 12px;
+        min-height: 36px;
     }
 
     .account-controls-row select {
