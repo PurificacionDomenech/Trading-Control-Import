@@ -509,7 +509,7 @@
                         <div class="step-number">1</div>
                         <div class="step-content">
                             <h3>Abrir y Conectar</h3>
-                            <p>Abre NinjaTrader y <strong>conéctate</strong> a una cuenta (aunque sea de simulación).</p>
+                            <p>Abre NinjaTrader y <strong>conéctate a un servidor</strong> (aunque sea de simulación).</p>
                         </div>
                     </div>
 
@@ -518,7 +518,7 @@
                         <div class="step-content">
                             <h3>Abrir Resultado de Operaciones</h3>
                             <p>Ve a <code>Nuevo</code> → <code>Resultado de Operaciones</code>.</p>
-                            <img src="Fotos/info1.png" alt="Resultado de Operaciones" class="step-image">
+                            <img src="Fotos/info1.png" alt="Resultado de Operaciones" class="step-image" onclick="openImageModal(this.src)">
                         </div>
                     </div>
 
@@ -526,8 +526,8 @@
                         <div class="step-number">3</div>
                         <div class="step-content">
                             <h3>Seleccionar Trades</h3>
-                            <p>Se abrirá la ventana <code>Datos de cuenta</code>. Elige la opción <code>Trades</code>.</p>
-                            <img src="Fotos/info2.png" alt="Seleccionar Trades" class="step-image">
+                            <p>Se abrirá la ventana <code>Resultado de Operaciones</code>. Elige la opción <code>Trades</code>.</p>
+                            <img src="Fotos/info2.png" alt="Seleccionar Trades" class="step-image" onclick="openImageModal(this.src)">
                         </div>
                     </div>
 
@@ -536,7 +536,7 @@
                         <div class="step-content">
                             <h3>Filtrar y Generar</h3>
                             <p>Haz la ventana grande para ver la sección de filtros. Elige las cuentas y el rango de fechas. Haz clic en <code>Generar</code>.</p>
-                            <img src="Fotos/info3.png" alt="Filtros y Generar" class="step-image">
+                            <img src="Fotos/info3.png" alt="Filtros y Generar" class="step-image" onclick="openImageModal(this.src)">
                         </div>
                     </div>
 
@@ -545,7 +545,7 @@
                         <div class="step-content">
                             <h3>Exportar</h3>
                             <p>Haz clic derecho sobre los datos generados y selecciona <code>Exportar</code>.</p>
-                            <img src="Fotos/info4.png" alt="Clic Derecho Exportar" class="step-image">
+                            <img src="Fotos/info4.png" alt="Clic Derecho Exportar" class="step-image" onclick="openImageModal(this.src)">
                         </div>
                     </div>
 
@@ -554,7 +554,7 @@
                         <div class="step-content">
                             <h3>Guardar CSV</h3>
                             <p>Guarda el archivo con un nombre descriptivo (ej: <code>cuenta-enero-2025.csv</code>).</p>
-                            <img src="Fotos/info5.png" alt="Guardar Archivo" class="step-image">
+                            <img src="Fotos/info5.png" alt="Guardar Archivo" class="step-image" onclick="openImageModal(this.src)">
                         </div>
                     </div>
                 </div>
@@ -573,6 +573,12 @@
                 </div>
             </div>
         </div>
+
+    <!-- Modal para ampliar imágenes -->
+    <div id="image-modal" class="image-modal" onclick="closeImageModal()">
+        <span class="close-modal" onclick="closeImageModal()">&times;</span>
+        <img id="modal-image" class="modal-image-content">
+    </div>
 
     <script src="assets/app.js"></script>
 </body>

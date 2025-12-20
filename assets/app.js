@@ -2228,5 +2228,24 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+// Funciones para modal de imágenes
+function openImageModal(src) {
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-image');
+    modal.style.display = 'block';
+    modalImg.src = src;
+}
+
+function closeImageModal() {
+    document.getElementById('image-modal').style.display = 'none';
+}
+
+// Cerrar modal con tecla Escape
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeImageModal();
+    }
+});
+
 // Inicializar tema
 initTheme();
