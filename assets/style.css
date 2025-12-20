@@ -67,10 +67,12 @@ body.dark-mode {
 }
 
 .header-buttons {
-    display: flex;
+    display: flex !important;
     gap: 8px;
     align-items: center;
     flex-shrink: 0;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .header-buttons .button-small {
@@ -78,11 +80,13 @@ body.dark-mode {
     height: 40px;
     min-width: 40px;
     padding: 0 !important;
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     font-size: 18px;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 #theme-toggle {
@@ -277,6 +281,8 @@ h3 {
 
     .header-buttons {
         gap: 6px;
+        display: flex !important;
+        visibility: visible !important;
     }
 
     .header-buttons .button-small,
@@ -285,6 +291,8 @@ h3 {
         height: 36px;
         min-width: 36px;
         font-size: 16px;
+        display: flex !important;
+        visibility: visible !important;
     }
 
     .account-controls {
