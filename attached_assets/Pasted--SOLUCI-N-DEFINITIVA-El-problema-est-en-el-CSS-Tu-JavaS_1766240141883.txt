@@ -1,0 +1,237 @@
+# 🎯 SOLUCIÓN DEFINITIVA - El problema está en el CSS
+
+Tu JavaScript funciona, pero los modales no se ven por el CSS. Aquí está la solución:
+
+## 📝 PASO 1: Reemplaza los estilos de los modales en style.css
+
+Busca estas secciones en tu `assets/style.css` y REEMPLÁZALAS:
+
+### Modal de Configuración (busca `.settings-modal`):
+
+```css
+.settings-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 999999 !important;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.settings-modal .modal-content {
+    background-color: var(--card-bg);
+    padding: 32px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    margin: 40px auto;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.settings-modal .close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+    font-size: 40px;
+    font-weight: bold;
+    color: #ffffff;
+    background: #ef4444;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: all 0.3s;
+    z-index: 10;
+}
+
+.settings-modal .close-modal:hover {
+    background: #dc2626;
+    transform: scale(1.1);
+}
+```
+
+### Modal de Ayuda Ninja (busca `.ninja-help-modal`):
+
+```css
+.ninja-help-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 999999 !important;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.ninja-help-modal.active {
+    display: block !important;
+}
+
+.ninja-modal-content {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 16px;
+    width: 95%;
+    max-width: 900px;
+    margin: 20px auto;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+}
+
+.ninja-modal-content .close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+    font-size: 40px;
+    font-weight: bold;
+    color: #ffffff;
+    background: #ef4444;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: all 0.3s;
+    z-index: 10;
+}
+
+.ninja-modal-content .close-modal:hover {
+    background: #dc2626;
+    transform: scale(1.1);
+}
+```
+
+## 📝 PASO 2: Verifica las funciones en app.js
+
+Busca estas funciones y ASEGÚRATE de que estén exactamente así:
+
+```javascript
+function openSettingsModal() {
+    const modal = document.getElementById('settings-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        console.log('Modal configuración abierto');
+    } else {
+        console.error('Modal settings-modal no encontrado');
+    }
+}
+
+function closeSettingsModal() {
+    const modal = document.getElementById('settings-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+        console.log('Modal configuración cerrado');
+    }
+}
+
+function openNinjaHelpModal() {
+    const modal = document.getElementById('modal-ayuda-ninja');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        console.log('Modal ayuda ninja abierto');
+    } else {
+        console.error('Modal modal-ayuda-ninja no encontrado');
+    }
+}
+
+function closeNinjaHelpModal() {
+    const modal = document.getElementById('modal-ayuda-ninja');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        console.log('Modal ayuda ninja cerrado');
+    }
+}
+```
+
+## 📝 PASO 3: Verifica los IDs en index.html
+
+Busca tus modales y asegúrate de que tengan estos IDs EXACTOS:
+
+```html
+<!-- Modal de Configuración -->
+<div id="settings-modal" class="settings-modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeSettingsModal()">&times;</span>
+        <!-- resto del contenido -->
+    </div>
+</div>
+
+<!-- Modal de Ayuda Ninja -->
+<div id="modal-ayuda-ninja" class="ninja-help-modal">
+    <div class="ninja-modal-content">
+        <span class="close-modal" onclick="closeNinjaHelpModal()">&times;</span>
+        <!-- resto del contenido -->
+    </div>
+</div>
+```
+
+## 📝 PASO 4: Verifica los botones
+
+Tus botones deben tener estos onclick EXACTOS:
+
+```html
+<div class="settings-help-row">
+    <button onclick="openSettingsModal()" class="settings-button">
+        ⚙️ Configuración de Cuenta
+    </button>
+    <button onclick="openNinjaHelpModal()" class="help-button">
+        ❓ ¿Cómo exportar de Ninja?
+    </button>
+</div>
+```
+
+## ✅ Después de hacer los cambios:
+
+1. Guarda todos los archivos
+2. Recarga la página (Ctrl+Shift+R o Cmd+Shift+R)
+3. Abre la consola (F12)
+4. Haz clic en los botones
+5. Deberías ver en la consola:
+   - "Modal configuración abierto"
+   - "Modal ayuda ninja abierto"
+
+## 🐛 Si TODAVÍA no funciona:
+
+Escribe esto en la consola y dime qué te sale:
+
+```javascript
+document.getElementById('settings-modal')
+document.getElementById('modal-ayuda-ninja')
+typeof openSettingsModal
+typeof openNinjaHelpModal
+```
+
+Y copia aquí los resultados.
+
+---
+
+## 🎯 RAZÓN DEL PROBLEMA
+
+El problema era que:
+1. El z-index no era suficientemente alto
+2. Los modales no tenían `!important` en el display
+3. El CSS estaba siendo sobrescrito por otro CSS
+
+Con estos cambios, los modales se verán POR ENCIMA de todo.

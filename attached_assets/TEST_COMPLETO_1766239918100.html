@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Botones</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            margin-bottom: 24px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .app-icon {
+            width: 40px;
+            height: 40px;
+            background: #4a9da8;
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #4a9da8;
+            font-size: 24px;
+        }
+
+        .icon-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        /* Account Controls */
+        .account-controls {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .account-selector-wrapper select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .account-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            padding: 12px 20px;
+            background: #4a9da8;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .action-button.danger {
+            background: #ef4444;
+        }
+
+        /* Nueva fila de botones */
+        .settings-help-row {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .settings-button,
+        .help-button {
+            flex: 1;
+            min-width: 200px;
+            padding: 16px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .settings-button {
+            background: #4a9da8;
+            color: white;
+        }
+
+        .help-button {
+            background: #8b7a99;
+            color: white;
+        }
+
+        .settings-button:hover {
+            background: #3e8a94;
+        }
+
+        .help-button:hover {
+            background: #7a6c88;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex !important;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+            background: #f5f5f5;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .settings-help-row {
+                flex-direction: column;
+            }
+            
+            .settings-button,
+            .help-button {
+                width: 100%;
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header-container">
+            <div class="header-left">
+                <div class="app-icon"></div>
+                <h1>Trading Control</h1>
+            </div>
+            <div class="header-right">
+                <button class="icon-button">🌙</button>
+            </div>
+        </div>
+
+        <!-- Account Controls -->
+        <div class="account-controls">
+            <div class="account-selector-wrapper">
+                <select>
+                    <option>Cuenta Demo</option>
+                    <option>Cuenta Real</option>
+                </select>
+            </div>
+            
+            <div class="account-actions">
+                <button class="action-button">Nueva Cuenta</button>
+                <button class="action-button danger">Eliminar Cuenta</button>
+                <button class="action-button">Importar CSV</button>
+            </div>
+
+            <div class="settings-help-row">
+                <button onclick="openSettings()" class="settings-button">
+                    ⚙️ Configuración de Cuenta
+                </button>
+                <button onclick="openHelp()" class="help-button">
+                    ❓ ¿Cómo exportar de Ninja?
+                </button>
+            </div>
+        </div>
+
+        <div style="background: white; padding: 20px; border-radius: 12px;">
+            <h2>Contenido Principal</h2>
+            <p>Los botones deberían estar funcionando ahora. Prueba a hacer clic en ellos.</p>
+        </div>
+    </div>
+
+    <!-- Modal Configuración -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeSettings()">&times;</span>
+            <h2>⚙️ Configuración de Cuenta</h2>
+            <p style="margin-top: 20px;">Este es el modal de configuración.</p>
+            <p style="margin-top: 10px; color: #666;">Aquí puedes ajustar tu saldo inicial, drawdown, etc.</p>
+        </div>
+    </div>
+
+    <!-- Modal Ayuda -->
+    <div id="help-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeHelp()">&times;</span>
+            <h2>❓ Ayuda NinjaTrader</h2>
+            <p style="margin-top: 20px;">Este es el modal de ayuda.</p>
+            <p style="margin-top: 10px; color: #666;">Aquí se explica cómo exportar desde NinjaTrader.</p>
+        </div>
+    </div>
+
+    <script>
+        function openSettings() {
+            console.log('Abriendo configuración...');
+            document.getElementById('settings-modal').classList.add('active');
+        }
+
+        function closeSettings() {
+            console.log('Cerrando configuración...');
+            document.getElementById('settings-modal').classList.remove('active');
+        }
+
+        function openHelp() {
+            console.log('Abriendo ayuda...');
+            document.getElementById('help-modal').classList.add('active');
+        }
+
+        function closeHelp() {
+            console.log('Cerrando ayuda...');
+            document.getElementById('help-modal').classList.remove('active');
+        }
+
+        // Cerrar con Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeSettings();
+                closeHelp();
+            }
+        });
+
+        // Cerrar al hacer clic fuera
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeSettings();
+                    closeHelp();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

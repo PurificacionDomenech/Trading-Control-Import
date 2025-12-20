@@ -1,0 +1,30 @@
+Failed to load resource: the server responded with a status of 404 ()
+217887c149b8bc90377fef1741d1f743:1   Failed to load resource: the server responded with a status of 404 ()
+217887c149b8bc90377fef1741d1f743:1   Failed to load resource: the server responded with a status of 404 ()
+stallwart.build.js:1 stallwart: failed ping 1
+217887c149b8bc90377fef1741d1f743:1   Failed to load resource: the server responded with a status of 404 ()
+217887c149b8bc90377fef1741d1f743:1   Failed to load resource: the server responded with a status of 404 ()
+217887c149b8bc90377fef1741d1f743:1   Failed to load resource: the server responded with a status of 404 ()
+workspace_iframe.html?initialPath=%2F&id=%3Ar37p%3A:32  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar37p%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar37p%3A:32  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar37p%3A:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar37p%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar37p%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar37p%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar37p%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar37p%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar37p%3A:32  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar37p%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar37p%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar37p%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar37p%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+217887c149b8bc90377fef1741d1f743:1   Failed to load resource: the server responded with a status of 404 ()
+app.js:2215 SW registrado correctamente
+217887c149b8bc90377fef1741d1f743:1   Failed to load resource: the server responded with a status of 404 ()
+stallwart.build.js:1 stallwart: failed ping 1
+42605816003b0097.js:2  WARN: A component changed from uncontrolled to controlled.
+(anonymous) @ 42605816003b0097.js:2
+42605816003b0097.js:2  WARN: A component changed from controlled to uncontrolled.
+(anonymous) @ 42605816003b0097.js:2
+42605816003b0097.js:2  
