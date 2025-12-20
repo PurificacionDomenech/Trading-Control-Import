@@ -1,0 +1,242 @@
+/* ============================================================================
+   HEADER Y CONTROLES SUPERIORES
+   ============================================================================ */
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    gap: 12px;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+h1 {
+    text-align: left;
+    color: #5cd5e6;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+h1 img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+#theme-toggle {
+    background: #ffffff;
+    color: #1a1a1a;
+    border: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+body.dark-mode #theme-toggle {
+    background: #000000;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15);
+}
+
+#theme-toggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+body.dark-mode #theme-toggle:hover {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
+}
+
+.btn-settings-icon {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.btn-settings-icon:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.account-controls {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding: 0;
+    background-color: transparent;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+}
+
+.account-controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 100%;
+}
+
+.account-controls-row-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 100%;
+}
+
+.account-controls-row select {
+    flex: 1 1 auto;
+    min-width: 150px;
+    max-width: 100%;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 10px 12px;
+    border-radius: 8px;
+    transition: all 0.3s;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 2px 12px rgba(74, 157, 168, 0.15);
+}
+
+.account-controls-row select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgb(78, 162, 177, 0.1);
+}
+
+.account-controls button {
+    margin: 0;
+    padding: 8px 12px;
+    font-size: 13px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* ============================================================================
+   RESPONSIVE PARA MÓVILES
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .header-container {
+        gap: 8px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    h1 img {
+        width: 28px;
+        height: 28px;
+    }
+
+    #theme-toggle {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+    }
+
+    .btn-settings-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 18px;
+    }
+
+    .account-controls {
+        gap: 6px;
+    }
+
+    .account-controls-row,
+    .account-controls-row-secondary {
+        gap: 6px;
+    }
+
+    .account-controls .button-small {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    .account-controls-row select {
+        min-width: 0;
+        font-size: 14px;
+        flex: 1 1 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-container {
+        gap: 6px;
+    }
+
+    h1 {
+        font-size: 18px;
+        gap: 8px;
+    }
+
+    h1 img {
+        width: 24px;
+        height: 24px;
+    }
+
+    #theme-toggle {
+        width: 36px;
+        height: 36px;
+        font-size: 15px;
+    }
+
+    .btn-settings-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+
+    .account-controls button {
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+}
