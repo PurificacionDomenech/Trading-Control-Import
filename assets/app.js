@@ -2182,6 +2182,9 @@ if (storedActive && accounts.find(a => a.id === storedActive)) {
 }
 document.getElementById('date').value = new Date().toISOString().split('T')[0];
 
+// Configurar listener para importación CSV
+document.getElementById('csv-file-input').addEventListener('change', iniciarImportacionCSV);
+
 openTab('dashboard');
 
 // ============================================================================
