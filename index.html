@@ -22,7 +22,10 @@
         <!-- Header con título y tema -->
         <div class="header-container">
             <h1><img src="icon.png" alt="Trading Control Icon">Trading Control</h1>
-            <button id="theme-toggle" aria-label="Cambiar tema">☀️</button>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <button onclick="openNinjaHelpModal()" class="button-small button-secondary" style="min-width: auto; padding: 8px 12px;">❓ Ayuda</button>
+                <button id="theme-toggle" aria-label="Cambiar tema">☀️</button>
+            </div>
         </div>
 
         <!-- Controles de cuenta optimizados -->
@@ -35,11 +38,10 @@
                 <button onclick="confirmDeleteAccount()" class="button-small button-danger">🗑️</button>
             </div>
             
-            <!-- Fila 2: Importación y ayuda -->
+            <!-- Fila 2: Importación -->
             <div class="account-controls-row-secondary">
                 <input type="file" id="csv-file-input" accept=".csv" style="display: none;">
                 <button onclick="document.getElementById('csv-file-input').click()" class="button-small button-secondary">📊 Importar CSV</button>
-                <button onclick="openNinjaHelpModal()" class="button-small button-secondary">❓ Ayuda NinjaTrader</button>
             </div>
         </div>
 

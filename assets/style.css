@@ -103,6 +103,8 @@ body.dark-mode #theme-toggle {
     gap: 12px;
     width: 100%;
     max-width: 100%;
+    position: relative;
+    z-index: 100;
 }
 
 h1 {
