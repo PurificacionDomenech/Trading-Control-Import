@@ -33,6 +33,7 @@
             <!-- Botón para importar CSV -->
             <input type="file" id="csv-file-input" accept=".csv" style="display: none;">
             <button onclick="document.getElementById('csv-file-input').click()" class="button-small button-secondary">Importar CSV</button>
+            <button onclick="openNinjaHelpModal()" class="button-small button-secondary" title="Guía de exportación">ℹ️ ¿Cómo exportar de Ninja?</button>
         </div>
 
         <div class="tabs">
@@ -492,6 +493,85 @@
             <button onclick="closeDetailsModal()">Cerrar</button>
           </div>
          </div>
+        </div>
+
+        <!-- Modal de Ayuda NinjaTrader -->
+        <div id="modal-ayuda-ninja" class="ninja-help-modal">
+            <div class="ninja-modal-content">
+                <span class="close-modal" onclick="closeNinjaHelpModal()">&times;</span>
+                <h2>📊 Guía de Exportación desde NinjaTrader</h2>
+                <p style="color: var(--text-muted); margin-bottom: 24px;">
+                    Para importar tus operaciones a Trading Control, sigue estos pasos para exportar el archivo CSV de "Account Performance" desde NinjaTrader:
+                </p>
+
+                <div class="ninja-steps">
+                    <div class="ninja-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Abrir y Conectar</h3>
+                            <p>Abre NinjaTrader y <strong>conéctate</strong> a una cuenta (aunque sea de simulación).</p>
+                        </div>
+                    </div>
+
+                    <div class="ninja-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Abrir Resultado de Operaciones</h3>
+                            <p>Ve a <code>Nuevo</code> → <code>Resultado de Operaciones</code>.</p>
+                            <img src="Fotos/info1.png" alt="Resultado de Operaciones" class="step-image">
+                        </div>
+                    </div>
+
+                    <div class="ninja-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Seleccionar Trades</h3>
+                            <p>Se abrirá la ventana <code>Datos de cuenta</code>. Elige la opción <code>Trades</code>.</p>
+                            <img src="Fotos/info2.png" alt="Seleccionar Trades" class="step-image">
+                        </div>
+                    </div>
+
+                    <div class="ninja-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Filtrar y Generar</h3>
+                            <p>Haz la ventana grande para ver la sección de filtros. Elige las cuentas y el rango de fechas. Haz clic en <code>Generar</code>.</p>
+                            <img src="Fotos/info3.png" alt="Filtros y Generar" class="step-image">
+                        </div>
+                    </div>
+
+                    <div class="ninja-step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h3>Exportar</h3>
+                            <p>Haz clic derecho sobre los datos generados y selecciona <code>Exportar</code>.</p>
+                            <img src="Fotos/info4.png" alt="Clic Derecho Exportar" class="step-image">
+                        </div>
+                    </div>
+
+                    <div class="ninja-step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h3>Guardar CSV</h3>
+                            <p>Guarda el archivo con un nombre descriptivo (ej: <code>cuenta-enero-2025.csv</code>).</p>
+                            <img src="Fotos/info5.png" alt="Guardar Archivo" class="step-image">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ninja-video-section">
+                    <h3>🎥 Vídeo Explicativo</h3>
+                    <p>Si prefieres una guía visual paso a paso:</p>
+                    <video controls class="ninja-video">
+                        <source src="Fotos/info.mp4" type="video/mp4">
+                        Tu navegador no soporta la reproducción de vídeo.
+                    </video>
+                </div>
+
+                <div class="modal-buttons">
+                    <button onclick="closeNinjaHelpModal()">Entendido</button>
+                </div>
+            </div>
         </div>
 
     <script src="assets/app.js"></script>

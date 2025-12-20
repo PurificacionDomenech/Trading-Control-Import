@@ -472,6 +472,14 @@ function closeDetailsModal() {
     document.getElementById('details-modal').style.display = 'none';
 }
 
+function openNinjaHelpModal() {
+    document.getElementById('modal-ayuda-ninja').style.display = 'flex';
+}
+
+function closeNinjaHelpModal() {
+    document.getElementById('modal-ayuda-ninja').style.display = 'none';
+}
+
 function saveSettings() {
     const ib = parseFloat(document.getElementById('initial-balance').value);
     const cp = parseInt(document.getElementById('consistency-percentage').value);
