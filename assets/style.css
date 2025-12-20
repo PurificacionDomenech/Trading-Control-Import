@@ -187,6 +187,7 @@ h3 {
     max-width: 100%;
     overflow: visible;
     z-index: 1;
+    min-height: 44px;
 }
 
 .account-controls-row select {
@@ -220,11 +221,16 @@ h3 {
     cursor: pointer;
     position: relative;
     z-index: 1;
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .account-controls .button-small {
     padding: 9px 12px;
     font-size: 13px;
+    min-height: 38px;
 }
 
 /* Eliminar tooltips nativos que causan overflow */
@@ -263,6 +269,7 @@ h3 {
     .account-controls-row-secondary {
         gap: 6px;
         overflow: visible;
+        min-height: 40px;
     }
 
     .account-controls button,
@@ -270,12 +277,18 @@ h3 {
         padding: 8px 10px;
         font-size: 12px;
         min-height: 36px;
+        flex: 0 0 auto;
     }
 
     .account-controls-row select {
         min-width: 0;
         font-size: 13px;
         padding: 8px 10px;
+        min-height: 36px;
+    }
+    
+    .account-controls-row-secondary {
+        justify-content: flex-start;
     }
 }
 
