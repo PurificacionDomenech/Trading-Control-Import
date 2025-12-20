@@ -86,31 +86,6 @@ body.dark-mode {
     width: 100%;
 }
 
-.settings-btn-full {
-    width: 100%;
-    padding: 10px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    background: var(--card-bg);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 2px;
-}
-
-.settings-btn-full:hover {
-    background: var(--hover-bg);
-    border-color: var(--primary-color);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(74, 157, 168, 0.2);
-}
-
 .account-selector-wrapper select {
     width: 100%;
     padding: 12px 16px;
@@ -398,6 +373,18 @@ h3 {
     .action-button {
         padding: 10px 8px;
         font-size: 12px;
+    }
+
+    .settings-help-row {
+        flex-direction: column;
+    }
+
+    .settings-button,
+    .help-button {
+        width: 100%;
+        min-width: 100%;
+        font-size: 13px;
+        padding: 10px 14px;
     }
 }
 
@@ -1299,6 +1286,99 @@ body.dark-mode #listaTareas li.completed {
 
 .percentage-above-50 {
     color: #10b981;
+}
+
+/* ============================================================================
+   BOTONES DE CONFIGURACIÓN Y AYUDA
+   ============================================================================ */
+
+/* Nueva fila para botones de configuración y ayuda */
+.settings-help-row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+/* Botón de configuración - estilo completo */
+.settings-button {
+    flex: 1;
+    min-width: 200px;
+    padding: 14px 20px;
+    background: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(74, 157, 168, 0.3);
+}
+
+.settings-button:hover {
+    background: #3e8a94;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 157, 168, 0.4);
+}
+
+.settings-button:active {
+    transform: translateY(0);
+}
+
+/* Botón de ayuda - estilo completo */
+.help-button {
+    flex: 1;
+    min-width: 200px;
+    padding: 14px 20px;
+    background: var(--secondary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(139, 122, 153, 0.3);
+}
+
+.help-button:hover {
+    background: #7a6c88;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 122, 153, 0.4);
+}
+
+.help-button:active {
+    transform: translateY(0);
+}
+
+/* Modo oscuro para los botones */
+body.dark-mode .settings-button {
+    background: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(91, 166, 176, 0.4);
+}
+
+body.dark-mode .settings-button:hover {
+    background: #4a9da8;
+    box-shadow: 0 4px 12px rgba(91, 166, 176, 0.5);
+}
+
+body.dark-mode .help-button {
+    background: var(--secondary-color);
+    box-shadow: 0 2px 8px rgba(155, 138, 168, 0.4);
+}
+
+body.dark-mode .help-button:hover {
+    background: #9b8aa8;
+    box-shadow: 0 4px 12px rgba(155, 138, 168, 0.5);
 }
 
 .progress-container {
