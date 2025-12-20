@@ -24,19 +24,16 @@
             <button id="theme-toggle" aria-label="Toggle theme">☀️</button>
         </div>
         <div class="account-controls">
-            <div class="account-selector-group">
+            <div class="account-main-row">
                 <select id="account-selector" onchange="setActiveAccount(this.value)"></select>
                 <button onclick="openSettingsModal()" class="button-secondary btn-settings-inline" title="Ajustes de cuenta">⚙️</button>
             </div>
-            <div class="account-actions-group">
+            <div class="account-buttons-row">
                 <button onclick="openCreateAccountModal()" class="button-small button-secondary">Nueva Cuenta</button>
                 <button onclick="confirmDeleteAccount()" class="button-small button-danger">Eliminar</button>
-            </div>
-            <!-- Botón para importar CSV -->
-            <input type="file" id="csv-file-input" accept=".csv" style="display: none;" onchange="iniciarImportacionCSV(event)">
-            <div class="import-actions-group">
-                <button onclick="document.getElementById('csv-file-input').click()" class="button-small button-secondary">📥 Importar CSV</button>
-                <button onclick="openNinjaHelpModal()" class="button-small button-secondary" title="Guía de exportación">ℹ️ Ninja</button>
+                <input type="file" id="csv-file-input" accept=".csv" style="display: none;" onchange="iniciarImportacionCSV(event)">
+                <button onclick="document.getElementById('csv-file-input').click()" class="button-small button-secondary">📥 CSV</button>
+                <button onclick="openNinjaHelpModal()" class="button-small button-secondary" title="Guía de exportación NinjaTrader">📊 Ninja</button>
             </div>
         </div>
 
