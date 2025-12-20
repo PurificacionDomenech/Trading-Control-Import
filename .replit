@@ -37,6 +37,10 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
+args = "pkill -f \"python server.py\" || true"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
 args = "python server.py"
 
 [[ports]]

@@ -139,47 +139,53 @@ body {
         }
 
         .account-controls {
-            margin-bottom: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .account-main-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        .account-buttons-row {
-            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 16px;
+            padding: 0;
+            background-color: transparent;
             gap: 8px;
             flex-wrap: wrap;
         }
 
+        .account-selector-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1 1 auto;
+            min-width: 200px;
+        }
+
         @media (max-width: 768px) {
-            .account-buttons-row .button-small {
-                padding: 8px 10px;
-                font-size: 12px;
+            .account-controls {
+                gap: 4px;
+                flex-wrap: wrap;
+            }
+
+            .account-controls .button-small {
+                padding: 6px 8px;
+                font-size: 10px;
                 white-space: nowrap;
-                flex: 1 1 auto;
+                flex: 0 1 auto;
                 min-width: fit-content;
+                max-width: calc(50% - 4px);
             }
 
             .btn-settings-inline {
-                padding: 0 !important;
-                font-size: 16px !important;
-                min-width: 38px !important;
-                width: 38px !important;
-                height: 38px !important;
-                border-radius: 6px !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                flex-shrink: 0;
+                padding: 4px 6px !important;
+                font-size: 14px !important;
+                min-width: 28px !important;
+                width: 28px !important;
             }
 
-            .account-main-row select {
+            .account-selector-group {
+                min-width: 0;
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+
+            .account-controls select {
                 min-width: 0;
                 font-size: 14px;
                 flex: 1;
