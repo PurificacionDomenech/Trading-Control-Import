@@ -94,8 +94,28 @@ body.dark-mode {
     min-width: 0;
 }
 
-.settings-btn {
-    flex-shrink: 0;
+.settings-btn-full {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    background: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.settings-btn-full:hover {
+    background: var(--hover-bg);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(74, 157, 168, 0.2);
 }
 
 .account-selector-wrapper select {
