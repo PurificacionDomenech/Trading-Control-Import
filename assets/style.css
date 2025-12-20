@@ -205,12 +205,19 @@ h1 {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 10;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .icon-button:hover {
     background-color: var(--hover-bg);
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.icon-button:active {
+    transform: scale(0.98);
 }
 
 #theme-toggle {
@@ -740,7 +747,7 @@ body.dark-mode .stat-box.highlighted {
     height: 100%;
     background-color: rgba(0,0,0,0.7);
     backdrop-filter: blur(4px);
-    z-index: 999;
+    z-index: 9999;
     align-items: center;
     justify-content: center;
     overflow-y: auto;
@@ -800,15 +807,17 @@ input[type="date"], input[type="time"] {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(4px);
-    z-index: 1000;
+    z-index: 10000;
     overflow-y: auto;
     padding: 20px;
 }
 
 .ninja-help-modal.active {
-    display: block;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
 }
 
 .ninja-modal-content {
@@ -824,6 +833,27 @@ input[type="date"], input[type="time"] {
     overflow-y: auto;
     box-sizing: border-box;
     position: relative;
+}
+
+.ninja-modal-content .close-modal {
+    position: sticky;
+    top: -16px;
+    right: -16px;
+    float: right;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    z-index: 10001;
+    margin-bottom: -40px;
+}
+
+.ninja-modal-content .close-modal:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
 }
 
 .ninja-modal-content h2 {
@@ -907,17 +937,18 @@ input[type="date"], input[type="time"] {
     border: 1px solid var(--border-color);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: all 0.3s ease;
 }
 
 .step-image:hover {
     transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(74, 157, 168, 0.3);
 }
 
 .image-modal {
     display: none;
     position: fixed;
-    z-index: 10000;
+    z-index: 20000;
     padding-top: 50px;
     left: 0;
     top: 0;
@@ -925,6 +956,24 @@ input[type="date"], input[type="time"] {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .modal-image-content {
@@ -933,6 +982,8 @@ input[type="date"], input[type="time"] {
     width: 90%;
     max-width: 1200px;
     border-radius: 8px;
+    animation: zoomIn 0.3s ease;
+    cursor: zoom-out;
 }
 
 .ninja-video-section {
